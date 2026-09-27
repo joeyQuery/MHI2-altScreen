@@ -226,14 +226,18 @@ int mu0678_interpose_init(void)
         uintptr_t dio_base;
         volatile uint32_t *server_got;
         volatile uint32_t *final_got;
-        if(!server_cb||!final_cb) return -5;
+        if(!server_cb||!final_cb) {
+            return -5;
+        }
         dio_base=(uintptr_t)server_cb-0x139a88u;
         server_got=(volatile uint32_t *)(dio_base+0x19d9d8u);
         final_got=(volatile uint32_t *)(dio_base+0x19da00u);
         g_original_server_copy_property=(void *)(uintptr_t)(*server_got);
         g_original_session_finalized=(void *)(uintptr_t)(*final_got);
         if(!guarded_store(server_got,(uint32_t)(uintptr_t)server_cb,
-                          (uint32_t)(uintptr_t)server_copy_property_hook,0)) return -6;
+                          (uint32_t)(uintptr_t)server_copy_property_hook,0)) {
+            return -6;
+        }
         if(!guarded_store(final_got,(uint32_t)(uintptr_t)final_cb,
                           (uint32_t)(uintptr_t)session_finalized_hook,0)) {
             guarded_store(server_got,(uint32_t)(uintptr_t)server_copy_property_hook,
