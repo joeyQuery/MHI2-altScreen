@@ -11,7 +11,7 @@
 7. Q accepts the second socket and calls ProcessFrames(B,NetSocket).
 8. Q ScreenStreamCreate hook reads `(*arg1)+0x38`.
 9. Q DIO callback uses `AirPlayReceiverSessionScreenSetDelegate`.
-10. Q native DIO Screen registration is explicit.
+10. Q resolves the native DIO Screen creation/registration API surface.
 11. Q hooks OMX lifecycle.
 12. MHI2 stock processing ends in NvssVideoImpl::decode.
 
@@ -20,4 +20,6 @@
 - semantic meaning of `(*arg1)+0x38`;
 - exact stock MHI2 ServerSocketOpen implementation/ABI;
 - exact stock MHI2 equivalent of the Q SessionScreen-created callback;
+- complete call-by-call proof of the Q native Screen creation/registration invocation chain;
+- exact teardown ordering across secondary stop/delete and original AirPlay teardown;
 - successful complete live 111 run through secondary decode/display.
