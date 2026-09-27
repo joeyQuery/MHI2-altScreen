@@ -8,20 +8,20 @@ The authoritative Q reference is `docs/mhi2q-reference-package-2026-09-27.md`. T
 | Create B | SessionScreen_Create | present | preserve |
 | UpdateState | `UpdateState(B,1)` | present | preserve |
 | ScreenSetup | `Setup(B,111,CreateResult)` | arg3 may be zero | pass CreateResult |
-| time sync | Q local state | present | trace exact 12-byte payload |
+| time sync | Q local state | present | preserve Q ordering; use MU0678-native 12-byte payload |
 | AES | stock Derive helper | present | preserve Q ordering with MU0678-native inputs |
 | security | SetSecurityInfo | present | preserve |
-| listener | 7-arg ServerSocketOpen | different MHI2 ABI | reconstruct MU0678 ABI; do not copy Q registers literally |
+| listener | 7-arg ServerSocketOpen | 7-arg AAPCS; stock screen listener is `0x23380` | use MU0678-native listener values, not Q constants |
 | response | 111 + dataPort | present | preserve |
 | accept | SocketAccept | present | preserve |
 | socket | NetSocket_CreateWithNative | present | preserve |
 | frame pump | ProcessFrames | present | preserve |
 | ScreenStreamCreate | Q hook observes `(*arg1)+0x38` | diagnostic only | **do not reproduce solely for parity** |
 | stream state | `(*arg1)+0x38` | unresolved | investigate only if later evidence proves functional dependency |
-| SessionScreen delegate | callback -> SetDelegate | different path | reproduce relationship only after dispatcher is traced |
+| SessionScreen delegate | callback -> SetDelegate | cross-module dispatcher boundary | reproduce relationship only; no unsupported local factory assumption |
 | native DIO Screen | Create -> RegisterDelegates -> Register | variants | map exact MU0678 equivalent |
 | decoder | OMX lifecycle | NvSS | translate decoder primitive only |
-| teardown | stop/delete | partial | reproduce only the Q-proven ordering; unresolved portions remain unresolved |
+| teardown | Q post-AirPlay cleanup | MHI2 stock path differs | preserve proven Q ordering where implementable |
 
 ## Critical lifecycle correction
 
@@ -45,6 +45,24 @@ detect 111
 ```
 
 The existing MHI2 110 path remains untouched.
+
+## MHI2-native listener translation now solved statically
+
+The stock MU0678 `ServerSocketOpen` ABI is a normal seven-argument AAPCS call. The relevant stock screen/media listener is the `0x23380` call inside `AirPlayReceiverSessionSetup`:
+
+```
+arg1 = *(uint8_t *)(session + 0x51)
+arg2 = 1
+arg3 = 6
+arg4 = 0xFFFFE872
+arg5 = local bound-result storage
+arg6 = 0xFFFD4000
+arg7 = local socket-fd storage
+```
+
+The other TCP call at `0x23C48` requests endpoint 5001 and is the RAOP event listener, so it is not the screen-data equivalent.
+
+This closes the previous socket-ABI uncertainty. The Q values (`session+0x55`, `0x17D4`, `-1`) must not be transplanted into MHI2; the MHI2 adapter should reproduce the native `0x23380` value construction.
 
 ## Diagnostic-only Q observations
 
