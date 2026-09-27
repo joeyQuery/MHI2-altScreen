@@ -53,7 +53,7 @@ worker context
   -> StartSession(B, arg2)
 ```
 
-The binary proves this object/offset chain. It does **not yet prove the C++ class identity of the `+0x1d0` owner**, so that field must not be renamed/speculated as a Screen object solely from the offset. Its semantic role is nevertheless the object supplied as StartSession argument 2.
+The binary proves this object/offset chain. The exact C++ class identity of the `+0x1d0` owner is not recovered from the stripped Q cluster alone. Independently, MU0678 StartSession analysis proves that its corresponding argument #2 is configuration/context input, not a hidden native Screen-B selector. Therefore the Q `+0x1d0` field must not be renamed `ScreenB`; it is the Q-side StartSession context object.
 
 Therefore:
 
