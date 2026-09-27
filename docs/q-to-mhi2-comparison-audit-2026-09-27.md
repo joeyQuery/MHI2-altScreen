@@ -36,9 +36,9 @@ The audit found one bookkeeping error in repository wording: several STATUS stat
 | Loopback listener | Q uses 15557 | MU0678 should use a private local transport; Q's port is not transplanted | CORRECT |
 | Loopback writer | Q accepted fd is stored and later passed to write() | Dedicated MHI2 secondary sink must own its fd | CORRECT |
 | Display geometry | Q helper uses 1440x540 | MU0678 recovered KOMBI displayable is 1440x455 | CORRECT; Q geometry must not be copied |
-| DMDT route | Q helper invokes context 74 | MU0672 should use its native DMDT/KOMBI routing | CORRECT, but physical panel identity remains runtime-specific |
-| ScreenCopyMain | Q evidence does not justify globally changing it | Leave MU0672 stock path untouched | CORRECT |
-| Teardown | Q performs secondary cleanup alongside original session | Implement equivalent independent cleanup | CORRECT requirement; exact MU0672 ordering still needs runtime verification |
+| DMDT route | Q helper invokes context 74 | MU0678 should use its native DMDT/KOMBI routing | CORRECT, but physical panel identity remains runtime-specific |
+| ScreenCopyMain | Q evidence does not justify globally changing it | Leave MU0678 stock path untouched | CORRECT |
+| Teardown | Q performs secondary cleanup alongside original session | Implement equivalent independent cleanup | CORRECT requirement; exact MU0678 ordering still needs runtime verification |
 
 ## Exact Q patch mechanics versus functional replication
 
