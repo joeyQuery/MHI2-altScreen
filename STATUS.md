@@ -104,3 +104,9 @@ The correct static construction for B is the transport/decoder half plus an expl
 The exact Q-side argument/data-flow edge from the launch helper's r4 into the embedded cluster-display path is not yet fully reconstructed, nor is the exact handoff of frame data into the helper. The physical mapping from the helper's QNX Screen window to the cluster is also not proven. Runtime validation is still required to prove simultaneous 110+111 output.
 
 These are narrower unknowns than the previous “candidate helper” state: the existence of the launch call, live-CarPlay mode, helper display implementation, and 1440x540 geometry selection are now statically proven.
+
+## 2026-09-27 static closure: Q live-CarPlay input transport
+
+The packaged Q display helper is now statically tied to the cluster's loopback producer. In live-CarPlay mode, mhi2q-aa-cluster-display selects port 15557, creates an IPv4 TCP socket, and connects to 127.0.0.1:15557. The Q CarPlay cluster passes the same 15557 constant into its loopback/listener setup and contains H.264 viewer/IDR synchronization state. The cluster then launches the helper with --live-carplay.
+
+This closes the display helper's input transport: Q does not rely on an inherited decoder pipe or stdin for live-CarPlay. The remaining static subtrace is the exact queued-access-unit writer call that feeds the 15557 socket. The final physical mapping of the helper's QNX Screen window remains runtime/hardware-specific.
