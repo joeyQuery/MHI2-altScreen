@@ -166,7 +166,7 @@ secondary connection worker
     +--> ProcessFrames(B, socket)
 ```
 
-The critical unresolved MHI2-specific operation remains the correct native Screen object passed as StartSession argument 2. Q proves that this object is supplied separately at worker time; it must not be confused with the AirPlay SessionScreen itself.
+The critical unresolved MHI2-specific operation is **not** a hidden Screen-B selector in StartSession argument 2. The actual unresolved association is how the alternate SessionScreen/ScreenStream receives the intended native Screen properties/output target instead of stock `ScreenCopyMain()` semantics. The secondary worker still needs the correct MHI2 StartSession context object, but that context must not be conflated with native Screen B.
 
 ## 6. Important correction to previous repository wording
 
