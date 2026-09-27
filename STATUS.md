@@ -1,7 +1,5 @@
 # Status
 
-## Specification
-
 The working MHI2Q AltScreen package is the functional specification. The objective is a literal functional replica on MHI2 with only unavoidable platform-specific translations.
 
 ## Proven
@@ -20,7 +18,7 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 - Q accepts the secondary socket, wraps it with `NetSocket_CreateWithNative`, and calls `ProcessFrames(B,socket)`.
 - Q hooks `ScreenStreamCreate` and reads state through its second argument at `(*arg1)+0x38`.
 - Q DIO loader has `s_sessionScreenCreatedCallback -> AirPlayReceiverSessionScreenSetDelegate`.
-- Q native DIO path resolves `ScreenCreate -> ScreenRegisterDelegates -> ScreenRegister`.
+- Q resolves the native DIO Screen operations `ScreenCreate -> ScreenRegisterDelegates -> ScreenRegister`.
 - Q resolves OMX initialize/configure/start/decode/stop/visibility.
 - MHI2 stock frame path is `ProcessFrames -> ScreenStreamProcessData -> ScreenStream/_ScreenStreamDecodeAll -> NvssVideoImpl::decode`.
 - MU0678 `SetTimeSynchronizer` copies 12 bytes to `screen+0x20` and ignores extra args.
