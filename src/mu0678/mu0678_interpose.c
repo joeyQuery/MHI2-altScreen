@@ -259,57 +259,76 @@ static int install_code_hooks(void)
 }
 int mu0678_interpose_init(void)
 {
-    void *setup,*screen_create;
-    volatile uint32_t *got;
+    void *setup,*screen_create,*server_cb,*final_cb;
+    volatile uint32_t *airplay_got;
+    volatile uint32_t *server_got,*final_got;
+    uintptr_t dio_base;
+    uint32_t old_airplay_got,old_server_got,old_final_got;
+
     if(g_installed) return 0;
+
+    /*
+     * Establish the DIO boundary first. This prevents a partially-installed
+     * libairplay hook if the target DIO image is not the expected MU0678 build.
+     */
+    server_cb=resolve_dio("_ZN3dio11CDIOManager28s_serverCopyPropertyCallbackEP28AirPlayReceiverServerPrivateP9CFLStringPKvPiPv");
+    final_cb=resolve_dio("_ZN3dio11CDIOManager26s_sessionFinalizedCallbackEP29AirPlayReceiverSessionPrivatePv");
+    if(!server_cb||!final_cb) return -5;
+
+    dio_base=(uintptr_t)server_cb-0x139a88u;
+    server_got=(volatile uint32_t *)(dio_base+0x19d9d8u);
+    final_got=(volatile uint32_t *)(dio_base+0x19da00u);
+    old_server_got=*server_got;
+    old_final_got=*final_got;
+
+    if(old_server_got!=(uint32_t)(uintptr_t)server_cb &&
+       old_server_got!=(uint32_t)(uintptr_t)server_copy_property_hook) return -6;
+    if(old_final_got!=(uint32_t)(uintptr_t)final_cb &&
+       old_final_got!=(uint32_t)(uintptr_t)session_finalized_hook) return -7;
+
+    g_original_server_copy_property=(void *)(uintptr_t)old_server_got;
+    g_original_session_finalized=(void *)(uintptr_t)old_final_got;
+
+    if(!guarded_store(server_got,(uint32_t)(uintptr_t)server_cb,
+                      (uint32_t)(uintptr_t)server_copy_property_hook,0)) return -8;
+    if(!guarded_store(final_got,(uint32_t)(uintptr_t)final_cb,
+                      (uint32_t)(uintptr_t)session_finalized_hook,0)) {
+        guarded_store(server_got,(uint32_t)(uintptr_t)server_copy_property_hook,
+                      old_server_got,0);
+        return -9;
+    }
+
     setup=mu0678_resolve_airplay("AirPlayReceiverSessionSetup");
-    if(!setup) return -1;
+    if(!setup) goto airplay_fail;
     g_libairplay_base=(uintptr_t)setup-0x22fd8u;
 
     screen_create=mu0678_resolve_airplay("ScreenStreamCreate");
-    if(!screen_create) return -2;
+    if(!screen_create) goto airplay_fail;
     g_screen_stream_create=(ScreenStreamCreateFn)screen_create;
 
-    got=(volatile uint32_t *)(g_libairplay_base+MU0678_GOT_SCREEN_STREAM_CREATE);
-    {
-        uint32_t got_old=*got;
-        if(!guarded_store(got,(uint32_t)(g_libairplay_base+0x17d2cu),
-                          (uint32_t)(uintptr_t)screen_stream_create_hook,
-                          (uint32_t)(g_libairplay_base+0x7f544u))) return -3;
-        if(install_code_hooks()!=0) {
-            guarded_store(got,(uint32_t)(uintptr_t)screen_stream_create_hook,got_old,0);
-            return -4;
-        }
+    airplay_got=(volatile uint32_t *)(g_libairplay_base+MU0678_GOT_SCREEN_STREAM_CREATE);
+    old_airplay_got=*airplay_got;
+    if(!guarded_store(airplay_got,(uint32_t)(g_libairplay_base+0x17d2cu),
+                      (uint32_t)(uintptr_t)screen_stream_create_hook,
+                      (uint32_t)(g_libairplay_base+0x7f544u))) goto airplay_fail;
+    if(install_code_hooks()!=0) {
+        guarded_store(airplay_got,(uint32_t)(uintptr_t)screen_stream_create_hook,
+                      old_airplay_got,0);
+        goto airplay_fail;
     }
-    {
-        void *server_cb=resolve_dio("_ZN3dio11CDIOManager28s_serverCopyPropertyCallbackEP28AirPlayReceiverServerPrivateP9CFLStringPKvPiPv");
-        void *final_cb=resolve_dio("_ZN3dio11CDIOManager26s_sessionFinalizedCallbackEP29AirPlayReceiverSessionPrivatePv");
-        uintptr_t dio_base;
-        volatile uint32_t *server_got;
-        volatile uint32_t *final_got;
-        if(!server_cb||!final_cb) {
-            return -5;
-        }
-        dio_base=(uintptr_t)server_cb-0x139a88u;
-        server_got=(volatile uint32_t *)(dio_base+0x19d9d8u);
-        final_got=(volatile uint32_t *)(dio_base+0x19da00u);
-        g_original_server_copy_property=(void *)(uintptr_t)(*server_got);
-        g_original_session_finalized=(void *)(uintptr_t)(*final_got);
-        if(!guarded_store(server_got,(uint32_t)(uintptr_t)server_cb,
-                          (uint32_t)(uintptr_t)server_copy_property_hook,0)) {
-            return -6;
-        }
-        if(!guarded_store(final_got,(uint32_t)(uintptr_t)final_cb,
-                          (uint32_t)(uintptr_t)session_finalized_hook,0)) {
-            guarded_store(server_got,(uint32_t)(uintptr_t)server_copy_property_hook,
-                          (uint32_t)(uintptr_t)g_original_server_copy_property,0);
-            return -7;
-        }
-    }
+
     g_installed=1;
     return 0;
-}
 
+airplay_fail:
+    guarded_store(final_got,(uint32_t)(uintptr_t)session_finalized_hook,
+                  old_final_got,0);
+    guarded_store(server_got,(uint32_t)(uintptr_t)server_copy_property_hook,
+                  old_server_got,0);
+    g_original_server_copy_property=(void *)0;
+    g_original_session_finalized=(void *)0;
+    return -10;
+}
 int mu0678_interpose_setup111(void *session,void *stream,void *setup_result,void *key_base)
 {
     uint64_t negotiated;
