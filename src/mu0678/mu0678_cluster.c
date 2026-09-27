@@ -78,8 +78,8 @@ static void aaf1(unsigned char h[32],unsigned char mode,unsigned char flags,
                  unsigned int v0c,unsigned int v14,unsigned int v10) {
     h[0]='A'; h[1]='A'; h[2]='F'; h[3]='1';
     h[4]=2; h[5]=mode; h[6]=flags; h[7]=32;
-    be32(h+8,v18); be32(h+12,v04); be32(h+16,v08);
-    be32(h+20,v0c); be32(h+24,v14); be32(h+28,v10);
+    be32(h+8,v18); be32(h+12,v04); be32(h+16,v0c);
+    be32(h+20,v08); be32(h+24,v14); be32(h+28,v10);
 }
 
 typedef struct { int fd; short events; short revents; } pollfd_t;
