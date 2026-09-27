@@ -13,3 +13,4 @@
 - `disproven.md` — corrected interpretations.
 - `runtime.md` — live observations.
 - `replica-plan.md` — implementation plan.
+- `mu0678-111-implementation-blueprint-2026-09-27.md` — implementation-ready MU0678 translation of the audited Q 111 lifecycle.
