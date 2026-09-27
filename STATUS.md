@@ -151,4 +151,9 @@ A direct comparison of the Q type-111 routine and the MU0678 DIO binary resolved
 - MU0678 imports `AirPlayReceiverSessionSetDelegate` at GOT `0x19d7a0` and `AirPlayReceiverSessionScreenSetDelegate` at `0x19d544`; these are preserved as ABI anchors, not guessed SETUP hooks.
 - Exact MU0678 DIO GOT translations of Q operations 1/2 are `0x19d734` (`HIDRegisterDevice`) and `0x19d7ec` (`HIDDeregisterDevice`), both guarded by the native PLT resolver word `0x115288`.
 
-The implementation therefore does not fabricate a callback-table field for SETUP. The guarded interposition substrate is committed, while the final hook remains target-specific until its native storage slot is proven from the MU image/runtime.
+The implementation therefore does not fabricate a callback-table field for SETUP. The guarded interposition substrate is now connected to the proven MU0678 SETUP boundary. It does not install guessed callback-table fields or Q absolute addresses.
+
+
+## Complete type-111 trace
+
+The implementation now covers the full statically proven path from MU0678 SETUP type 111 through response-port advertisement, secondary SessionScreen/security setup, MU-native listener/worker, secondary ScreenStream decoder capture, and secondary-only NvSS raw access-unit tee. See docs/mu0678-type111-complete-trace-2026-09-27.md for the exact addresses and guards. Remaining work is hardware validation of 111 negotiation, simultaneous 110/111 operation, display-helper compatibility, physical VC routing, and reconnect/teardown.
