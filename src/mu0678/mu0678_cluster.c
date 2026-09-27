@@ -113,6 +113,78 @@ static volatile int g_media_thread_running;
 static int g_media_listener=-1;
 static unsigned short g_media_port;
 static unsigned char g_media_ctx[12];
+static volatile int g_have_codec_config;
+static volatile int g_synced_viewer;
+static unsigned char *g_config;
+static unsigned int g_config_len;
+static unsigned int g_config_cap;
+static unsigned char *g_pending_idr;
+static unsigned int g_pending_idr_len;
+static unsigned int g_pending_idr_cap;
+
+static int au_has_nal(const unsigned char *p,unsigned int n,unsigned int want_type)
+{
+    unsigned int i=0;
+    while(i+4<=n) {
+        unsigned int start=i, len=0, nt;
+        if(i+4<=n && p[i]==0 && p[i+1]==0 && p[i+2]==1) { start=i+3; i=start; }
+        else if(i+5<=n && p[i]==0 && p[i+1]==0 && p[i+2]==0 && p[i+3]==1) { start=i+4; i=start; }
+        else if(i+4<=n) {
+            len=((unsigned int)p[i]<<24)|((unsigned int)p[i+1]<<16)|((unsigned int)p[i+2]<<8)|p[i+3];
+            if(len==0 || len>n-i-4) { i++; continue; }
+            start=i+4; nt=p[start]&0x1f;
+            if(nt==want_type) return 1;
+            i+=4+len; continue;
+        } else break;
+        if(start>=n) break;
+        nt=p[start]&0x1f;
+        if(nt==want_type) return 1;
+        i=start+1;
+    }
+    return 0;
+}
+
+static int au_has_config(const unsigned char *p,unsigned int n)
+{
+    return au_has_nal(p,n,7)||au_has_nal(p,n,8);
+}
+
+static int au_has_idr(const unsigned char *p,unsigned int n)
+{
+    return au_has_nal(p,n,5);
+}
+
+static void remember_config(const unsigned char *p,unsigned int n)
+{
+    unsigned char *q;
+    if(!p||!n||n>0x40000u) return;
+    if(n>g_config_cap) {
+        q=(unsigned char *)mmap((void *)0, n, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, -1, 0);
+        if(q==(unsigned char *)-1) return;
+        if(g_config) munmap(g_config,g_config_cap);
+        g_config=q; g_config_cap=n;
+    }
+    memcpy(g_config,p,n); g_config_len=n; g_have_codec_config=1;
+}
+
+static void remember_idr(const unsigned char *p,unsigned int n)
+{
+    unsigned char *q;
+    if(!p||!n||n>0x100000u) return;
+    if(n>g_pending_idr_cap) {
+        q=(unsigned char *)mmap((void *)0, n, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, -1, 0);
+        if(q==(unsigned char *)-1) return;
+        if(g_pending_idr) munmap(g_pending_idr,g_pending_idr_cap);
+        g_pending_idr=q; g_pending_idr_cap=n;
+    }
+    memcpy(g_pending_idr,p,n); g_pending_idr_len=n;
+}
+
+static void reset_output_state(void)
+{
+    g_have_codec_config=0; g_synced_viewer=0;
+    g_config_len=0; g_pending_idr_len=0;
+}
 
 static void *resolve(const char *n) { return mu0678_resolve_airplay(n); }
 
@@ -199,6 +271,7 @@ static void *sink_worker(void *unused)
         int fd=accept(g_sink,(void *)0,&len);
         if(fd<0) { if(!g_running) break; continue; }
         g_viewer=fd;
+        g_synced_viewer=0;
         while(g_running && g_viewer==fd) {
             pollfd_t p; p.fd=fd; p.events=1; p.revents=0;
             if(poll(&p,1,1000)>0 && (p.revents&0x011)) {
@@ -357,8 +430,22 @@ int mu0678_alt111_publish_h264(const unsigned char *data,unsigned int length,
                                unsigned int v0c,unsigned int v14,unsigned int v10)
 {
     unsigned char h[32]; int n;
-    if(!data||!length||g_viewer<0) return -1;
-    aaf1(h,mode?mode:1,flags,v18,v04,v08,v0c,v14,v10);
+    if(!data||!length) return -1;
+    if(au_has_config(data,length)) remember_config(data,length);
+    if(au_has_idr(data,length)) remember_idr(data,length);
+    if(g_viewer<0) return 0;
+    if(!g_synced_viewer) {
+        if(!au_has_idr(data,length) || !g_have_codec_config) return 0;
+        if(g_config&&g_config_len) {
+            aaf1(h,mode?mode:1,flags,g_config_len,g_config_len,0,0,0,0);
+            n=write(g_viewer,h,32);
+            if(n!=32 || write(g_viewer,g_config,g_config_len)!=(int)g_config_len) {
+                close(g_viewer); g_viewer=-1; return -1;
+            }
+        }
+        g_synced_viewer=1;
+    }
+    aaf1(h,mode?mode:1,flags,length,length,0,0,0,0);
     n=write(g_viewer,h,32);
     if(n!=32) { close(g_viewer); g_viewer=-1; return -1; }
     n=write(g_viewer,data,length);
@@ -370,6 +457,7 @@ void mu0678_alt111_stop(MU0678Session session)
 {
     (void)session;
     g_running=0; g_capture_active=0; g_media_thread_running=0;
+    reset_output_state();
     if(g_media_listener>=0){close(g_media_listener);g_media_listener=-1;}
     if(g_media_thread) { pthread_join(g_media_thread,(void **)0); g_media_thread=0; }
     if(g_viewer>=0){close(g_viewer);g_viewer=-1;}
