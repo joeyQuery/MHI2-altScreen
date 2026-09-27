@@ -21,7 +21,7 @@ extern void *memset(void *,int,unsigned int);
 #define AAF1_PORT 15557
 
 typedef void *(*ScreenCreateFn)(void *,void *);
-typedef void *(*ScreenSetupFn)(void *,void *,void *);
+typedef int (*ScreenSetupFn)(void *,void *,void *);
 typedef void (*UpdateFn)(void *,int);
 typedef void (*TimeFn)(void *,void *);
 typedef void (*SecurityFn)(void *,void *,void *);
@@ -33,6 +33,7 @@ typedef void (*DeriveFn)(void *,int,unsigned int,unsigned int,void *,void *);
 typedef void *(*WrapFn)(int,int *);
 typedef int (*ServerOpenFn)(unsigned int,unsigned int,unsigned int,int,int *,int,int *);
 typedef int (*SocketAcceptFn)(int,unsigned int,int *,void *);
+typedef void (*SocketDeleteFn)(void *);
 
 static ScreenCreateFn ScreenCreate;
 static ScreenSetupFn ScreenSetup;
@@ -46,23 +47,26 @@ static DeleteFn DeleteScreen;
 static DeriveFn DeriveAES;
 static WrapFn WrapSocket;
 static ServerOpenFn ServerOpen;
-static SocketAcceptFn SocketAccept;\ntypedef void (*SocketDeleteFn)(void *);\nstatic SocketDeleteFn DeleteSocket;
+static SocketAcceptFn SocketAccept;
+static SocketDeleteFn DeleteSocket;
 
 static void *g_session;
 static void *g_screen_b;
 static int g_viewer=-1;
 static int g_sink=-1;
-static unsigned long g_thread;
+static unsigned long g_sink_thread;
 static volatile int g_running;
 static volatile int g_capture_active;
 static void *g_secondary_video_impl;
 static unsigned long g_media_thread;
 static volatile int g_media_thread_running;
 static int g_media_listener=-1;
+static unsigned char g_media_ctx[12];
 
 static void *resolve(const char *n) { return dlsym((void *)0,n); }
 
-static int resolve_all(void) {
+static int resolve_all(void)
+{
     ScreenCreate=(ScreenCreateFn)resolve("AirPlayReceiverSessionScreen_Create");
     ScreenSetup=(ScreenSetupFn)resolve("AirPlayReceiverSessionScreen_Setup");
     UpdateState=(UpdateFn)resolve("AirPlayReceiverSessionScreen_UpdateState");
@@ -75,19 +79,23 @@ static int resolve_all(void) {
     DeriveAES=(DeriveFn)resolve("AirPlay_DeriveAESKeySHA512ForScreen");
     WrapSocket=(WrapFn)resolve("NetSocket_CreateWithNative");
     ServerOpen=(ServerOpenFn)resolve("ServerSocketOpen");
-    SocketAccept=(SocketAcceptFn)resolve("SocketAccept");\n    DeleteSocket=(SocketDeleteFn)resolve("NetSocket_Delete");
+    SocketAccept=(SocketAcceptFn)resolve("SocketAccept");
+    DeleteSocket=(SocketDeleteFn)resolve("NetSocket_Delete");
     return ScreenCreate&&ScreenSetup&&UpdateState&&SetTime&&SetSecurity&&
-           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&DeriveAES&&WrapSocket&&ServerOpen&&SocketAccept;
+           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&DeriveAES&&
+           WrapSocket&&ServerOpen&&SocketAccept&&DeleteSocket;
 }
 
-static void be32(unsigned char *p,unsigned int v) {
+static void be32(unsigned char *p,unsigned int v)
+{
     p[0]=(unsigned char)(v>>24); p[1]=(unsigned char)(v>>16);
     p[2]=(unsigned char)(v>>8); p[3]=(unsigned char)v;
 }
 
 static void aaf1(unsigned char h[32],unsigned char mode,unsigned char flags,
                  unsigned int v18,unsigned int v04,unsigned int v08,
-                 unsigned int v0c,unsigned int v14,unsigned int v10) {
+                 unsigned int v0c,unsigned int v14,unsigned int v10)
+{
     h[0]='A'; h[1]='A'; h[2]='F'; h[3]='1';
     h[4]=2; h[5]=mode; h[6]=flags; h[7]=32;
     be32(h+8,v18); be32(h+12,v04); be32(h+16,v0c);
@@ -95,7 +103,9 @@ static void aaf1(unsigned char h[32],unsigned char mode,unsigned char flags,
 }
 
 typedef struct { int fd; short events; short revents; } pollfd_t;
-static void *sink_worker(void *unused) {
+
+static void *sink_worker(void *unused)
+{
     (void)unused;
     while(g_running && g_sink>=0) {
         unsigned int len=0;
@@ -103,8 +113,8 @@ static void *sink_worker(void *unused) {
         if(fd<0) continue;
         g_viewer=fd;
         while(g_running && g_viewer==fd) {
-            pollfd_t p; p.fd=fd; p.events=0x001; p.revents=0;
-            if(poll(&p,1,1000)>0 && (p.revents & 0x011)) {
+            pollfd_t p; p.fd=fd; p.events=1; p.revents=0;
+            if(poll(&p,1,1000)>0 && (p.revents&0x011)) {
                 close(fd); g_viewer=-1; break;
             }
         }
@@ -112,14 +122,14 @@ static void *sink_worker(void *unused) {
     return (void *)0;
 }
 
-int mu0678_alt111_init(void) {
+int mu0678_alt111_init(void)
+{
     if(!resolve_all()) return -1;
     if(g_sink>=0) return 0;
     g_sink=socket(AF_INET,SOCK_STREAM,0);
     if(g_sink<0) return -1;
     {
-        int one=1;
-        unsigned char sa[16];
+        int one=1; unsigned char sa[16];
         memset(sa,0,16);
         sa[0]=0; sa[1]=2;
         sa[2]=(unsigned char)(AAF1_PORT>>8); sa[3]=(unsigned char)AAF1_PORT;
@@ -130,15 +140,14 @@ int mu0678_alt111_init(void) {
         }
     }
     g_running=1;
-    return pthread_create(&g_thread,(const void *)0,sink_worker,(void *)0)==0 ? 0 : -1;
+    return pthread_create(&g_sink_thread,(const void *)0,sink_worker,(void *)0)==0 ? 0 : -1;
 }
 
 int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
                          unsigned int stream_index,unsigned long long negotiated64,
-                         void *setup_result) {
+                         void *setup_result)
+{
     unsigned char a[16],b[16];
-    void *material;
-    (void)stream_index;
     if(!resolve_all()||!session||!stream) return -1;
     if(!g_running && mu0678_alt111_init()!=0) return -1;
     g_screen_b=ScreenCreate(session,(void *)0);
@@ -146,58 +155,101 @@ int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
     g_session=session;
     UpdateState(g_screen_b,1);
     if(ScreenSetup(g_screen_b,stream,setup_result)!=0) return -1;
-    material=(unsigned char *)session+0x1c8;
-    DeriveAES(material,16,(unsigned int)negotiated64,
-              (unsigned int)(negotiated64>>32),a,b);
+    DeriveAES((unsigned char *)session+0x1c8,16,
+              (unsigned int)negotiated64,(unsigned int)(negotiated64>>32),a,b);
     SetSecurity(g_screen_b,a,b);
     return 0;
 }
 
-int mu0678_alt111_set_time(MU0678SessionScreen B, void *time_blob) {
-    if(!B||!time_blob||!SetTime) return -1;
-    SetTime(B,time_blob);
+int mu0678_alt111_set_time(MU0678SessionScreen screen_b,void *time_blob)
+{
+    if(!screen_b||!time_blob||!SetTime) return -1;
+    SetTime(screen_b,time_blob);
     return 0;
 }
 
-int mu0678_alt111_open_media_listener(MU0678Session session, unsigned short *data_port, int *listener_fd) {
-    unsigned int port=0; int fd=-1;
-    unsigned int owner=(unsigned int)(*(unsigned char *)((unsigned char *)session+0x51));
+int mu0678_alt111_open_media_listener(MU0678Session session,
+                                      unsigned short *data_port,int *listener_fd)
+{
+    int port=0,fd=-1;
+    unsigned int owner;
     if(!session||!ServerOpen||!data_port||!listener_fd) return -1;
-    /* Exact MU0678 stock screen/media listener recipe recovered from 0x23380. */
-    if(ServerOpen(owner,1,6,0xffffe872,(int *)&port,0xfffd4000,&fd)!=0) return -1;
+    owner=(unsigned int)(*(unsigned char *)((unsigned char *)session+0x51));
+    if(ServerOpen(owner,1,6,0xffffe872,&port,0xfffd4000,&fd)!=0) return -1;
     *data_port=(unsigned short)port;
     *listener_fd=fd;
     return 0;
 }
 
-int mu0678_alt111_accept_media(MU0678Session session,MU0678SessionScreen B,int listener_fd) {
-    int err=0; void *ns,*ctx,*arg3;
-    if(!session||!B||listener_fd<0||!ProcessFrames||!SocketAccept) return -1;
-    {
-        int native=-1;
-        SocketAccept(listener_fd,10,&native,(void *)0);
-        if(native<0) return -1;
-        ns=WrapSocket(native,&err);
-    }
-    if(!ns) return -1;
-    ctx=*(void **)((unsigned char *)session+0x0c);
-    if(!ctx) return -1;
-    arg3=*(void **)((unsigned char *)ctx+0xc8);
-    if(StartSession(B)!=0) return -1;
-    return ProcessFrames(B,ns,arg3);
+void mu0678_alt111_capture_video_impl(void *video)
+{
+    if(g_capture_active) g_secondary_video_impl=video;
 }
 
-void mu0678_alt111_capture_video_impl(void *video) { g_secondary_video_impl=video; }\nint mu0678_alt111_capture_active(void) { return g_capture_active; }\n\nint mu0678_alt111_publish_decode(void *video_impl, void *data_pp, unsigned int length) {\n    const unsigned char *data;\n    if(!video_impl || video_impl!=g_secondary_video_impl || !data_pp || !length) return 0;\n    data=*(const unsigned char **)data_pp;\n    if(!data) return 0;\n    return mu0678_alt111_publish_h264(data,length,1,0,0,0,0,0,0,0);\n}\n\nstatic void *media_worker(void *arg) {\n    MU0678Session session=((MU0678Session *)arg)[0];\n    MU0678SessionScreen screen=((MU0678SessionScreen *)arg)[1];\n    int listener=*(int *)(((unsigned char *)arg)+8);\n    while(g_media_thread_running) {\n        int native=-1,err=0; void *ns,*ctx,*arg3;\n        if(SocketAccept(listener,10,&native,(void *)0)!=0 || native<0) continue;\n        ns=WrapSocket(native,&err);\n        if(!ns) { close(native); continue; }\n        g_capture_active=1;\n        if(StartSession(screen)!=0) { g_capture_active=0; DeleteSocket(ns); continue; }\n        g_capture_active=0;\n        ctx=*(void **)((unsigned char *)session+0x0c);\n        arg3=ctx?*(void **)((unsigned char *)ctx+0xc8):(void *)0;\n        if(ctx && arg3) ProcessFrames(screen,ns,arg3);\n        DeleteSocket(ns);\n    }\n    return (void *)0;\n}\n\nint mu0678_alt111_start_worker(MU0678Session session,MU0678SessionScreen screen,int listener_fd) {\n    static unsigned char ctx[12];\n    if(!session||!screen||listener_fd<0) return -1;\n    *(MU0678Session *)(ctx+0)=session;\n    *(MU0678SessionScreen *)(ctx+4)=screen;\n    *(int *)(ctx+8)=listener_fd;\n    g_media_listener=listener_fd; g_media_thread_running=1;\n    return pthread_create(&g_media_thread,(const void *)0,media_worker,ctx)==0?0:-1;\n}\n\nint mu0678_alt111_capture_active(void) { return g_capture_active; }\n\nint mu0678_alt111_accept_viewer(void) {
+int mu0678_alt111_capture_active(void)
+{
+    return g_capture_active;
+}
+
+int mu0678_alt111_publish_decode(void *video_impl,void *data_pp,unsigned int length)
+{
+    const unsigned char *data;
+    if(!video_impl||video_impl!=g_secondary_video_impl||!data_pp||!length) return 0;
+    data=*(const unsigned char **)data_pp;
+    if(!data) return 0;
+    return mu0678_alt111_publish_h264(data,length,1,0,0,0,0,0,0,0);
+}
+
+static void *media_worker(void *arg)
+{
+    MU0678Session session=*(MU0678Session *)(arg+0);
+    MU0678SessionScreen screen=*(MU0678SessionScreen *)(arg+4);
+    int listener=*(int *)(arg+8);
+    while(g_media_thread_running) {
+        int native=-1,err=0; void *ns,*ctx,*arg3;
+        if(SocketAccept(listener,10,&native,(void *)0)!=0 || native<0) continue;
+        ns=WrapSocket(native,&err);
+        if(!ns) { close(native); continue; }
+        g_capture_active=1;
+        if(StartSession(screen)!=0) {
+            g_capture_active=0; DeleteSocket(ns); continue;
+        }
+        g_capture_active=0;
+        ctx=*(void **)((unsigned char *)session+0x0c);
+        arg3=ctx?*(void **)((unsigned char *)ctx+0xc8):(void *)0;
+        if(ctx&&arg3) ProcessFrames(screen,ns,arg3);
+        DeleteSocket(ns);
+    }
+    return (void *)0;
+}
+
+int mu0678_alt111_start_worker(MU0678Session session,
+                               MU0678SessionScreen screen,int listener_fd)
+{
+    if(!session||!screen||listener_fd<0) return -1;
+    *(MU0678Session *)(g_media_ctx+0)=session;
+    *(MU0678SessionScreen *)(g_media_ctx+4)=screen;
+    *(int *)(g_media_ctx+8)=listener_fd;
+    g_media_listener=listener_fd;
+    g_media_thread_running=1;
+    if(pthread_create(&g_media_thread,(const void *)0,media_worker,g_media_ctx)!=0) {
+        g_media_thread_running=0; g_media_listener=-1; return -1;
+    }
+    return 0;
+}
+
+int mu0678_alt111_accept_viewer(void)
+{
     if(g_viewer>=0) return 0;
-    return (g_sink>=0) ? 0 : -1;
+    return g_sink>=0 ? 0 : -1;
 }
 
 int mu0678_alt111_publish_h264(const unsigned char *data,unsigned int length,
                                unsigned char mode,unsigned char flags,
                                unsigned int v18,unsigned int v04,unsigned int v08,
-                               unsigned int v0c,unsigned int v14,unsigned int v10) {
-    unsigned char h[32];
-    int n;
+                               unsigned int v0c,unsigned int v14,unsigned int v10)
+{
+    unsigned char h[32]; int n;
     if(!data||!length||g_viewer<0) return -1;
     aaf1(h,mode?mode:1,flags,v18,v04,v08,v0c,v14,v10);
     n=write(g_viewer,h,32);
@@ -207,12 +259,14 @@ int mu0678_alt111_publish_h264(const unsigned char *data,unsigned int length,
     return 0;
 }
 
-void mu0678_alt111_stop(MU0678Session session) {
+void mu0678_alt111_stop(MU0678Session session)
+{
     (void)session;
-    g_running=0;\n    g_capture_active=0;\n    g_media_thread_running=0;\n    if(g_media_listener>=0){close(g_media_listener);g_media_listener=-1;}
+    g_running=0; g_capture_active=0; g_media_thread_running=0;
+    if(g_media_listener>=0){close(g_media_listener);g_media_listener=-1;}
     if(g_viewer>=0){close(g_viewer);g_viewer=-1;}
     if(g_sink>=0){close(g_sink);g_sink=-1;}
     if(g_screen_b&&StopSession) StopSession(g_screen_b);
     if(g_screen_b&&DeleteScreen) DeleteScreen(g_screen_b);
-    g_screen_b=(void *)0; g_session=(void *)0;
+    g_screen_b=(void *)0; g_session=(void *)0; g_secondary_video_impl=(void *)0;
 }
