@@ -112,22 +112,35 @@ static int install_code_hooks(void)
 {
     uintptr_t hint=g_libairplay_base+MU0678_VENEER_HINT;
     uintptr_t v;
+    volatile uint32_t *setup_word=(volatile uint32_t *)(g_libairplay_base+MU0678_SETUP_BRANCH);
+    volatile uint32_t *decode_word=(volatile uint32_t *)(g_libairplay_base+MU0678_NVSS_DECODE_CALL);
+    uint32_t old_setup=*setup_word;
+    uint32_t old_decode=*decode_word;
+
     g_veneer=(unsigned char *)mmap((void *)hint,0x1000,PROT_READ|PROT_WRITE,
                                    MAP_PRIVATE|MAP_ANON,-1,0);
     if(g_veneer==MAP_FAILED){g_veneer=(unsigned char *)0;return -1;}
     v=(uintptr_t)g_veneer;
-    if(v>g_libairplay_base+0x02000000u || v+0x80u<g_libairplay_base-0x02000000u){
+    if(v>=g_libairplay_base+0x01fffffcu || v<g_libairplay_base-0x01fffffcu){
         munmap(g_veneer,0x1000);g_veneer=(unsigned char *)0;return -2;
     }
     write_veneer_words();
-    if(mprotect(g_veneer,0x1000,PROT_READ|PROT_EXEC)!=0) return -3;
-    if(!guarded_store((volatile uint32_t *)(g_libairplay_base+MU0678_SETUP_BRANCH),
-                      0x1affffe2u,arm_branch(g_libairplay_base+MU0678_SETUP_BRANCH,v,0),0)) return -4;
-    if(!guarded_store((volatile uint32_t *)(g_libairplay_base+MU0678_NVSS_DECODE_CALL),
-                      0xebfe6021u,arm_branch(g_libairplay_base+MU0678_NVSS_DECODE_CALL,v+0x40u,1),0)) return -5;
+    if(mprotect(g_veneer,0x1000,PROT_READ|PROT_EXEC)!=0) {
+        munmap(g_veneer,0x1000); g_veneer=(unsigned char *)0; return -3;
+    }
+    if(!guarded_store(setup_word,0x1affffe2u,
+                      arm_branch(g_libairplay_base+MU0678_SETUP_BRANCH,v,0),0))
+        return -4;
+    if(!guarded_store(decode_word,0xebfe6021u,
+                      arm_branch(g_libairplay_base+MU0678_NVSS_DECODE_CALL,v+0x34u,1),0)) {
+        guarded_store(setup_word,
+                      arm_branch(g_libairplay_base+MU0678_SETUP_BRANCH,v,0),
+                      old_setup,0);
+        return -5;
+    }
+    (void)old_decode;
     return 0;
 }
-
 int mu0678_interpose_init(void)
 {
     void *setup,*screen_create;
