@@ -70,3 +70,35 @@ Do not copy Q offsets or socket arguments directly into MHI2. The MHI2 replica m
 ## Final static SessionScreen association
 
 `AirPlayReceiverSessionScreen_StartSession @ 0x25fd0` creates the stream and then obtains the native main Screen to clone display geometry/properties into that stream. No hidden SessionScreen→native-Screen selector remains identified. The secondary 111 path therefore requires an explicit native Screen selection/property-cloning step for B; global `ScreenCopyMain()` changes are not acceptable because they would affect 110.
+
+
+## Final static conclusion — 2026-09-27
+
+The remaining Screen-B question is now reduced to a concrete MHI2 implementation boundary.
+
+MU0678 `AirPlayReceiverSessionScreen_StartSession @ 0x25fd0` creates the ScreenStream through `ScreenStreamCreate`, then obtains the native **main** Screen and clones its properties into the newly created stream before `ScreenStreamStart`. The StartSession argument #2 is configuration/context input; it is not a native Screen selector.
+
+Therefore a second MHI2 SessionScreen cannot be made to target Screen[1] merely by passing a different StartSession argument.
+
+The correct static construction for B is:
+
+1. Create/register native Screen B.
+2. Create SessionScreen B and complete its AirPlay setup/security state.
+3. Do **not** rely on stock StartSession's Main-Screen lookup for B.
+4. Create B's ScreenStream explicitly with `ScreenStreamCreate` using the same context ABI required by MU0678.
+5. Populate B's ScreenStream properties from the explicitly selected native Screen B:
+   `platformLayer`, `maxFPS`, `xOffset`, `yOffset`, `windowWidth`, `windowHeight`, `widthPixels`, `heightPixels`.
+6. Start the B stream with the native `ScreenStreamStart` path.
+7. Preserve B's stream state independently; the recovered ScreenStream type field is `+0x94`, which must identify the secondary stream as 111 before ProcessFrames.
+8. Feed the accepted 111 socket to `ProcessFrames(B,...)`.
+9. Keep stock `ScreenCopyMain()` and the entire 110 path unchanged.
+
+This is the first point at which the static evidence yields a concrete implementation strategy rather than another hypothesis.
+
+### What remains genuinely unproven
+
+The exact Q-side mechanism that makes the working Q package's alternate stream use the intended output cannot be reconstructed solely from `libmhi2qcarplaycluster.so`: Q uses a different stock AirPlay/DIO environment and its stripped DIO loader is the cross-module integration boundary. The Q cluster's StartSession argument chain is proven, but its exact class identity is not.
+
+That uncertainty does **not** block the MHI2 design above, because MU0678's own StartSession implementation establishes the critical limitation: its normal StartSession path selects the main Screen. The MHI2 adapter must therefore reproduce the stream-creation/start portion with an explicit Screen-B property source.
+
+The remaining runtime proof is whether the chosen Screen-B properties correspond to the physical VC output and whether the resulting B stream reaches the existing NvSS/tee/display path without affecting 110.
