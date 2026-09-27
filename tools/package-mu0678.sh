@@ -26,7 +26,11 @@ fi
 
 rm -rf "$OUT"
 mkdir -p "$OUT/eso/bin/apps" "$OUT/eso/lib"
-cp "$DIO" "$OUT/eso/bin/apps/dio_manager"
+if readelf -d "$DIO" 2>/dev/null | grep -F "libmhi2qcarplaycluster.so" >/dev/null 2>&1; then
+    cp "$DIO" "$OUT/eso/bin/apps/dio_manager"
+else
+    python3 "$ROOT/tools/patch-mu0678-dio.py" "$DIO" "$OUT/eso/bin/apps/dio_manager"
+fi
 chmod 755 "$OUT/eso/bin/apps/dio_manager"
 
 TMP=`mktemp -d`
