@@ -17,7 +17,8 @@ Authoritative Q lifecycle reference: `docs/mhi2q-reference-package-2026-09-27.md
 11. Q resolves StartSession but the proven type-111 setup path does not call it.
 12. Q hooks OMX lifecycle.
 13. MHI2 stock processing ends in NvssVideoImpl::decode.
-14. Stock MU0678 ServerSocketOpen implementation is at `0x79910` and consumes r0/r1/r3 plus stack arguments 14/15/16; incoming r2 is not consumed as an input.
+14. Stock MU0678 ServerSocketOpen at `0x79910` is a normal seven-argument AAPCS call; the stock `0x23380` branch is the screen/media listener.
+15. MU0678 `AirPlayReceiverSessionScreen_Setup @ 0x26400` overwrites caller `r2` with `sp+4` before its only internal setup-helper call, so the caller's third argument is not consumed by this export.
 
 ## Interpretation rules
 
