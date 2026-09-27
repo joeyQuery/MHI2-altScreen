@@ -27,6 +27,91 @@ static void *g_dio_handle;
 static void *g_original_server_copy_property;
 static void *g_original_session_finalized;
 
+static void set_info_int(void *dict, void *key, unsigned int value)
+{
+    typedef void (*Fn)(void *,void *,unsigned int,unsigned int);
+    Fn f=(Fn)mu0678_resolve_airplay("CFDictionarySetInt64");
+    if(f&&dict&&key) f(dict,key,value,0);
+}
+
+static void set_info_string(void *dict, const char *key_name, const char *value)
+{
+    typedef void *(*MakeFn)(void *,const char *,unsigned int);
+    typedef void (*SetFn)(void *,void *,void *);
+    typedef void (*ReleaseFn)(void *);
+    MakeFn make=(MakeFn)mu0678_resolve_airplay("CFStringCreateWithCString");
+    SetFn set=(SetFn)mu0678_resolve_airplay("CFDictionarySetValue");
+    ReleaseFn rel=(ReleaseFn)mu0678_resolve_airplay("CFRelease");
+    void *k,*v;
+    if(!make||!set||!dict) return;
+    k=make((void *)0,key_name,0x08000100u);
+    v=value?make((void *)0,value,0x08000100u):(void *)0;
+    if(k&&v) set(dict,k,v);
+    if(rel&&k) rel(k);
+    if(rel&&v) rel(v);
+}
+
+static void augment_alt_info(void *dict)
+{
+    typedef void *(*ArrayCreateFn)(void *,unsigned int,void *,void *);
+    typedef int (*ArrayAppendFn)(void *,void *);
+    typedef void *(*StringFn)(void *,const char *,unsigned int);
+    typedef void (*SetFn)(void *,void *,void *);
+    typedef void (*ReleaseFn)(void *);
+    typedef void *(*DictCreateFn)(void *,unsigned int,void *,void *);
+    ArrayCreateFn ac=(ArrayCreateFn)mu0678_resolve_airplay("CFArrayCreateMutable");
+    ArrayAppendFn aa=(ArrayAppendFn)mu0678_resolve_airplay("CFArrayAppendValue");
+    StringFn make=(StringFn)mu0678_resolve_airplay("CFStringCreateWithCString");
+    SetFn set=(SetFn)mu0678_resolve_airplay("CFDictionarySetValue");
+    ReleaseFn rel=(ReleaseFn)mu0678_resolve_airplay("CFRelease");
+    DictCreateFn dc=(DictCreateFn)mu0678_resolve_airplay("CFDictionaryCreateMutable");
+    void *k,*v,*arr,*displays,*display;
+    if(!dict||!ac||!aa||!make||!set) return;
+
+    k=make((void *)0,"enabledFeatures",0x08000100u);
+    arr=ac((void *)0,0,(void *)0,(void *)0);
+    v=make((void *)0,"altScreen",0x08000100u);
+    if(k&&arr&&v) {
+        aa(arr,v);
+        set(dict,k,arr);
+    }
+    if(rel&&k) rel(k);
+    if(rel&&v) rel(v);
+    if(rel&&arr) rel(arr);
+
+    /* MU0678's logical secondary target is the 1440x455
+       DISPLAYABLE_KOMBI_MAP_VIEW resource. Only target facts established
+       by the firmware are advertised here; physical UUID/DSI is omitted. */
+    if(!dc) return;
+    k=make((void *)0,"displays",0x08000100u);
+    displays=ac((void *)0,0,(void *)0,(void *)0);
+    display=dc((void *)0,0,(void *)0,(void *)0);
+    if(k&&displays&&display) {
+        void *dk=make((void *)0,"widthPixels",0x08000100u);
+        void *hk=make((void *)0,"heightPixels",0x08000100u);
+        void *tk=make((void *)0,"type",0x08000100u);
+        void *tv=make((void *)0,"DISPLAYABLE_KOMBI_MAP_VIEW",0x08000100u);
+        set_info_int(display,dk,1440u);
+        set_info_int(display,hk,455u);
+        if(tk&&tv) set(display,tk,tv);
+        aa(displays,display);
+        set(dict,k,displays);
+        if(rel&&dk) rel(dk); if(rel&&hk) rel(hk);
+        if(rel&&tk) rel(tk); if(rel&&tv) rel(tv);
+    }
+    if(rel&&k) rel(k);
+    if(rel&&display) rel(display);
+    if(rel&&displays) rel(displays);
+
+    {
+        unsigned int port=mu0678_alt111_data_port();
+        if(port) {
+            k=make((void *)0,"dataPort",0x08000100u);
+            if(k) { set_info_int(dict,k,port); if(rel) rel(k); }
+        }
+    }
+}
+
 static void *resolve_dio(const char *name)
 {
     if(!g_dio_handle) g_dio_handle=dlopen((const char *)0,0x80000100);
@@ -61,6 +146,7 @@ static void *server_copy_property_hook(void *server, void *key,
             if(release) release(ak);
         }
     }
+    augment_alt_info(copy_info);
     return copy_info;
 stock:
     if(g_original_server_copy_property) {
