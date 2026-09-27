@@ -70,7 +70,7 @@ static volatile int g_media_thread_running;
 static int g_media_listener=-1;
 static unsigned char g_media_ctx[12];
 
-static void *resolve(const char *n) { return dlsym((void *)0,n); }
+static void *resolve(const char *n) { return mu0678_resolve_airplay(n); }
 
 static int resolve_all(void)
 {
