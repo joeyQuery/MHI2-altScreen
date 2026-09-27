@@ -4,20 +4,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 #define MU0678_DIO_BASE 0x00100000u
 #define MU0678_GOT_HID_REGISTER 0x0019d734u
 #define MU0678_GOT_HID_DEREGISTER 0x0019d7ecu
-#define MU0678_GOT_GUARD 0x00115288u
-
+#define MU0678_GOT_SCREEN_STREAM_CREATE 0x000aa2d8u
+#define MU0678_SETUP_BRANCH 0x00023260u
+#define MU0678_NVSS_DECODE_CALL 0x0007fb68u
+#define MU0678_NVSS_DECODE_CONT 0x0007fb6cu
+#define MU0678_NVSS_DECODE_PLT 0x00017bf4u
+#define MU0678_VENEER_HINT 0x000ac000u
 int mu0678_interpose_init(void);
-int mu0678_interpose_patch_word(volatile uint32_t *target, uint32_t expected,
-                                uint32_t replacement, uint32_t alternate_expected);
-
-/* Exact SETUP trampoline ABI is intentionally target-specific and is not guessed. */
-int mu0678_interpose_setup111(void *session, void *streams, void *setup_result);
-void mu0678_interpose_session_finalized(void *session);
-
+int mu0678_interpose_patch_word(volatile uint32_t *target, uint32_t expected, uint32_t replacement, uint32_t alternate_expected);
+int mu0678_interpose_setup111(void *session, void *stream, void *setup_result, void *key_base);
 #ifdef __cplusplus
 }
 #endif
