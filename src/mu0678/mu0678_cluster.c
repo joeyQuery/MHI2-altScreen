@@ -111,6 +111,7 @@ static void *g_secondary_stream;
 static unsigned long g_media_thread;
 static volatile int g_media_thread_running;
 static int g_media_listener=-1;
+static unsigned short g_media_port;
 static unsigned char g_media_ctx[12];
 
 static void *resolve(const char *n) { return mu0678_resolve_airplay(n); }
@@ -272,6 +273,7 @@ int mu0678_alt111_open_media_listener(MU0678Session session,
     owner=(unsigned int)(*(unsigned char *)((unsigned char *)session+0x51));
     if(ServerOpen(owner,1,6,0xffffe872,&port,0xfffd4000,&fd)!=0) return -1;
     *data_port=(unsigned short)port;
+    g_media_port=(unsigned short)port;
     *listener_fd=fd;
     return 0;
 }
@@ -376,5 +378,5 @@ void mu0678_alt111_stop(MU0678Session session)
     if(g_secondary_stream&&StreamStop) StreamStop(g_secondary_stream);
     if(g_screen_b&&StopSession) StopSession(g_screen_b);
     if(g_screen_b&&DeleteScreen) DeleteScreen(g_screen_b);
-    g_screen_b=(void *)0; g_session=(void *)0; g_secondary_video_impl=(void *)0; g_secondary_stream=(void *)0;
+    g_screen_b=(void *)0; g_session=(void *)0; g_secondary_video_impl=(void *)0; g_secondary_stream=(void *)0; g_media_port=0;
 }
