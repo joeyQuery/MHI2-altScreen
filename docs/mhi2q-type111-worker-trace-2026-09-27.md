@@ -4,13 +4,7 @@
 
 This is the corrected binary-level trace of the authoritative MHI2Q `install.zip` after the secondary 111 listener is created.
 
-The important result is that the earlier shorthand:
-
-```
-accept -> NetSocket_CreateWithNative -> StartSession -> ProcessFrames
-```
-
-was too strong. The supplied Q cluster directly proves a dedicated worker, `SocketAccept`, post-accept `StartSession`, and an OMX decode call. Direct `NetSocket_CreateWithNative` and `ProcessFrames` callsites were not found.
+The important result is now exact: the supplied Q cluster directly proves the full post-accept sequence `SocketAccept -> NetSocket_CreateWithNative -> StartSession -> ProcessFrames` inside a dedicated worker. The remaining unknown is the identity of the Q-specific context object passed as ProcessFrames argument #3.
 
 ## Worker creation
 
@@ -94,56 +88,31 @@ The exact stripped type of the `+0x1d0` object is not recovered.
 
 The critical invariant is proven: **StartSession occurs after the secondary accept worker is active.**
 
-## Direct OMX decode edge
+## ProcessFrames edge
 
-The same worker contains a direct call through API slot:
+The same worker directly calls API slot `0x10318` at `0x3bbc`.
 
-```
-0x10348 = dio::OmxVideoImpl::decode(unsigned char*, unsigned int, unsigned long long, bool)
-```
-
-The callsite is:
+The call setup is:
 
 ```
-0x399c
+r0 = SessionScreen B
+r1 = wrapped NetSocket
+r2 = Q-specific context value
 ```
 
-The function pointer is loaded immediately before the indirect call.
+The function pointer is loaded from the resolved API table immediately before the indirect call.
 
-This establishes that the Q secondary worker contains a Q-specific OMX decode boundary. MU0678 must not copy the Q `OmxVideoImpl` object layout; its corresponding decode boundary is the MU0678 NvSS implementation.
+This establishes the actual Q handoff from the accepted secondary connection into the AirPlay SessionScreen frame-processing path. MU0678 should preserve the semantic sequence and translate the context/object ABI natively.
 
-## What is NOT directly proven
+## Remaining unknowns
 
-### ProcessFrames
+### Q ProcessFrames context
 
-The resolver maps:
+The third argument is loaded from `[r6+0x1c8]`. The exact stripped C++ object/type represented by that field is not recovered. It must not be invented or mapped to a MU0678 field without an independent trace.
 
-```
-0x10318 = AirPlayReceiverSessionScreen_ProcessFrames
-```
+### Q output handoff
 
-but the literal used to initialise that slot occurs at `0x6800`, inside the dlsym resolver table.
-
-A binary-wide search found no second occurrence of that slot-address literal.
-
-Therefore:
-
-- the symbol is resolved;
-- a direct worker call through that slot is not present in the supplied binary;
-- an indirect use through another opaque table cannot be ruled out without recovering that table;
-- it is incorrect to state as a proven fact that the Q worker calls `ProcessFrames(B, NetSocket)`.
-
-### NetSocket_CreateWithNative
-
-Likewise:
-
-```
-0x102bc = NetSocket_CreateWithNative
-```
-
-but its resolver literal at `0x6828` has no second direct occurrence.
-
-Therefore direct post-accept `NetSocket_CreateWithNative` use is also not proven.
+The exact frame transport from the ProcessFrames/decoder side into `mhi2q-aa-cluster-display --live-carplay` remains the final narrow static target.
 
 ## Correct Q post-accept model
 
@@ -213,15 +182,15 @@ remains a valid native translation candidate, but it is **not justified by the Q
 - worker start address is `0x38fc`;
 - worker is created at `0x4128`;
 - secondary connection is accepted through `SocketAccept`;
+- accepted native socket is wrapped with `NetSocket_CreateWithNative`;
 - post-accept `StartSession` is direct;
-- Q worker contains a direct OMX decode call;
+- `ProcessFrames(B, NetSocket, Q-context)` is direct;
 - 110 stock path is not replaced by this worker.
 
 ### Still requiring deeper static recovery
 
-- exact indirect handoff from the accepted connection to the Q decode buffer/object;
+- exact C++ identity/semantics of the Q ProcessFrames argument #3 (`[r6+0x1c8]`);
 - exact relationship between the worker's state object and SessionScreen B;
-- whether the resolved `ProcessFrames` and `NetSocket_CreateWithNative` APIs are ever called indirectly;
 - exact frame transport into `mhi2q-aa-cluster-display --live-carplay`.
 
 These are narrower than the previous architecture-level uncertainty and are now the correct remaining static targets.
