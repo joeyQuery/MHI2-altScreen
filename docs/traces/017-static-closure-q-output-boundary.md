@@ -159,3 +159,38 @@ No stronger statement should be made without recovering the callback target's da
 
 ### MHI2 implementation consequence
 The Q architecture requires a producer-side worker/queue boundary after H.264 access-unit production. For an MHI2 implementation, this can be reproduced directly with a dedicated worker that owns the secondary-output sink. It must remain independent of the stock 110 ScreenStream path.
+
+
+## Deeper correction: separate listener and worker roles
+
+### 9. 0xad4c is the concrete 15557 TCP listener constructor
+The function at 0xad4c receives the loopback port as its first argument. At 0x4168 its caller supplies 0x3cc5 = 15557 and a mode value of 3.
+
+Inside 0xad4c:
+- it creates an IPv4 socket with the socket PLT;
+- stores the resulting descriptor in its transport state;
+- constructs a sockaddr containing AF_INET and the supplied port;
+- calls bind/listen through resolved socket APIs;
+- initializes the loopback transport state;
+- creates a pthread for the listener/transport worker path.
+
+This establishes that the 15557 endpoint is a real TCP listener owned by the Q CarPlay cluster, not merely a port number shared textually with the display helper.
+
+### 10. Correction to the earlier 0x38fc characterization
+The pthread created at 0x4128 uses start routine 0x38fc, but 0x38fc is not proven to be the direct access-unit writer. Its body is a broader worker/orchestration routine with mutex/condition state and several indirect callback calls. The incoming pthread argument is not directly consumed as a socket/write object.
+
+The exact writer callback therefore remains an indirect data-flow problem. The correct architecture at this point is:
+
+15557 listener setup (0xad4c) -> accepted/transport state -> queued worker/callback machinery -> final socket-write primitive -> mhi2q-aa-cluster-display.
+
+No direct 0x38fc-to-write claim should be made.
+
+### 11. spawnl path is also more precisely reconstructed
+At 0x4560-0x4578:
+- r0 = 1 (P_WAIT-shaped mode);
+- r1 = r4 (path argument);
+- r2 = r4 (argv[0]);
+- r3 = PC-relative global data pointer;
+- stack argument = 0.
+
+The path value in r4 is produced by the preceding executable-discovery/validation callback chain and is then passed through additional validation/use before this spawnl call. The embedded /eso/bin/apps/mhi2q-aa-cluster-display string is present in the same binary. Thus the launch edge is proven, while the final callback-level proof that the r4 value equals that exact embedded string on every branch remains intentionally unclaimed.
