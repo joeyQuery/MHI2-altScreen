@@ -16,8 +16,8 @@ Q reference sequence:
 12. accept secondary connection;
 13. `NetSocket_CreateWithNative`;
 14. `ProcessFrames(B,socket)`;
-15. ScreenStreamCreate hook captures Q secondary state;
-16. DIO/native Screen binding and decoder lifecycle operate around B;
-17. teardown unwinds secondary state with original AirPlay teardown.
+15. ScreenStreamCreate hook captures Q state;
+16. Q's DIO/decoder integration operates around the secondary stream; the exact cross-subsystem call ordering is still being traced;
+17. teardown includes the secondary stop/delete path alongside the original AirPlay teardown; exact final ordering remains to be established.
 
-The replica must preserve this ordering.
+The replica must preserve the proven Q ordering and must not invent ordering for the unresolved portions.
