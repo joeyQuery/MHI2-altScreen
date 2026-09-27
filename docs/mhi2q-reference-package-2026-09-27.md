@@ -143,7 +143,7 @@ The MHI2 replica must translate structure offsets and negotiated-value represent
 
 Q opens a second listener through its seven-argument `ServerSocketOpen` ABI, publishes the resulting port as the 111 `dataPort`, and accepts the connection in a dedicated worker. The worker is created by `pthread_create` at cluster address `0x4128`, with start routine `0x38fc`. Inside that worker, `SocketAccept` is directly loaded from API slot `0x10328` and called at `0x395c`; `AirPlayReceiverSessionScreen_StartSession` is directly loaded from slot `0x101e0` and called at `0x3b60` after the accept path succeeds.
 
-The previously asserted direct `NetSocket_CreateWithNative` and `ProcessFrames` calls are **not** supported by direct slot references in the cluster: their resolver slots (`0x102bc` and `0x10318`) occur only in the dlsym resolver's literal table. No second direct callsite to either slot was found in the supplied binary. They therefore remain unproven as Q worker operations.
+The direct Q worker trace is closed: `NetSocket_CreateWithNative` is called at `0x3a70` through its resolved API slot; `StartSession(B,arg2)` is called at `0x3b60`; `ProcessFrames(B,NetSocket,[context+0x1c8])` is called at `0x3bbc`.
 
 MHI2 uses the same seven-argument AAPCS shape, but the native values differ. Static tracing identifies the stock `0x23380` screen/media listener as the MHI2 translation target: `arg1=session+0x51 byte`, TCP (`1,6`), `arg4=0xFFFFE872`, `arg6=0xFFFD4000`, with independent arg5/arg7 outputs. The `0x23C48` listener is the RAOP event channel (`-5001`) and is not the screen listener.
 
@@ -231,7 +231,7 @@ The current MHI2 work has statically established many of these operations. The i
 - `SocketAccept` is directly called by that worker;
 - `NetSocket_CreateWithNative` is directly called at `0x3a70`;
 - `StartSession(B,...)` is directly called at `0x3b60` after accept/wrapping;
-- `ProcessFrames(B, NetSocket, Q-context)` is directly called at `0x3bbc`.
+- `ProcessFrames(B, NetSocket, [context+0x1c8])` is directly called at `0x3bbc`.
 - the Q package contains a dedicated live-CarPlay display helper;
 - Q has executable native Screen creation/registration symbols and the SessionScreen-created delegate callback.
 
