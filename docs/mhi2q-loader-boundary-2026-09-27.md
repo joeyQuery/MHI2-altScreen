@@ -109,7 +109,38 @@ The established MU0678 map includes:
 
 The implementation should therefore preserve stock `libairplay.so` and call these native primitives from a MU0678-compatible DIO-side extension.
 
-## New prerequisite: DIO replacement audit
+## MU0678 DIO audit — concrete result
+
+The stock MU0678 DIO executable is present in the dump at:
+
+`/eso/bin/apps/dio_manager`
+
+Static ELF inspection establishes:
+
+- size: 649,413 bytes;
+- NEEDED includes `libairplay.so`;
+- NEEDED includes `libnvss_video.so`;
+- NEEDED includes `libsocket.so.3`;
+- the dynamic symbol table imports `AirPlayReceiverSessionChangeModes`;
+- it imports `AirPlayReceiverSessionScreenSetDelegate`;
+- it imports `AirPlayReceiverSessionSetDelegate`;
+- it imports `ScreenCreate`;
+- it imports `ScreenRegister`;
+- it imports `ScreenRegisterDelegates`;
+- it imports `AirPlayReceiverServerCreate` / `SetDelegate` / `Control` / `SetProperty`;
+- it contains the existing `CDIOManager::s_sessionScreenCreatedCallback` at `0x1362d0`;
+- it contains the existing `CDIOManager::s_sessionCreatedCallback` at `0x138fb4`;
+- it contains the existing `CDIOManager::s_sessionModesChangedCallback` at `0x139268`;
+- it contains the existing `CDIOManager::s_sessionFinalizedCallback` at `0x139424`;
+- it contains the existing `CDIOManager::s_changeModeCompletionCallback` at `0x137fc4`.
+
+This materially changes the implementation path: **MU0678 already has the DIO-side AirPlay/Screen host surface that the Q loader extends.** We do not need to invent a separate host process or intercept `libairplay.so` merely to obtain those APIs.
+
+The Q working loader has the same architectural role: it is an executable DIO application with `libmhi2qcarplaycluster.so` as an additional NEEDED dependency while retaining `libairplay.so` as a dependency.
+
+Therefore the most direct MU0678 replica is a MU0678 DIO-manager-compatible executable/loader that preserves the existing DIO callbacks and links a MU0678 cluster component implementing the 111 path.
+
+## Remaining prerequisite: DIO replacement audit
 
 The remaining static prerequisite is the stock MU0678 DIO executable itself:
 
