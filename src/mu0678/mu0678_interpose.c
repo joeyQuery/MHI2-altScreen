@@ -3,6 +3,7 @@
 
 extern int mprotect(void *, unsigned int, int);
 extern long sysconf(int);
+extern void *dlopen(const char *, int);
 extern void *dlsym(void *, const char *);
 extern unsigned int getpagesize(void);
 extern void *mmap(void *, unsigned int, int, int, int, int);
@@ -21,6 +22,7 @@ static ScreenStreamCreateFn g_screen_stream_create;
 static uintptr_t g_libairplay_base;
 static unsigned char *g_veneer;
 static int g_installed;
+static void *g_airplay_handle;
 
 static uint32_t arm_branch(uintptr_t pc,uintptr_t target,int link)
 {
@@ -63,40 +65,49 @@ static void *screen_stream_create_hook(void *a,void *b)
     return stream;
 }
 
+void *mu0678_resolve_airplay(const char *name)
+{
+    if(!name) return (void *)0;
+    if(!g_airplay_handle) g_airplay_handle=dlopen("libairplay.so",0x80000100);
+    return g_airplay_handle?dlsym(g_airplay_handle,name):(void *)0;
+}
+
 static void write_veneer_words(void)
 {
     uint32_t *w=(uint32_t *)g_veneer;
-    w[0]=0xe92d5fffu;
-    w[1]=0xe350006fu;
-    w[2]=0x1a000005u;
-    w[3]=0xe1a00006u;
-    w[4]=0xe59d1088u;
-    w[5]=0xe59d209cu;
-    w[6]=0xe1a0300au;
-    w[7]=0xe59fc00cu;
-    w[8]=0xe12fff3cu;
-    w[9]=0xe8bd5fffu;
-    w[10]=arm_branch((uintptr_t)g_veneer+0x28u,g_libairplay_base+0x231f0u,0);
-    w[11]=0xe1a00000u;
 
-    w[12]=0xe59d3014u;
-    w[13]=0xe92d400fu;
-    w[14]=0xe1a02003u;
-    w[15]=0xe59fc01cu;
-    w[16]=0xe12fff3cu;
-    w[17]=0xe8bd400fu;
-    w[18]=0xe59fe014u;
-    w[19]=0xe59fc014u;
-    w[20]=0xe12fff1cu;
-    w[21]=0xe1a00000u;
+    /* SETUP boundary: r6=session, r9=stream, r10=key-base,
+       original setup_result is at [original_sp+0x68]. */
+    w[0]=0xe92d5fffu;                 /* push {r0-r12,lr} */
+    w[1]=0xe350006fu;                 /* cmp r0,#111 */
+    w[2]=0x1a000005u;                 /* bne -> common stock return */
+    w[3]=0xe1a00006u;                 /* r0 = session */
+    w[4]=0xe59d10a0u;                 /* r1 = setup_result */
+    w[5]=0xe1a02009u;                 /* r2 = current stream */
+    w[6]=0xe1a0300au;                 /* r3 = key-base */
+    w[7]=0xe59fc00cu;                 /* ip = setup111 */
+    w[8]=0xe12fff3cu;                 /* blx ip */
+    w[9]=0xe8bd5fffu;                 /* restore caller registers */
+    w[10]=0xe59ff004u;                /* pc = stock non-110 path */
+    w[11]=(uint32_t)(uintptr_t)mu0678_interpose_setup111;
+    w[12]=(uint32_t)(g_libairplay_base+0x231f0u);
 
-    *(uintptr_t *)(g_veneer+0x30)=(uintptr_t)mu0678_interpose_setup111;
-    *(uintptr_t *)(g_veneer+0x70)=(uintptr_t)mu0678_alt111_publish_decode;
-    *(uintptr_t *)(g_veneer+0x74)=(uintptr_t)(g_libairplay_base+MU0678_NVSS_DECODE_CONT);
-    *(uintptr_t *)(g_veneer+0x78)=(uintptr_t)(g_libairplay_base+MU0678_NVSS_DECODE_PLT);
-    __builtin___clear_cache((char *)g_veneer,(char *)(g_veneer+0x80));
+    /* Nvss decode raw-call veneer: length is [sp+0x14]. */
+    w[13]=0xe59d3014u;                /* r3 = original length */
+    w[14]=0xe92d400fu;                /* push {r0-r3,lr} */
+    w[15]=0xe1a02003u;                /* r2 = length */
+    w[16]=0xe59fc014u;                /* ip = tee */
+    w[17]=0xe12fff3cu;                /* blx ip */
+    w[18]=0xe8bd400fu;                /* restore original regs/lr */
+    w[19]=0xe59fe00cu;                /* lr = original continuation */
+    w[20]=0xe59fc00cu;                /* ip = original NvSS PLT */
+    w[21]=0xe12fff1cu;                /* bx ip */
+    w[22]=(uint32_t)(uintptr_t)mu0678_alt111_publish_decode;
+    w[23]=(uint32_t)(g_libairplay_base+MU0678_NVSS_DECODE_CONT);
+    w[24]=(uint32_t)(g_libairplay_base+MU0678_NVSS_DECODE_PLT);
+
+    __builtin___clear_cache((char *)g_veneer,(char *)(g_veneer+0x64));
 }
-
 static int install_code_hooks(void)
 {
     uintptr_t hint=g_libairplay_base+MU0678_VENEER_HINT;
@@ -122,13 +133,11 @@ int mu0678_interpose_init(void)
     void *setup,*screen_create;
     volatile uint32_t *got;
     if(g_installed) return 0;
-    setup=dlsym((void *)-2,"AirPlayReceiverSessionSetup");
-    if(!setup) setup=dlsym((void *)0,"AirPlayReceiverSessionSetup");
+    setup=mu0678_resolve_airplay("AirPlayReceiverSessionSetup");
     if(!setup) return -1;
     g_libairplay_base=(uintptr_t)setup-0x22fd8u;
 
-    screen_create=dlsym((void *)-2,"ScreenStreamCreate");
-    if(!screen_create) screen_create=dlsym((void *)0,"ScreenStreamCreate");
+    screen_create=mu0678_resolve_airplay("ScreenStreamCreate");
     if(!screen_create) return -2;
     g_screen_stream_create=(ScreenStreamCreateFn)screen_create;
 
@@ -149,17 +158,16 @@ int mu0678_interpose_setup111(void *session,void *stream,void *setup_result,void
     typedef void *(*DictCreateFn)(void *,unsigned int,void *,void *);
     typedef void (*DictSetInt64Fn)(void *,void *,unsigned int,unsigned int);
     typedef int (*AddResponseFn)(void *,void *);
-    GetInt64Fn get64=(GetInt64Fn)dlsym((void *)-2,"CFDictionaryGetInt64");
-    DictCreateFn create=(DictCreateFn)dlsym((void *)-2,"CFDictionaryCreateMutable");
-    DictSetInt64Fn set64=(DictSetInt64Fn)dlsym((void *)-2,"CFDictionarySetInt64");
+    GetInt64Fn get64=(GetInt64Fn)mu0678_resolve_airplay("CFDictionaryGetInt64");
+    DictCreateFn create=(DictCreateFn)mu0678_resolve_airplay("CFDictionaryCreateMutable");
+    DictSetInt64Fn set64=(DictSetInt64Fn)mu0678_resolve_airplay("CFDictionarySetInt64");
     AddResponseFn add=(AddResponseFn)(g_libairplay_base+0x22f34u);
     uintptr_t r4=g_libairplay_base+0xa9418u;
     void *keys=*(void **)(r4+0xfa0u);
     void *vals=*(void **)(r4+0xf78u);
     void *key_type=(void *)(g_libairplay_base+0x941dcu);
     void *key_port=(void *)(g_libairplay_base+0x942c4u);
-    unsigned int allocator=*(unsigned char *)((unsigned char *)session+0x1408);
-
+ 
     if(!get64||!create||!set64||!add) return -10;
     negotiated=get64(stream,(unsigned char *)key_base+644u,(void *)0);
     if(mu0678_alt111_create(session,stream,0,negotiated,setup_result)!=0) return -11;
@@ -172,7 +180,7 @@ int mu0678_interpose_setup111(void *session,void *stream,void *setup_result,void
     }
     if(mu0678_alt111_open_media_listener(session,(unsigned short *)&port,&listener)!=0) return -13;
 
-    response=create((void *)(uintptr_t)allocator,allocator,keys,vals);
+    response=create((void *)0,0,keys,vals);
     if(!response) return -14;
     set64(response,key_type,111u,0u);
     set64(response,key_port,(unsigned int)port,0u);
