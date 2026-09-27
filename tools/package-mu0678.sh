@@ -33,6 +33,8 @@ else
     python3 "$ROOT/tools/patch-mu0678-dio.py" "$DIO" "$OUT/eso/bin/apps/dio_manager"
 fi
 chmod 755 "$OUT/eso/bin/apps/dio_manager"
+cp "$CLUSTER" "$OUT/eso/lib/libmhi2qcarplaycluster.so"
+chmod 755 "$OUT/eso/lib/libmhi2qcarplaycluster.so"
 
 TMP=`mktemp -d`
 trap 'rm -rf "$TMP"' EXIT
@@ -53,6 +55,8 @@ cp "$HELPER" "$OUT/eso/bin/apps/mhi2q-aa-cluster-display"
 chmod 755 "$OUT/eso/bin/apps/mhi2q-aa-cluster-display"
 
 echo "staged target MU0678 dio_manager: $OUT/eso/bin/apps/dio_manager"
+CLUSTER_SHA=`sha256sum "$OUT/eso/lib/libmhi2qcarplaycluster.so" | awk '{print $1}'`
 echo "staged MU0678 cluster: $OUT/eso/lib/libmhi2qcarplaycluster.so"
+echo "cluster sha256: $CLUSTER_SHA"
 echo "staged exact reference helper: $OUT/eso/bin/apps/mhi2q-aa-cluster-display"
 echo "sha256: $HELPER_SHA"
