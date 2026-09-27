@@ -175,12 +175,10 @@ int mu0678_interpose_patch_word(volatile uint32_t *target,uint32_t expected,
 
 static int screen_stream_process_data_hook(void *stream,const void *data,unsigned int length)
 {
-    int rc=0;
-    if(g_screen_stream_process_data)
-        rc=g_screen_stream_process_data(stream,data,length);
-    if(rc==0 && stream && data && length)
+    if(stream && data && length)
         (void)mu0678_alt111_publish_process_data(stream,(const uint8_t *)data,length);
-    return rc;
+    return g_screen_stream_process_data
+        ? g_screen_stream_process_data(stream,data,length) : 0;
 }
 
 static void *screen_stream_create_hook(void *a,void *b)
