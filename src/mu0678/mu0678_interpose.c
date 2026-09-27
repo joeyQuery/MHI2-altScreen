@@ -163,16 +163,23 @@ int mu0678_interpose_setup111(void *session,void *stream,void *setup_result,void
     if(!get64||!create||!set64||!add) return -10;
     negotiated=get64(stream,(unsigned char *)key_base+644u,(void *)0);
     if(mu0678_alt111_create(session,stream,0,negotiated,setup_result)!=0) return -11;
-    if(mu0678_alt111_open_media_listener(session,(unsigned short *)&port,&listener)!=0) return -12;
+    {
+        void *time_blob[3];
+        time_blob[0]=setup_result;
+        time_blob[1]=(void *)(g_libairplay_base+0x20650u);
+        time_blob[2]=(void *)(g_libairplay_base+0x20644u);
+        if(mu0678_alt111_set_time(mu0678_alt111_screen(),time_blob)!=0) return -12;
+    }
+    if(mu0678_alt111_open_media_listener(session,(unsigned short *)&port,&listener)!=0) return -13;
 
     response=create((void *)(uintptr_t)allocator,allocator,keys,vals);
-    if(!response) return -13;
+    if(!response) return -14;
     set64(response,key_type,111u,0u);
     set64(response,key_port,(unsigned int)port,0u);
-    if(add(response,setup_result)!=0) return -14;
+    if(add(response,setup_result)!=0) return -15;
 
     err=mu0678_alt111_start_worker(session,mu0678_alt111_screen(),listener);
-    if(err!=0) return -15;
+    if(err!=0) return -16;
     return 0;
 }
 
