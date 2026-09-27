@@ -12,6 +12,7 @@ if command -v qcc >/dev/null 2>&1; then
     "$CC" -Vgcc_ntoarmv7le -shared -fPIC -march=armv7-a -marm \
         -fno-builtin -fno-stack-protector -I"$ROOT" \
         "$ROOT/mu0678_cluster.c" "$ROOT/mu0678_interpose.c" \
+        -lsocket \
         -Wl,-soname,libmhi2qcarplaycluster.so \
         -o "$OUT"
 elif command -v ntoarmv7-gcc >/dev/null 2>&1; then
@@ -19,6 +20,7 @@ elif command -v ntoarmv7-gcc >/dev/null 2>&1; then
     "$CC" -shared -fPIC -march=armv7-a -marm \
         -fno-builtin -fno-stack-protector -I"$ROOT" \
         "$ROOT/mu0678_cluster.c" "$ROOT/mu0678_interpose.c" \
+        -lsocket \
         -Wl,-soname,libmhi2qcarplaycluster.so \
         -o "$OUT"
 else
