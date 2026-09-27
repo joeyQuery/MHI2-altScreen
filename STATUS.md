@@ -24,7 +24,7 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 - Q resolves OMX initialize/configure/start/decode/stop/visibility.
 - MHI2 stock frame path is `ProcessFrames -> ScreenStreamProcessData -> ScreenStream/_ScreenStreamDecodeAll -> NvssVideoImpl::decode`.
 - MU0678 `SetTimeSynchronizer` copies 12 bytes to `screen+0x20` and ignores extra args.
-- Stock MU0678 `ServerSocketOpen` is at `0x79910`; its observable ABI consumes r0/r1/r3 plus stack arguments 14/15/16 and does not consume incoming r2 as an input.
+- Stock MU0678 `ServerSocketOpen` at `0x79910` is a normal seven-argument AAPCS call. The relevant screen/media listener is the stock `0x23380` call: `arg1=*(uint8_t *)(session+0x51)`, `arg2=1`, `arg3=6`, `arg4=0xFFFFE872`, `arg6=0xFFFD4000`, with fresh arg5/arg7 output storage. The `0x23C48` TCP call is the RAOP event listener (`-5001`).
 
 ## Current MHI2 implementation already contains
 
@@ -45,6 +45,10 @@ Type 111 detection, second SessionScreen, UpdateState, ScreenSetup, AES derivati
 - exact external dispatcher that invokes `s_sessionScreenCreatedCallback`;
 - Q normal-session teardown ordering;
 - successful live 111 run through secondary decode/display.
+
+## Static closure
+
+The socket boundary is no longer unresolved: ABI shape and the exact stock MHI2 screen/media listener recipe are proven in `traces/016-static-closure-mhi2-listener.md`. Q teardown ordering is also proven: original AirPlay `SessionTearDown` first, then secondary listener close, worker join, `ScreenStreamStop`, `StopSession`, `ScreenDeregister`, and duplicate-state clearing.
 
 ## Runtime gaps
 
