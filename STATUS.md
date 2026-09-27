@@ -15,7 +15,10 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 - Q derives B AES material with DeriveAESKeySHA512ForScreen(session+0x1c0,16,negotiated64) and calls SetSecurityInfo.
 - Q opens a second listener through its 7-argument ServerSocketOpen ABI.
 - Q advertises {type:111,dataPort:N}.
-- Q accepts the secondary socket, wraps it with NetSocket_CreateWithNative, and calls ProcessFrames(B,socket).
+- Q creates a dedicated secondary worker (`pthread_create` at `0x4128`, start routine `0x38fc`).
+- That worker directly calls `SocketAccept` (slot `0x10328`) and post-accept `StartSession(B,...)` (slot `0x101e0`).
+- The worker also directly calls `dio::OmxVideoImpl::decode` (slot `0x10348`).
+- Q's resolved `NetSocket_CreateWithNative` (`0x102bc`) and `ProcessFrames` (`0x10318`) slots have no second direct callsite in the supplied binary; their use remains unproven and must not be asserted as direct worker operations.
 - Q resolves StartSession, but the proven type-111 setup block does not call it.
 - Q ScreenStreamCreate observes (*arg1)+0x38; the captured value is not subsequently read in the Q cluster, so this is not proven functionally required.
 - Q DIO callback s_sessionScreenCreatedCallback -> AirPlayReceiverSessionScreenSetDelegate is proven.
