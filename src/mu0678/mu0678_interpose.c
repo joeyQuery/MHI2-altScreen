@@ -85,10 +85,10 @@ static void write_veneer_words(void)
     w[4]=0xe59d10a0u;                 /* r1 = setup_result */
     w[5]=0xe1a02009u;                 /* r2 = current stream */
     w[6]=0xe1a0300au;                 /* r3 = key-base */
-    w[7]=0xe59fc00cu;                 /* ip = setup111 */
+    w[7]=0xe59fc008u;                 /* ip = setup111 */
     w[8]=0xe12fff3cu;                 /* blx ip */
     w[9]=0xe8bd5fffu;                 /* restore caller registers */
-    w[10]=0xe59ff004u;                /* pc = stock non-110 path */
+    w[10]=0xe59ff000u;                /* pc = stock non-110 path */
     w[11]=(uint32_t)(uintptr_t)mu0678_interpose_setup111;
     w[12]=(uint32_t)(g_libairplay_base+0x231f0u);
 
@@ -96,7 +96,7 @@ static void write_veneer_words(void)
     w[13]=0xe59d3014u;                /* r3 = original length */
     w[14]=0xe92d400fu;                /* push {r0-r3,lr} */
     w[15]=0xe1a02003u;                /* r2 = length */
-    w[16]=0xe59fc014u;                /* ip = tee */
+    w[16]=0xe59fc010u;                /* ip = tee */
     w[17]=0xe12fff3cu;                /* blx ip */
     w[18]=0xe8bd400fu;                /* restore original regs/lr */
     w[19]=0xe59fe00cu;                /* lr = original continuation */
