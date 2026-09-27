@@ -56,8 +56,10 @@ int mu0678_interpose_patch_word(volatile uint32_t *target,uint32_t expected,
 static void *screen_stream_create_hook(void *a,void *b)
 {
     void *stream=g_screen_stream_create?g_screen_stream_create(a,b):(void *)0;
-    if(stream&&mu0678_alt111_capture_active())
+    if(stream&&mu0678_alt111_capture_active()) {
+        mu0678_alt111_capture_stream(stream);
         mu0678_alt111_capture_video_impl(*(void **)((unsigned char *)stream+0x48));
+    }
     return stream;
 }
 
