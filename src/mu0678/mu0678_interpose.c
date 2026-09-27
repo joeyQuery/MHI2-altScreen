@@ -46,10 +46,9 @@ static void *server_copy_property_hook(void *server, void *key,
     StringFn make=(StringFn)mu0678_resolve_airplay("CFStringCreateWithCString");
     SetIntFn set=(SetIntFn)mu0678_resolve_airplay("CFDictionarySetInt64");
     ReleaseFn release=(ReleaseFn)mu0678_resolve_airplay("CFRelease");
-    void *info,*copy_info,*k;
+    void *info,*copy_info;
     (void)value; (void)out_int; (void)context;
     if(!copy||!deep||!make||!set) goto stock;
-    k=(void *)0;
     info=copy(server);
     if(!info) goto stock;
     copy_info=deep((void *)0,info,2u);
