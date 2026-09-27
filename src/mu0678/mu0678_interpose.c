@@ -68,7 +68,7 @@ static void *screen_stream_create_hook(void *a,void *b)
 void *mu0678_resolve_airplay(const char *name)
 {
     if(!name) return (void *)0;
-    if(!g_airplay_handle) g_airplay_handle=dlopen("libairplay.so",0x80000100);
+    if(!g_airplay_handle) g_airplay_handle=dlopen((const char *)0,0x80000100);
     return g_airplay_handle?dlsym(g_airplay_handle,name):(void *)0;
 }
 
