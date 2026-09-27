@@ -205,15 +205,16 @@ The later sequence statically reaches:
 0x405c  -> ServerSocketOpen
 ```
 
-The post-accept worker is now concretely traced further. It is created at `0x4128` with start routine `0x38fc`. In that worker:
+The post-accept worker is now concretely closed. It is created at `0x4128` with start routine `0x38fc`. In that worker:
 
 ```
 0x395c -> API slot 0x10328 -> SocketAccept
-0x399c -> API slot 0x10348 -> dio::OmxVideoImpl::decode
+0x3a70 -> API slot 0x102bc -> NetSocket_CreateWithNative
 0x3b60 -> API slot 0x101e0 -> AirPlayReceiverSessionScreen_StartSession
+0x3bbc -> API slot 0x10318 -> AirPlayReceiverSessionScreen_ProcessFrames
 ```
 
-`ProcessFrames` resolves to slot `0x10318`, but its resolver literal is the only direct occurrence of that slot's address in the binary. `NetSocket_CreateWithNative` similarly resolves to `0x102bc` with no second direct slot reference. Therefore neither operation is currently proven as a Q worker call; the earlier documentation claiming a direct `ProcessFrames(B, NetSocket)` stage is corrected here.
+The `ProcessFrames` call uses `r0=B`, `r1=wrapped NetSocket`, and a Q-specific context value in `r2`. This closes the exact Q post-accept worker dispatch that the MU0678 implementation must reproduce functionally.
 
 ## MU0678 security translation
 
@@ -321,7 +322,8 @@ The static implementation is now sufficiently specified to build in this order:
 10. accept and wrap the socket;
 11. perform post-accept StartSession;
 12. reproduce the Q post-accept worker boundary;
-13. route secondary H.264 through the MU0678-native NvSS/output path;
+13. call the MU0678-native `ProcessFrames(B, NetSocket, context)` equivalent;
+14. route secondary H.264 through the MU0678-native NvSS/output path;
 14. tear down B independently;
 15. validate simultaneous 110 + 111 operation on hardware.
 
@@ -338,7 +340,7 @@ What is now proven:
 - Q explicitly detects stream type 111.
 - Q creates/sets up a second SessionScreen.
 - Q uses a second listener and a dedicated post-accept worker.
-- Q directly calls post-accept StartSession and contains a direct OMX decode call.
+- Q directly calls `SocketAccept`, `NetSocket_CreateWithNative`, post-accept `StartSession`, and `ProcessFrames` in that worker.
 - MU0678 exposes the required DIO callback symbols.
 - MU0678 exposes the required native AirPlay/Screen substrate.
 - MU0678 has a native NvSS decode path.
@@ -346,8 +348,8 @@ What is now proven:
 What remains statically unresolved:
 
 - exact MU0678 output/display activation;
-- exact indirect Q data/transport path after the direct StartSession call;
-- whether Q's resolved ProcessFrames/NetSocket symbols are used through an indirect table rather than direct callsites;
+- exact Q-context object identity passed as ProcessFrames argument #3;
+- exact frame transport into `mhi2q-aa-cluster-display --live-carplay`;
 - successful simultaneous 110+111 negotiation;
 - actual secondary H.264 decode/display;
 - reconnect/teardown stability.
