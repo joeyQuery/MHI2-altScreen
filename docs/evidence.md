@@ -19,6 +19,9 @@ Authoritative Q lifecycle reference: `docs/mhi2q-reference-package-2026-09-27.md
 13. MHI2 stock processing ends in NvssVideoImpl::decode.
 14. Stock MU0678 ServerSocketOpen at `0x79910` is a normal seven-argument AAPCS call; the stock `0x23380` branch is the screen/media listener.
 15. MU0678 `AirPlayReceiverSessionScreen_Setup @ 0x26400` overwrites caller `r2` with `sp+4` before its only internal setup-helper call, so the caller's third argument is not consumed by this export.
+16. The supplied Q DIO loader has exactly one direct `ScreenCreate` BL callsite (`0x158bd4`), followed in the same creation path by `ScreenRegisterDelegates` (`0x158e20`) and `ScreenRegister` (`0x158e28`).
+17. Q packages `mhi2q-aa-cluster-display`, whose binary contains `--live-carplay` and dynamically resolves QNX screen-window APIs including `screen_create_window`, `screen_set_window_property_iv`, `screen_create_window_buffers`, and `screen_post_window`.
+18. `libmhi2qcarplaycluster.so` embeds `/eso/bin/apps/mhi2q-aa-cluster-display` and `--live-carplay` alongside the 111 metadata.
 
 ## Interpretation rules
 
@@ -29,5 +32,6 @@ Authoritative Q lifecycle reference: `docs/mhi2q-reference-package-2026-09-27.md
 
 ## Unresolved
 
-- final MHI2-specific SessionScreen ↔ DIO/native Screen association;
+- exact cross-module/process data-flow that launches and feeds `mhi2q-aa-cluster-display` for 111;
+- whether the Q native Screen object, the helper process, or both are involved in the final 111 output;
 - successful complete live 111 run through secondary decode/display.
