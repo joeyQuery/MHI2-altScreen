@@ -23,6 +23,69 @@ static uintptr_t g_libairplay_base;
 static unsigned char *g_veneer;
 static int g_installed;
 static void *g_airplay_handle;
+static void *g_dio_handle;
+static void *g_original_server_copy_property;
+static void *g_original_session_finalized;
+
+static void *resolve_dio(const char *name)
+{
+    if(!g_dio_handle) g_dio_handle=dlopen((const char *)0,0x80000100);
+    return g_dio_handle?dlsym(g_dio_handle,name):(void *)0;
+}
+
+static void *server_copy_property_hook(void *server, void *key,
+                                       const void *value, int *out_int, void *context)
+{
+    typedef void *(*CopyInfoFn)(void *);
+    typedef void *(*DeepCopyFn)(void *,void *,unsigned int);
+    typedef void *(*StringFn)(void *,const char *,unsigned int);
+    typedef int (*EqualFn)(void *,void *);
+    typedef void (*SetIntFn)(void *,void *,unsigned int,unsigned int);
+    typedef void (*ReleaseFn)(void *);
+    CopyInfoFn copy=(CopyInfoFn)mu0678_resolve_airplay("AirPlayCopyServerInfo");
+    DeepCopyFn deep=(DeepCopyFn)mu0678_resolve_airplay("CFPropertyListCreateDeepCopy");
+    StringFn make=(StringFn)mu0678_resolve_airplay("CFStringCreateWithCString");
+    EqualFn equal=(EqualFn)mu0678_resolve_airplay("CFEqual");
+    SetIntFn set=(SetIntFn)mu0678_resolve_airplay("CFDictionarySetInt64");
+    ReleaseFn release=(ReleaseFn)mu0678_resolve_airplay("CFRelease");
+    void *info,*copy_info,*k;
+    (void)value; (void)out_int; (void)context;
+    if(!copy||!deep||!make||!equal||!set) goto stock;
+    k=make((void *)0,"info",0x08000100u);
+    if(!k || !key || !equal(key,k)) {
+        if(k&&release) release(k);
+        goto stock;
+    }
+    info=copy(server);
+    if(!info) { if(release) release(k); goto stock; }
+    copy_info=deep((void *)0,info,2u);
+    if(release) release(info);
+    if(!copy_info) { if(release) release(k); goto stock; }
+    {
+        void *ak=make((void *)0,"altScreen",0x08000100u);
+        if(ak) {
+            set(copy_info,ak,1u,0u);
+            if(release) release(ak);
+        }
+    }
+    if(release) release(k);
+    return copy_info;
+stock:
+    if(g_original_server_copy_property) {
+        typedef void *(*Fn)(void *,void *,const void *,int *,void *);
+        return ((Fn)g_original_server_copy_property)(server,key,value,out_int,context);
+    }
+    return (void *)0;
+}
+
+static void session_finalized_hook(void *session, void *context)
+{
+    typedef void (*Fn)(void *,void *);
+    mu0678_interpose_session_finalized(session);
+    if(g_original_session_finalized)
+        ((Fn)g_original_session_finalized)(session,context);
+}
+
 
 static uint32_t arm_branch(uintptr_t pc,uintptr_t target,int link)
 {
@@ -163,6 +226,27 @@ int mu0678_interpose_init(void)
         if(install_code_hooks()!=0) {
             guarded_store(got,(uint32_t)(uintptr_t)screen_stream_create_hook,got_old,0);
             return -4;
+        }
+    }
+    {
+        void *server_cb=resolve_dio("_ZN3dio11CDIOManager28s_serverCopyPropertyCallbackEP28AirPlayReceiverServerPrivateP9CFLStringPKvPiPv");
+        void *final_cb=resolve_dio("_ZN3dio11CDIOManager26s_sessionFinalizedCallbackEP29AirPlayReceiverSessionPrivatePv");
+        uintptr_t dio_base;
+        volatile uint32_t *server_got;
+        volatile uint32_t *final_got;
+        if(!server_cb||!final_cb) return -5;
+        dio_base=(uintptr_t)server_cb-0x139a88u;
+        server_got=(volatile uint32_t *)(dio_base+0x19d9d8u);
+        final_got=(volatile uint32_t *)(dio_base+0x19da00u);
+        g_original_server_copy_property=(void *)(uintptr_t)(*server_got);
+        g_original_session_finalized=(void *)(uintptr_t)(*final_got);
+        if(!guarded_store(server_got,(uint32_t)(uintptr_t)server_cb,
+                          (uint32_t)(uintptr_t)server_copy_property_hook,0)) return -6;
+        if(!guarded_store(final_got,(uint32_t)(uintptr_t)final_cb,
+                          (uint32_t)(uintptr_t)session_finalized_hook,0)) {
+            guarded_store(server_got,(uint32_t)(uintptr_t)server_copy_property_hook,
+                          (uint32_t)(uintptr_t)g_original_server_copy_property,0);
+            return -7;
         }
     }
     g_installed=1;
