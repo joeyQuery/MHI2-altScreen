@@ -15,12 +15,18 @@ extern int write(int,const void *,unsigned int);
 extern void *memcpy(void *,const void *,unsigned int);
 extern void *memset(void *,int,unsigned int);
 extern int spawnl(int,const char *,const char *,const char *,...);
+extern void *mmap(void *,unsigned int,int,int,int,int);
+extern int munmap(void *,unsigned int);
 
 #define AF_INET 2
 #define SOCK_STREAM 1
 #define SOL_SOCKET 0xffff
 #define SO_REUSEADDR 4
 #define AAF1_PORT 15557
+#define PROT_READ 1
+#define PROT_WRITE 2
+#define MAP_PRIVATE 2
+#define MAP_ANON 0x20
 #define AAF1_HELPER "/eso/bin/apps/mhi2q-aa-cluster-display"
 
 typedef void *(*ScreenCreateFn)(void *,void *);
