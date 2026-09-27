@@ -6,6 +6,7 @@ extern int socket(int,int,int);
 extern int bind(int,const void *,unsigned int);
 extern int listen(int,int);
 extern int accept(int,void *,unsigned int *);
+extern int poll(void *,unsigned int,int);
 extern int close(int);
 extern int setsockopt(int,int,int,const void *,unsigned int);
 extern int write(int,const void *,unsigned int);
@@ -81,6 +82,7 @@ static void aaf1(unsigned char h[32],unsigned char mode,unsigned char flags,
     be32(h+20,v0c); be32(h+24,v14); be32(h+28,v10);
 }
 
+typedef struct { int fd; short events; short revents; } pollfd_t;
 static void *sink_worker(void *unused) {
     (void)unused;
     while(g_running && g_sink>=0) {
@@ -89,10 +91,11 @@ static void *sink_worker(void *unused) {
         if(fd<0) continue;
         g_viewer=fd;
         while(g_running && g_viewer==fd) {
-            /* Producer owns framing; connection is closed on the next failed write. */
-            break;
+            pollfd_t p; p.fd=fd; p.events=0x001; p.revents=0;
+            if(poll(&p,1,1000)>0 && (p.revents & 0x011)) {
+                close(fd); g_viewer=-1; break;
+            }
         }
-        if(g_viewer==fd) { close(fd); g_viewer=-1; }
     }
     return (void *)0;
 }
@@ -135,6 +138,12 @@ int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
     DeriveAES(material,16,(unsigned int)negotiated64,
               (unsigned int)(negotiated64>>32),a,b);
     SetSecurity(g_screen_b,a,b);
+    return 0;
+}
+
+int mu0678_alt111_set_time(MU0678SessionScreen B, void *time_blob) {
+    if(!B||!time_blob||!SetTime) return -1;
+    SetTime(B,time_blob);
     return 0;
 }
 
