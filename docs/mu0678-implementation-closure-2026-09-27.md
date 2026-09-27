@@ -19,8 +19,8 @@ The MU0678 cluster now implements the reference architecture at the external DIO
 - the MU0678-native SessionScreen B security derivation uses `session+0x1c8`;
 - the MU0678-native secondary listener uses the recovered screen/media `ServerSocketOpen` ABI;
 - the 111 response advertises type 111 and its allocated data port;
-- the dedicated worker performs `SocketAccept -> NetSocket_CreateWithNative -> StartSession(B) -> ProcessFrames(B, socket, [session+0x0c]+0xc8)`;
-- the Q-compatible 32-byte AAF1 live-CarPlay transport is emitted;
+- the dedicated worker performs `SocketAccept -> NetSocket_CreateWithNative -> ProcessFrames(B, socket, [session+0x0c]+0xc8)`; the MU0678 stock `StartSession(B)` call is deliberately omitted because its singleton `ScreenCopyMain` binding would rebind the primary output;
+- the Q-compatible 32-byte AAF1 live-CarPlay transport is emitted from the secondary `ScreenStreamProcessData` boundary;
 - the output writer gates transmission until codec configuration and an IDR access unit are available;
 - the exact reference `mhi2q-aa-cluster-display --live-carplay` helper is still used by the package;
 - teardown stops the secondary worker, stream, SessionScreen and output transport independently.
@@ -42,7 +42,7 @@ MU0678 uses its proven native equivalents instead.
 
 The MU0678 firmware proves that the stock AirPlay StartSession path obtains the single main native Screen. It does not contain a second native Screen factory.
 
-Therefore a literal copy of the QNX helper's physical DMDT route cannot be claimed as a MU0678 equivalent. The implementation keeps the secondary encoded stream independent and leaves physical VC routing as the final hardware-specific boundary.
+Therefore a literal copy of the QNX helper's physical DMDT route cannot be claimed as a MU0678 equivalent. The implementation keeps the secondary encoded stream independent and bypasses MU0678's singleton native Screen/NvSS binding. The exact reference-equivalent downstream physical VC route remains hardware-specific.
 
 The recovered logical target remains:
 
