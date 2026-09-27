@@ -74,31 +74,29 @@ Do not copy Q offsets or socket arguments directly into MHI2. The MHI2 replica m
 
 ## Final static conclusion — 2026-09-27
 
-The remaining Screen-B question is now reduced to a concrete MHI2 implementation boundary.
+The MU0678 StartSession limitation is proven, but the Q output boundary is now narrower and more precise: the working package contains a separate CarPlay-aware display executable, so a second native Screen cannot be assumed to be the complete Q replica.
 
 MU0678 `AirPlayReceiverSessionScreen_StartSession @ 0x25fd0` creates the ScreenStream through `ScreenStreamCreate`, then obtains the native **main** Screen and clones its properties into the newly created stream before `ScreenStreamStart`. The StartSession argument #2 is configuration/context input; it is not a native Screen selector.
 
-Therefore a second MHI2 SessionScreen cannot be made to target Screen[1] merely by passing a different StartSession argument.
+Therefore a second MHI2 SessionScreen cannot be made to target a different native Screen merely by passing a different StartSession argument. More importantly, the Q package does not prove that a second native Screen object is its complete 111 display sink.
 
-The correct static construction for B is:
+The correct static construction for B is the transport/decoder half; the final display binding must remain an explicit platform boundary until the Q helper path is closed:
 
-1. Create/register native Screen B.
-2. Create SessionScreen B and complete its AirPlay setup/security state.
-3. Do **not** rely on stock StartSession's Main-Screen lookup for B.
-4. Create B's ScreenStream explicitly with `ScreenStreamCreate` using the same context ABI required by MU0678.
-5. Populate B's ScreenStream properties from the explicitly selected native Screen B:
-   `platformLayer`, `maxFPS`, `xOffset`, `yOffset`, `windowWidth`, `windowHeight`, `widthPixels`, `heightPixels`.
-6. Start the B stream with the native `ScreenStreamStart` path.
-7. Preserve B's stream state independently; the recovered ScreenStream type field is `+0x94`, which must identify the secondary stream as 111 before ProcessFrames.
-8. Feed the accepted 111 socket to `ProcessFrames(B,...)`.
-9. Keep stock `ScreenCopyMain()` and the entire 110 path unchanged.
+1. Create SessionScreen B and complete its AirPlay setup/security state.
+2. Do **not** rely on stock StartSession's main-Screen lookup as a selector for B.
+3. Reproduce the post-accept Q StartSession/ScreenStream stage using the MU0678-native ABI.
+4. If the MHI2 output sink is a native ScreenStream, populate its properties from an explicitly selected display source; do not globally alter `ScreenCopyMain()`.
+5. Preserve B's stream state independently; the recovered ScreenStream type field is `+0x94`, which must identify the secondary stream as 111 before ProcessFrames.
+6. Feed the accepted 111 socket to `ProcessFrames(B,...)`.
+7. Separately close the Q display-boundary question against the packaged `mhi2q-aa-cluster-display` path before declaring the native Screen-B model to be a literal Q replica.
+8. Keep stock 110 behaviour unchanged.
 
 This is the first point at which the static evidence yields a concrete implementation strategy rather than another hypothesis.
 
 ### What remains genuinely unproven
 
-The exact Q-side mechanism that makes the working Q package's alternate stream use the intended output cannot be reconstructed solely from `libmhi2qcarplaycluster.so`: Q uses a different stock AirPlay/DIO environment and its stripped DIO loader is the cross-module integration boundary. The Q cluster's StartSession argument chain is proven, but its exact class identity is not.
+The exact Q-side mechanism that makes the working Q package's alternate stream use the intended output is still a cross-module/process boundary. Static evidence now proves that the package contains `mhi2q-aa-cluster-display`, which supports `--live-carplay` and directly resolves QNX screen-window APIs; `libmhi2qcarplaycluster.so` also embeds that executable path and flag. The exact launch/data-flow edge is not yet proven. The Q DIO loader has exactly one direct `ScreenCreate` callsite, so a second native ScreenCreate cannot be claimed from that loader.
 
-That uncertainty does **not** block the MHI2 design above, because MU0678's own StartSession implementation establishes the critical limitation: its normal StartSession path selects the main Screen. The MHI2 adapter must therefore reproduce the stream-creation/start portion with an explicit Screen-B property source.
+That uncertainty does not invalidate the proven transport/security/accept/ProcessFrames replica. It does mean the display portion must not be frozen as a literal native Screen-B implementation until the Q helper/data-flow boundary is closed.
 
-The remaining runtime proof is whether the chosen Screen-B properties correspond to the physical VC output and whether the resulting B stream reaches the existing NvSS/tee/display path without affecting 110.
+The remaining proof is whether the MHI2 B stream should terminate in a native ScreenStream, an equivalent helper/display process, or a combination, and which concrete display source maps to the physical VC. Runtime validation is still required to prove simultaneous 110+111 output.
