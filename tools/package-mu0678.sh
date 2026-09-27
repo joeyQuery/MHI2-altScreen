@@ -6,17 +6,17 @@ set -eu
 # from the supplied working install.zip; it is not rebuilt or modified here.
 
 REF=${1:-}
+OUT=${2:-package-mu0678}
+CLUSTER=${3:-build/libmhi2qcarplaycluster.so}
 if [ ! -f "$CLUSTER" ]; then
     echo "built cluster missing: $CLUSTER" >&2
     exit 1
 fi
-OUT=${2:-package-mu0678}
-CLUSTER=${3:-build/libmhi2qcarplaycluster.so}
 DIO_LOADER_SHA=4dbbb057fe5ccbd95fbea71b16810cbdd417ca60a7aa6113e7918ac97e252e94
 HELPER_SHA=0ad556112e427745da99e057affde5b18195db875398d2111cb131f790b7d65e
 
 if [ -z "$REF" ] || [ ! -f "$REF" ]; then
-    echo "usage: $0 /path/to/install.zip [output-dir]" >&2
+    echo "usage: $0 /path/to/install.zip [output-dir] [cluster-so]" >&2
     exit 2
 fi
 
