@@ -245,3 +245,120 @@ The physical panel mapping remains runtime-dependent.
 Trace the MU0678 object supplied as `session+0x0c` far enough to determine whether its `+0x1c8` field has a direct equivalent. If it does not, identify the MU0678-native object/context that should be passed as ProcessFrames argument #3.
 
 The second narrow target is to recover the Q loopback writer's exact producer call/data format so the MU0678 writer can be made byte/packet-semantically equivalent where the platforms permit it.
+
+
+## 9. Context offset is now solved on MU0678
+
+The stock MU0678 `_ScreenThread` gives the exact native `ProcessFrames` third argument.
+
+At `0x204d0`:
+
+~~~
+r3 = [session + 0x0c]
+r1 = [sp + 0x1c]
+r0 = [session + 0x140c]
+r2 = [r3 + 0xc8]
+ProcessFrames(r0, r1, r2)
+~~~
+
+Therefore the platform-specific mapping is:
+
+| Platform | AirPlay session context | ProcessFrames arg #3 |
+|---|---:|---:|
+| Q reference | `session + 0x0c` | `[context + 0x1c8]` |
+| MU0678 stock | `session + 0x0c` | `[context + 0xc8]` |
+
+This is a direct disassembly result on both sides. The correct MU0678 implementation must therefore use `[session+0x0c]+0xc8`, not Q's `+0x1c8`.
+
+This confirms that the Q worker deliberately reuses an existing AirPlay host-context value; the field is not a new secondary-screen ABI.
+
+## 10. Q loopback wire format is now solved
+
+The Q display helper has a strict 32-byte frame-header parser at `0x1023b8`.
+
+It first performs an exact 32-byte read, then requires:
+
+~~~
+bytes 0..3 = ASCII "AAF1"
+byte 4      = 2
+byte 7      = 32
+~~~
+
+The Q cluster constructs the same header in its producer at `0xa600` and writes it through the common timed write routine `0xa1e8`.
+
+The producer and consumer are therefore both present in the supplied reference binary; this is not an inferred framing protocol.
+
+### Producer header layout
+
+For the 32-byte live format, the cluster writes:
+
+~~~
+offset 0x00..0x03 : 'A' 'A' 'F' '1'
+offset 0x04        : 0x02
+offset 0x05        : stream mode (1 or 2)
+offset 0x06        : flags (arg2, with bit 0 forced when object+0x1d is non-zero)
+offset 0x07        : 0x20 (32-byte header)
+
+0x08..0x0b         : object +0x18, big-endian
+0x0c..0x0f         : object +0x04, big-endian
+0x10..0x13         : object +0x08, big-endian
+0x14..0x17         : object +0x0c, big-endian
+0x18..0x1b         : object +0x14, big-endian
+0x1c..0x1f         : object +0x10, big-endian
+~~~
+
+The helper parser reconstructs these fields into its frame metadata object. The payload immediately follows the 32-byte header; the producer passes the payload pointer separately to the same timed write routine, with payload length from the producer object's `+0x04` field.
+
+The parser consumes the exact payload bytes after the header.
+
+### Important distinction
+
+The cluster also contains a 24-byte-header path in the adjacent producer logic at `0xa4e0`. That path is not the `--live-carplay` protocol because the helper's live parser explicitly requires byte 7 == 32. The live-carplay path is the 32-byte `AAF1` format constructed at `0xa600`.
+
+## 11. Resulting faithful MU0678 translation
+
+The secondary worker should therefore call the MU0678-native equivalent of:
+
+~~~
+AirPlayReceiverSessionScreen_ProcessFrames(
+    B,
+    acceptedNetSocket,
+    *((void **)(*((void **)(session + 0x0c)) + 0xc8))
+)
+~~~
+
+The Q `+0x1c8` must **not** be copied to MU0678.
+
+The output side should reproduce the Q producer/consumer framing where useful:
+
+~~~
+H.264 access unit
+    ↓
+32-byte AAF1 header
+    ↓
+exact payload bytes
+    ↓
+TCP 127.0.0.1:15557
+    ↓
+mhi2q-aa-cluster-display --live-carplay
+~~~
+
+MU0678 should retain its own display geometry/routing (`DISPLAYABLE_KOMBI_MAP_VIEW`, ID 33, 1440x455) rather than copying Q's 1440x540 geometry.
+
+## Static closure status
+
+### Solved
+
+- Q host-context origin: `session+0x0c`.
+- MU0678 host-context origin: `session+0x0c`.
+- Q ProcessFrames context offset: `+0x1c8`.
+- MU0678 ProcessFrames context offset: `+0xc8`.
+- Q live-carplay TCP endpoint: `127.0.0.1:15557`.
+- Q live frame header magic: `AAF1`.
+- Q live header size: 32 bytes.
+- Q producer and consumer are both statically identified.
+- Payload follows the 32-byte header and is written using the Q timed write routine.
+
+### Remaining static implementation work
+
+The architecture is now closed. Remaining work is implementation translation: construct the MU0678-compatible external cluster/loader and reproduce the Q secondary lifecycle and output writer using MU0678-native APIs and ABI. Runtime validation remains necessary for actual iPhone 111 negotiation, decode continuity, VC routing, and teardown.
