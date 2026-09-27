@@ -157,3 +157,17 @@ The implementation therefore does not fabricate a callback-table field for SETUP
 ## Complete type-111 trace
 
 The implementation now covers the full statically proven path from MU0678 SETUP type 111 through response-port advertisement, secondary SessionScreen/security setup, MU-native listener/worker, secondary ScreenStream decoder capture, and secondary-only NvSS raw access-unit tee. See docs/mu0678-type111-complete-trace-2026-09-27.md for the exact addresses and guards. Remaining work is hardware validation of 111 negotiation, simultaneous 110/111 operation, display-helper compatibility, physical VC routing, and reconnect/teardown.
+
+
+## 2026-09-27 Q-parity gap closure
+
+The implementation pass has closed the source-level gaps identified by the direct working-package comparison:
+
+- the MU0678 secondary ScreenStream is retained so Q-equivalent `ScreenStreamStop(streamB)` teardown can occur;
+- the secondary worker and output accept worker are joined during teardown, matching the proven Q cleanup ordering;
+- the exact Q live-CarPlay helper launch is now present at sink startup using `spawnl(1,...,"--live-carplay",...)`;
+- MU0678 time synchronization now precedes AES/security and copies the three Q-equivalent words: `setup_result`, MU `_ScreenGetSynchronizedNTPTime @ 0x20650`, and MU `_ScreenGetUpTicksNearSynchronizedNTPTime @ 0x20644`;
+- the previously missing `mu0678_alt111_screen()` accessor is implemented;
+- the exact reference display helper is reproducibly staged by `tools/package-mu0678.sh`, with SHA-256 `0ad556112e427745da99e057affde5b18195db875398d2111cb131f790b7d65e`.
+
+The remaining boundary is deliberately not guessed: Q teardown also calls `ScreenDeregister(vc_screen)`, but the MU0678 native VC Screen registration/association required to supply that object has not been proven. The current code therefore does not deregister the stock 110 screen. Runtime validation and the MU-native VC routing association remain hardware gates.
