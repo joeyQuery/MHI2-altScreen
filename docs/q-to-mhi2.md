@@ -7,7 +7,7 @@ The authoritative Q reference is `docs/mhi2q-reference-package-2026-09-27.md`. T
 | detect 111 | SETUP scan | present | preserve |
 | Create B | SessionScreen_Create | present | preserve |
 | UpdateState | `UpdateState(B,1)` | present | preserve |
-| ScreenSetup | `Setup(B,111,CreateResult)` | arg3 may be zero | pass CreateResult |
+| ScreenSetup | `Setup(B,111,CreateResult)` | MU0678 export overwrites caller r2 with its own `sp+4` output storage | use native MU0678 ABI; no Q CreateResult dependency |
 | time sync | Q local state | present | preserve Q ordering; use MU0678-native 12-byte payload |
 | AES | stock Derive helper | present | preserve Q ordering with MU0678-native inputs |
 | security | SetSecurityInfo | present | preserve |
