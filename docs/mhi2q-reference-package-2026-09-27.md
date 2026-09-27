@@ -40,14 +40,27 @@ The audited Q trace establishes this order:
 15. integrate the resulting secondary stream with DIO/decoder/output;
 16. tear the secondary path down alongside the main path.
 
-## Important correction: StartSession
+## Important correction: StartSession is post-accept
 
-Q dynamically resolves `AirPlayReceiverSessionScreen_StartSession`, but the proven type-111 setup path does **not** call it.
+Q dynamically resolves `AirPlayReceiverSessionScreen_StartSession`, but the **initial type-111 SETUP handler does not call it**. The separate secondary-socket worker does call it after `SocketAccept` and `NetSocket_CreateWithNative`.
+
+The worker loads the StartSession argument 2 through:
+
+```text
+worker context
+  -> [r9 + 0x0c]
+  -> [that object + 0x1d0]
+  -> StartSession(B, arg2)
+```
+
+The binary proves this object/offset chain. It does **not yet prove the C++ class identity of the `+0x1d0` owner**, so that field must not be renamed/speculated as a Screen object solely from the offset. Its semantic role is nevertheless the object supplied as StartSession argument 2.
 
 Therefore:
 
-- do not add an artificial `StartSession(B)` merely because the symbol exists;
-- the replica must follow the observed Q path rather than assumed symmetry with stock MHI2 110.
+- do not add `StartSession(B)` to the initial SETUP handler;
+- reproduce the post-accept StartSession stage;
+- resolve the MU0678 equivalent of the Q worker's argument-2 object before binding B to a native Screen.
+
 
 ## ScreenStreamCreate / +0x38
 
