@@ -120,6 +120,7 @@ static int g_media_listener=-1;
 static unsigned short g_media_port;
 static unsigned char g_media_ctx[12];
 static volatile int g_have_codec_config;
+static volatile int g_process_capture_seen;
 static volatile int g_synced_viewer;
 static unsigned char *g_config;
 static unsigned int g_config_len;
@@ -188,7 +189,7 @@ static void remember_idr(const unsigned char *p,unsigned int n)
 
 static void reset_output_state(void)
 {
-    g_have_codec_config=0; g_synced_viewer=0;
+    g_have_codec_config=0; g_synced_viewer=0; g_process_capture_seen=0;
     g_config_len=0; g_pending_idr_len=0;
 }
 
@@ -382,9 +383,22 @@ int mu0678_alt111_capture_active(void)
     return g_capture_active;
 }
 
+int mu0678_alt111_publish_process_data(void *stream, const uint8_t *data, uint32_t length)
+{
+    if(!stream||stream!=g_secondary_stream||!data||!length) return 0;
+    g_process_capture_seen=1;
+    return mu0678_alt111_publish_h264(data,length,1,0,0,0,0,0,0,0);
+}
+
+int mu0678_alt111_process_capture_seen(void)
+{
+    return g_process_capture_seen;
+}
+
 int mu0678_alt111_publish_decode(void *video_impl,void *data_pp,unsigned int length)
 {
     const unsigned char *data;
+    if(mu0678_alt111_process_capture_seen()) return 0;
     if(!video_impl||video_impl!=g_secondary_video_impl||!data_pp||!length) return 0;
     data=*(const unsigned char **)data_pp;
     if(!data) return 0;
