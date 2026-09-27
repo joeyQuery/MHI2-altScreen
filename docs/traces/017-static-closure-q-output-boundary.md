@@ -115,3 +115,47 @@ The exact writer-thread function that performs each queued access-unit write ont
 
 ### MHI2 consequence
 Do not add a speculative second native ScreenCreate solely to reproduce Q. The authoritative Q reference now supplies a concrete display-boundary model: secondary H.264 access units can be exposed through a local TCP producer and consumed by a dedicated display helper running an explicit alternate-display mode. On MHI2, direct NvSS/ScreenStream binding remains preferable only if it can be shown to select the intended output without modifying 110. Otherwise a helper can reproduce the Q boundary.
+
+## Final local writer-thread trace (static)
+
+### 6. The Q loopback producer has a dedicated pthread
+The cluster's loopback setup reaches a real pthread_create call at 0x4128.
+
+Immediately before the call:
+- r0 = r4 + 0x14 (thread-id storage)
+- r1 = r6 (pthread attribute/context value)
+- r2 = 0x38fc (resolved from the PC-relative literal at 0x463c)
+- r3 = r6 (thread argument)
+
+Therefore the created thread's start routine is statically identified as 0x38fc, and its argument is r6.
+
+### 7. Start routine 0x38fc is a queue/condition-driven worker
+At 0x38fc the routine:
+- locks a global mutex through the pthread_mutex_lock PLT entry;
+- obtains three fields from the worker state ([r4], [r4+4], [r4+8]);
+- enters a condition/timed-wait path through a resolved callback;
+- processes the returned work state and invokes additional resolved callbacks;
+- performs the worker-state cleanup/reset path before returning.
+
+The routine itself does not contain a direct call to the imported write symbol. The imported write PLT callsite is elsewhere in the library (notably 0x6b68 and 0xa36c). Consequently, the static evidence proves the dedicated worker and its queue/condition machinery, but does not justify claiming that 0x38fc directly executes write(fd,buf,len).
+
+This distinction matters: the remaining local code boundary is an indirect callback/function-pointer edge between the worker's queued item and the socket-write primitive, not an unresolved question about whether a writer thread exists.
+
+### 8. What is now proven vs. not proven
+Proven:
+- loopback listener port = 15557;
+- helper connects to 127.0.0.1:15557;
+- cluster creates a dedicated pthread at 0x4128;
+- thread start routine = 0x38fc;
+- worker uses mutex/condition/state machinery;
+- cluster contains explicit writer-thread creation failure and queue-saturation/discontinuity diagnostics;
+- the cluster contains imported write and concrete write callsites.
+
+Not proven statically from this stripped artifact:
+- which exact function-pointer callback in the 0x38fc worker performs the final write of each queued access unit;
+- whether that callback is the direct 15557 socket writer or an intermediate transport routine.
+
+No stronger statement should be made without recovering the callback target's data-flow/initialization.
+
+### MHI2 implementation consequence
+The Q architecture requires a producer-side worker/queue boundary after H.264 access-unit production. For an MHI2 implementation, this can be reproduced directly with a dedicated worker that owns the secondary-output sink. It must remain independent of the stock 110 ScreenStream path.
