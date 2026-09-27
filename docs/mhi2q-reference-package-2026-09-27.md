@@ -48,8 +48,10 @@ AirPlay session
           +-- secondary listener
           +-- secondary listener / worker
           +-- post-accept StartSession(B)
-          +-- Q-specific secondary decode/transport path
-          +-- MHI2 translation may use stock ProcessFrames/NvSS
+          +-- NetSocket wrapper
+          +-- post-accept StartSession(B)
+          +-- ProcessFrames(B, NetSocket, Q-context)
+          +-- secondary ScreenStream / decoder integration
           +-- dedicated display/output path
 ```
 
@@ -69,9 +71,9 @@ The audited Q trace establishes this order:
 10. open the secondary listener;
 11. advertise `{type:111,dataPort:N}`;
 12. accept the secondary connection;
-13. enter the dedicated secondary worker;
-14. call `StartSession(B,...)` post-accept;
-15. continue into the Q-specific opaque transport/decode path;
+13. wrap it with `NetSocket_CreateWithNative`;
+14. call `StartSession(B,...)` in the post-accept worker;
+15. call `ProcessFrames(B, NetSocket, Q-context)`;
 16. integrate the resulting secondary stream with DIO/decoder/output;
 17. tear the secondary path down alongside the main path.
 
@@ -205,7 +207,7 @@ accept + NetSocket
     |
 post-accept StartSession(B,...)
     |
-Q-specific secondary decode/transport boundary
+ProcessFrames(B, NetSocket, Q-context)
     |
 secondary decode/output sink
 ```
@@ -227,9 +229,9 @@ The current MHI2 work has statically established many of these operations. The i
 - a second listener is opened and its port is advertised as 111 dataPort;
 - the secondary socket has a dedicated pthread worker;
 - `SocketAccept` is directly called by that worker;
-- `StartSession(B,...)` is directly called post-accept;
-- the worker also contains a direct `OmxVideoImpl::decode` call through slot `0x10348` at `0x399c`;
-- direct `NetSocket_CreateWithNative` and `ProcessFrames` callsites are **not** established by the current binary trace.
+- `NetSocket_CreateWithNative` is directly called at `0x3a70`;
+- `StartSession(B,...)` is directly called at `0x3b60` after accept/wrapping;
+- `ProcessFrames(B, NetSocket, Q-context)` is directly called at `0x3bbc`.
 - the Q package contains a dedicated live-CarPlay display helper;
 - Q has executable native Screen creation/registration symbols and the SessionScreen-created delegate callback.
 
