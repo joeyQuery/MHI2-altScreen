@@ -357,6 +357,7 @@ int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
     if(StreamCreate(g_screen_b,(unsigned char *)g_screen_b+0x1f4)!=0) return -1;
     g_secondary_stream=*(void **)((unsigned char *)g_screen_b+0x1f4);
     if(!g_secondary_stream) return -1;
+    g_secondary_video_impl=*(void **)((unsigned char *)g_secondary_stream+0x48);
     return 0;
 }
 
