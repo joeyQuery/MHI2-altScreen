@@ -27,7 +27,9 @@ SETUP streams[]
   -> publish {type:111,dataPort:N}
   -> accept secondary connection
   -> accept secondary connection
+  -> NetSocket_CreateWithNative(acceptedFd)
   -> post-accept StartSession(B, MU0678 context)
+  -> ProcessFrames(B, NetSocket, Q-context)
   -> MU0678-native secondary frame/decode path
   -> dedicated 111 output sink
 ```
@@ -133,7 +135,8 @@ Teardown must never deregister or destroy the stock 110 Screen.
 - Q 111/dataPort response.
 - secondary accept and post-accept worker boundary.
 - post-accept StartSession ordering.
-- MU0678 stock ProcessFrames/NvSS chain as the native translation candidate, not as a proven Q callsite.
+- Q direct `NetSocket_CreateWithNative` and `ProcessFrames` worker callsites.
+- MU0678 stock ProcessFrames/NvSS chain as the native decoder translation.
 - Q's dedicated live-CarPlay output transport: accepted helper socket -> H.264 loopback -> 127.0.0.1:15557 -> QNX Screen helper.
 - Q helper launch via `spawnl(...,"--live-carplay",...)`.
 - Q helper's direct Screen/display API boundary and DMDT VC-routing invocation.
