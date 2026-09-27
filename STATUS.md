@@ -140,3 +140,15 @@ The implementation still requires:
 - stable teardown/reconnect.
 
 \n\n## 2026-09-27 implementation pass\n\nAn ARM EABI5 MU0678 external-cluster implementation has now been added under `src/mu0678/`. It preserves stock `libairplay.so`, resolves the existing SessionScreen lifecycle APIs dynamically, implements the MU0678-native ProcessFrames context translation (`session+0x0c` then `+0xc8`), reproduces the Q AAF1 32-byte live-output header, and exposes explicit entry points for SETUP, time-sync, accept, encoded-frame publication, and teardown.\n\nThe implementation is intentionally not labelled installable yet: the exact MU0678 DIO executable required for the final guarded interposition/SETUP trampoline is not present in the current authoritative upload, so inventing those patch sites would violate the evidence boundary. The source is therefore the implementation core, with the remaining integration boundary explicitly exposed rather than guessed.\n\n\n## Exact target executable now verified\n\nThe MU0678 target `dio_manager` is present in the repository dump at `dump/MU0678-MHI2_ER_AUG22_P3241-JTB-07429.06.161184010D/advanced/MU0678-appimg/eso/bin/apps/dio_manager`. Its Git blob SHA is `1f9dd87e2553f3a89fe083466d1ed3729dd9d094`, size 649413 bytes, and the exact callback anchors are recorded in `docs/mu0678-target-dio-audit-2026-09-27.md`. The previous statement that the target executable was unavailable is superseded.\n
+
+## 2026-09-27 integration boundary update
+
+A direct comparison of the Q type-111 routine and the MU0678 DIO binary resolved an important boundary:
+
+- Q's type-111 entry at `0x3c60` is a replacement callback with effective arguments `(session, streams, setup_result)`.
+- It is not the public `AirPlayReceiverSessionSetDelegate` callback table itself.
+- The public AirPlay delegate layout is confirmed independently: context, initialize, finalize, started, control, copyProperty, setProperty, modesChanged, requestUI, duckAudio, unduckAudio.
+- MU0678 imports `AirPlayReceiverSessionSetDelegate` at GOT `0x19d7a0` and `AirPlayReceiverSessionScreenSetDelegate` at `0x19d544`; these are preserved as ABI anchors, not guessed SETUP hooks.
+- Exact MU0678 DIO GOT translations of Q operations 1/2 are `0x19d734` (`HIDRegisterDevice`) and `0x19d7ec` (`HIDDeregisterDevice`), both guarded by the native PLT resolver word `0x115288`.
+
+The implementation therefore does not fabricate a callback-table field for SETUP. The guarded interposition substrate is committed, while the final hook remains target-specific until its native storage slot is proven from the MU image/runtime.
