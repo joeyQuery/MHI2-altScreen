@@ -94,7 +94,7 @@ The MHI2 replica must translate the structure offsets and negotiated-value repre
 
 Q opens a second listener through its seven-argument `ServerSocketOpen` ABI, publishes the resulting port as the 111 `dataPort`, accepts the connection, wraps the native socket with `NetSocket_CreateWithNative`, and passes that socket into `ProcessFrames`.
 
-MHI2's stock `ServerSocketOpen` ABI differs. Therefore the socket parameters must be reconstructed on MHI2 rather than copied literally from Q.
+MHI2 uses the same seven-argument AAPCS shape, but the native values differ. Static tracing identifies the stock `0x23380` screen/media listener as the MHI2 translation target: `arg1=session+0x51 byte`, TCP (`1,6`), `arg4=0xFFFFE872`, `arg6=0xFFFD4000`, with independent arg5/arg7 outputs. The `0x23C48` listener is the RAOP event channel (`-5001`) and is not the screen listener.
 
 ## Decoder translation
 
@@ -153,9 +153,10 @@ The current MHI2 implementation already contains many of these operations. The r
 
 ### MHI2-specific and separate
 
-- MU0678 native offsets, socket arguments, negotiated-value fields, and delegate bookkeeping.
-- MU0678 ScreenStream/NvSS implementation.
+- MU0678 native offsets, negotiated-value fields, and delegate bookkeeping.
 - The exact external dispatcher equivalent to Q's session-screen-created callback.
+- The exact MU0678 third-argument/CreateResult construction for the secondary ScreenSetup, if not already preserved by the adapter.
+- MU0678 ScreenStream/NvSS implementation.
 - Successful end-to-end live 111 decode/display.
 
 These must be established independently on MHI2.
