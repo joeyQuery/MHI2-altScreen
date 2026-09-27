@@ -8,7 +8,7 @@ The new src/mu0678/ cluster core implements:
 2. Second SessionScreen creation.
 3. UpdateState(B,1).
 4. Setup(B,111-stream,CreateResult).
-5. Stock MU0678 AES derivation boundary: AirPlay_DeriveAESKeySHA512ForScreen(session+0x1c0,16,negotiated64).
+5. Stock MU0678 AES derivation boundary: AirPlay_DeriveAESKeySHA512ForScreen(session+0x1c8,16,negotiated64).
 6. SetSecurityInfo(B,keyA,keyB).
 7. MU0678-native post-accept StartSession(B) ABI.
 8. MU0678-native ProcessFrames(B,NetSocket,[session+0xc]+0xc8).
