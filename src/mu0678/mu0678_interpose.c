@@ -39,28 +39,22 @@ static void *server_copy_property_hook(void *server, void *key,
     typedef void *(*CopyInfoFn)(void *);
     typedef void *(*DeepCopyFn)(void *,void *,unsigned int);
     typedef void *(*StringFn)(void *,const char *,unsigned int);
-    typedef int (*EqualFn)(void *,void *);
     typedef void (*SetIntFn)(void *,void *,unsigned int,unsigned int);
     typedef void (*ReleaseFn)(void *);
     CopyInfoFn copy=(CopyInfoFn)mu0678_resolve_airplay("AirPlayCopyServerInfo");
     DeepCopyFn deep=(DeepCopyFn)mu0678_resolve_airplay("CFPropertyListCreateDeepCopy");
     StringFn make=(StringFn)mu0678_resolve_airplay("CFStringCreateWithCString");
-    EqualFn equal=(EqualFn)mu0678_resolve_airplay("CFEqual");
     SetIntFn set=(SetIntFn)mu0678_resolve_airplay("CFDictionarySetInt64");
     ReleaseFn release=(ReleaseFn)mu0678_resolve_airplay("CFRelease");
     void *info,*copy_info,*k;
     (void)value; (void)out_int; (void)context;
-    if(!copy||!deep||!make||!equal||!set) goto stock;
-    k=make((void *)0,"info",0x08000100u);
-    if(!k || !key || !equal(key,k)) {
-        if(k&&release) release(k);
-        goto stock;
-    }
+    if(!copy||!deep||!make||!set) goto stock;
+    k=(void *)0;
     info=copy(server);
-    if(!info) { if(release) release(k); goto stock; }
+    if(!info) goto stock;
     copy_info=deep((void *)0,info,2u);
     if(release) release(info);
-    if(!copy_info) { if(release) release(k); goto stock; }
+    if(!copy_info) goto stock;
     {
         void *ak=make((void *)0,"altScreen",0x08000100u);
         if(ak) {
@@ -68,7 +62,6 @@ static void *server_copy_property_hook(void *server, void *key,
             if(release) release(ak);
         }
     }
-    if(release) release(k);
     return copy_info;
 stock:
     if(g_original_server_copy_property) {
