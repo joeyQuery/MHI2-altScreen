@@ -9,7 +9,7 @@
 5. Q derives B security with the stock AES/SHA512 helper.
 6. Q opens a second listener and advertises its port as 111 dataPort.
 7. Q accepts the second socket and calls ProcessFrames(B,NetSocket).
-8. Q ScreenStreamCreate hook reads `(*arg1)+0x38`.
+8. Q ScreenStreamCreate hook reads `(*arg1)+0x38`; the captured value is not read elsewhere in the Q cluster, so this is not proven to be a functional dependency.
 9. Q DIO callback uses `AirPlayReceiverSessionScreenSetDelegate`.
 10. Q resolves the native DIO Screen creation/registration API surface.
 11. Q hooks OMX lifecycle.
@@ -17,7 +17,7 @@
 
 ## Unresolved
 
-- semantic meaning of `(*arg1)+0x38`;
+- semantic meaning of `(*arg1)+0x38` remains unknown, although its functional priority is downgraded;
 - exact stock MHI2 ServerSocketOpen implementation/ABI;
 - exact stock MHI2 equivalent of the Q SessionScreen-created callback;
 - complete call-by-call proof of the Q native Screen creation/registration invocation chain;
