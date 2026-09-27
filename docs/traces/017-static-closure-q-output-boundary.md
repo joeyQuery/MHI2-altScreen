@@ -17,39 +17,79 @@ dio::CDIOManager::s_sessionScreenCreatedCallback(void*) is at 0x154cdc (208 byte
 The callback checks DIO/native-screen state, builds a small local callback payload, calls the resolved AirPlayReceiverSessionScreenSetDelegate, and returns.
 There is no ScreenCreate, ScreenRegister, listener creation, or explicit 110/111 branch inside this callback.
 
-### 3. The Q package contains a separate CarPlay-aware display executable
-mhi2q-aa-cluster-display is a packaged production binary.
-Its strings include --live-carplay, IVRDISPLAY, DISPLAY_CATALOG_PATH, libdisplayinit.so, display_init, display_create_window, screen_set_window_property_iv, screen_get_window_property_iv, screen_create_window_buffers, screen_destroy_window_buffers, screen_destroy_window, screen_get_window_property_pv, screen_post_window, screen_create_window, screen_create_window_type, and eglGetDisplay.
-The executable dynamically resolves these display/screen entry points rather than importing libscreen directly. It also contains a usage: %s stream.h264 string and decoder/output-format handling.
-This is hard evidence that the working Q package contains a separate H.264-to-QNX-screen output component with an explicit CarPlay mode.
+### 3. Q CarPlay cluster directly contains a process-launch edge
+libmhi2qcarplaycluster.so imports spawnl.
 
-### 4. The Q CarPlay cluster embeds the helper's executable path
-libmhi2qcarplaycluster.so contains /eso/bin/apps/mhi2q-aa-cluster-display and --live-carplay.
-The same binary also contains the 111 metadata strings: altScreen, streamConnectionID, dataPort, features, displays, maxFPS, widthPhysical, heightPhysical, primaryInputDevice.
-This establishes that the CarPlay cluster and the dedicated display executable are part of the same production package architecture. It does not, by itself, prove the exact launch call/argument construction for every runtime path.
+A direct ARM callsite exists at 0x4578 to the spawnl PLT entry. Immediately before the call:
+- r0 = 1
+- r1 = r4
+- r2 = r4
+- r3 = pointer to the embedded string "--live-carplay"
+- stack arg at [sp] is zero.
+
+This is a concrete spawnl(P_WAIT, path, argv0, "--live-carplay", NULL)-shaped invocation. The exact semantic identity of r4 is determined by the surrounding launch helper/data flow; the call itself is not speculative.
+
+The same Q cluster contains the literal executable path:
+
+/eso/bin/apps/mhi2q-aa-cluster-display
+
+and the literal mode flag:
+
+--live-carplay.
+
+Thus the previously unresolved question “does the Q CarPlay cluster actually have a process-launch edge for the packaged display helper?” is now closed at the call-site level: the cluster has a real spawnl launch path with the live-CarPlay flag. What remains is only the exact data-flow proof that the r4 path at this call is that embedded helper path on the specific branch.
+
+### 4. The helper executable explicitly recognizes live-CarPlay mode
+mhi2q-aa-cluster-display has a direct strcmp in main at 0x103140 comparing argv[1] against the embedded string --live-carplay.
+
+When that comparison matches, the helper selects a geometry state containing:
+- width = 1440
+- height = 540
+
+The helper then initializes its display stack through dynamically resolved:
+- display_init
+- display_create_window
+- screen_set_window_property_iv
+- screen_get_window_property_iv
+- screen_create_window_buffers
+- screen_post_window
+- screen_create_window
+- screen_create_window_type
+- EGL entry points.
+
+This is hard static evidence that --live-carplay is not a dead label: it selects a dedicated display mode in the packaged helper.
+
+### 5. The helper has a direct screen-output implementation
+The helper contains:
+- screen_create_window
+- screen_create_window_type
+- screen_create_window_buffers
+- screen_post_window
+- buffer/property queries
+- screen_destroy_window_buffers
+- screen_destroy_window.
+
+It also contains the literal usage: %s stream.h264, showing that the executable has an H.264 stream-input mode in addition to its live-CarPlay mode.
 
 ## Consequence for MHI2 replication
-The previous conclusion — Q necessarily creates a second native libscreen Screen object for B — is too strong.
-What is proven is narrower:
-- Q has a native Screen creation/registration path in DIO.
-- Q has a separate CarPlay-aware display process that directly creates/posts QNX screen windows.
-- Q CarPlay cluster contains the helper executable path and --live-carplay.
-- Q type-111 SessionScreen path is separately responsible for transport, security, accept, and frame processing.
-Therefore the remaining Q output association cannot be reduced to finding a second ScreenCreate call in the DIO loader. The dedicated display process is now a first-class static candidate for the final 111 display boundary.
+The Q display boundary is now materially more closed than the previous trace established.
 
-## What is still not proven
-Without runtime tracing of the working Q package or a complete cross-reference through the stripped cluster's process-launch/data-flow path, this trace does not claim:
-- exactly where mhi2q-aa-cluster-display is spawned;
-- whether the helper is used for every 111 session;
-- the exact mechanism by which its output is mapped to the physical cluster;
-- whether the Q native Screen object and the helper process are both involved.
+Proven static architecture:
+
+111 SessionScreen -> secondary listener -> accepted socket -> ProcessFrames -> Q video/output integration -> spawnl(..., "--live-carplay") -> mhi2q-aa-cluster-display -> QNX screen window
+
+The remaining uncertainty is no longer whether a launch mechanism exists. It is:
+1. exact r4 path data-flow at the 0x4578 call;
+2. exact handoff between the Q cluster's frame-processing state and the helper process;
+3. exact mapping from the helper's QNX screen window to the physical cluster display.
+
+The earlier statement that the Q display boundary was merely a “candidate helper” is therefore obsolete. The helper launch edge itself is proven.
 
 ## MHI2 consequence
-Do not implement a speculative second native Screen solely because the earlier static model expected one.
-Before changing MU0678 StartSession/ScreenStream logic, compare the existing MHI2 video/display path against the Q helper architecture:
+Do not assume a second native ScreenCreate is required for the 111 display sink.
 
-Q: 111 SessionScreen -> accepted socket -> ProcessFrames -> Q video/output integration -> dedicated CarPlay-aware display helper -> QNX screen window
+The Q reference now provides a stronger functional translation target: a secondary CarPlay stream can terminate in a dedicated H.264/display process using the QNX Screen API. On MHI2, the equivalent can be implemented either by:
+- a native ScreenStream/NvSS path if it can be bound to the intended output, or
+- a dedicated helper process analogous to the Q binary.
 
-MHI2: 111 SessionScreen -> accepted socket -> ProcessFrames -> ScreenStream / NvSS -> existing DIO/display route
-
-The MHI2 translation should reproduce the functional boundary, not assume that Q's native ScreenCreate path is the display sink.
+The exact physical VC mapping remains a separate hardware/runtime question and must not be inferred from DMDT ID 33 or any generic NVSS output-device constant.
