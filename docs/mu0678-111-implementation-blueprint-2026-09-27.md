@@ -21,7 +21,7 @@ SETUP streams[]
   -> ScreenSetup(B, stream111, MU0678-native ABI)
   -> SetTimeSynchronizer(B, ...)
   -> obtain 111 negotiated 64-bit value
-  -> DeriveAESKeySHA512ForScreen(session+0x1c0, 16, negotiated64)
+  -> DeriveAESKeySHA512ForScreen(session+0x1c8, 16, negotiated64)
   -> SetSecurityInfo(B, derivedA, derivedB)
   -> open secondary screen/media listener
   -> publish {type:111,dataPort:N}
@@ -40,9 +40,9 @@ The Q reference proves that the type-111 setup block itself does not call `Start
 
 The stock 110 path establishes the exact key derivation ABI:
 
-- `session + 0x1c0): 16-byte session security material.
+- `session + 0x1c8): 16-byte session security material.
 - negotiated 64-bit value: read by `CFDictionaryGetInt64` from the stream's negotiated field at `stream + 0x284`.
-- call `AirPlay_DeriveAESKeySHA512ForScreen(session+0x1c0, 16, negotiated64)`.
+- call `AirPlay_DeriveAESKeySHA512ForScreen(session+0x1c8, 16, negotiated64)`.
 - pass both 16-byte outputs to `AirPlayReceiverSessionScreen_SetSecurityInfo(B,...)`.
 
 Do not invent a second security ABI for 111.
