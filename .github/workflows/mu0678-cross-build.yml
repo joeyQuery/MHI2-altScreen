@@ -1,0 +1,25 @@
+name: mu0678-cross-build
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ARMv7 soft-float cluster
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p build/stub
+          printf 'void __mhi2_socket_stub(void) {}\n' > build/stub/empty.c
+          clang --target=armv7-unknown-linux-gnueabihf -marm -mfloat-abi=soft -fPIC -shared -nostdlib -fuse-ld=lld build/stub/empty.c -Wl,-soname,libsocket.so.3 -o build/stub/libsocket.so.3
+          clang --target=armv7-unknown-linux-gnueabihf -marm -mfloat-abi=soft -fPIC -shared -nostdlib -fuse-ld=lld -fno-builtin -fno-stack-protector -Isrc/mu0678 src/mu0678/mu0678_cluster.c src/mu0678/mu0678_interpose.c -Lbuild/stub -Wl,--no-as-needed -l:libsocket.so.3 -Wl,--unresolved-symbols=ignore-all,-soname,libmhi2qcarplaycluster.so -o build/libmhi2qcarplaycluster.so
+          file build/libmhi2qcarplaycluster.so
+          readelf -h build/libmhi2qcarplaycluster.so | grep -E 'Class|Data|Type|Machine|Flags'
+          readelf -d build/libmhi2qcarplaycluster.so | grep -E 'NEEDED|SONAME'
+          readelf -r build/libmhi2qcarplaycluster.so | head -80
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mu0678-cluster-armv7
+          path: build/libmhi2qcarplaycluster.so
