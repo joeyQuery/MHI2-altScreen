@@ -16,7 +16,7 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 - Q opens a second listener through a 7-argument `ServerSocketOpen` ABI.
 - Q advertises `{type:111,dataPort:N}`.
 - Q accepts the secondary socket, wraps it with `NetSocket_CreateWithNative`, and calls `ProcessFrames(B,socket)`.
-- Q hooks `ScreenStreamCreate` and reads state through its second argument at `(*arg1)+0x38`.
+- Q hooks `ScreenStreamCreate` and reads four bytes through its second argument at `(*arg1)+0x38`; the destination is not subsequently read in the Q cluster, so this is currently treated as diagnostic/bookkeeping rather than a required functional step.
 - Q DIO loader has `s_sessionScreenCreatedCallback -> AirPlayReceiverSessionScreenSetDelegate`.
 - Q resolves the native DIO Screen operations `ScreenCreate -> ScreenRegisterDelegates -> ScreenRegister`.
 - Q resolves OMX initialize/configure/start/decode/stop/visibility.
@@ -30,11 +30,19 @@ Type 111 detection, second SessionScreen, UpdateState, ScreenSetup, AES derivati
 ## Q divergences
 
 - ScreenSetup can receive zero as arg 3; Q passes the real Create result.
-- Current socket code abstracts the listener more simply; Q uses seven arguments.
+- Current socket code uses a different argument layout; Q uses seven arguments. Equality with stock MHI2 remains unproven until the stock MU0678 `libairplay.so` callsite is available.
 - Q captures `(*arg1)+0x38` after ScreenStreamCreate; current MHI2 does not reproduce it.
-- Q binds new SessionScreens through the DIO callback/delegate mechanism; current MHI2 uses different repoint/copy bookkeeping.
+- Q loader contains executable `ScreenCreate`, `ScreenRegisterDelegates`, and `ScreenRegister` callsites; the exact call-by-call linkage of those operations to the type-111 SessionScreen remains unresolved.
 - Current MHI2 manual UUID/client/end-time setters are not part of Q cluster's resolved API surface and should not define the replica lifecycle without proof.
 - Q uses OmxVideoImpl; MHI2 uses NvssVideoImpl. Translate only the decoder primitive.
+
+## Remaining trace targets
+
+- exact Q `StartSession(B)` callsite and arguments;
+- exact Q type-111 SessionScreen -> DIO Screen creation/registration chain;
+- stock MHI2 `ServerSocketOpen` ABI;
+- Q normal-session teardown ordering;
+- successful live 111 run through secondary decode/display.
 
 ## Runtime gaps
 
