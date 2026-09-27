@@ -2,7 +2,7 @@
 
 ## Q ABI
 
-Q callsite `0x40A0-0x40D8`:
+Q's type-111 listener callsite uses a seven-argument call:
 
 ```c
 ServerSocketOpen(
@@ -16,31 +16,41 @@ ServerSocketOpen(
 );
 ```
 
-This is a proven seven-argument Q callsite. `0x17D4` is only identified as argument 4.
+This is a proven seven-argument Q callsite. `0x17D4` is only identified as argument 4; its semantic meaning is not assumed here.
 
 ## Stock MU0678 ABI
 
-The stock MU0678 `libairplay.so` is present in the repository dump. Its `ServerSocketOpen` implementation is at `0x79910`, size 788 bytes.
+The stock MU0678 `libairplay.so` is present in the repository dump. Its `ServerSocketOpen` implementation starts at `0x79910` and is 788 bytes.
 
-Its prologue saves:
+The entry code preserves:
 
 - argument 1 from `r0`;
 - argument 2 from `r1`;
 - argument 4 from `r3`.
 
-Incoming `r2` is not consumed as an input before being reused internally.
+The incoming `r2` is not consumed as an input before being reused internally.
 
-After its `0x44`-byte local frame is established, it reads `[sp+0x68]`, `[sp+0x6C]`, and `[sp+0x70]`. These correspond to caller stack offsets `+0x24`, `+0x28`, and `+0x2C`, i.e. arguments 14, 15, and 16 under the normal ARM argument convention.
+After the function's `0x44)-byte local stack frame is established, the implementation reads caller-supplied stack locations corresponding to:
 
-Therefore stock MHI2 `ServerSocketOpen` is **not** the Q seven-argument ABI. The current MHI2 replica must use an MHI2-specific adapter/frame rather than copying Q's seven arguments.
+- `+0x24) — argument 14;
+- `+0x28) — argument 15;
+- `+0x2C) — argument 16.
 
-The exact semantic names of MHI2 arguments 1/2/4 and 14/15/16 remain to be recovered from the wider socket helper chain.
+Therefore stock MHI2 `ServerSocketOpen` is **not** Q's seven-argument ABI. The current replica must not copy Q's register/stack layout literally.
+
+## What is solved vs. not solved
+
+**Solved:** the ABI shape and the exact caller-stack positions consumed by stock MHI2 are known.
+
+**Not yet solved:** the semantic names/values represented by MHI2 arguments 1, 2, 4, 14, 15 and 16. Those require tracing the stock helper chain and/or a native callsite that supplies them.
+
+This distinction matters: the ABI mismatch is a concrete platform boundary, but it is not evidence by itself that any particular Q argument should be assigned to any particular MHI2 argument.
 
 ## Replica consequence
 
-Treat `ServerSocketOpen` as an unavoidable platform-specific translation point:
+Treat `ServerSocketOpen` as an unavoidable platform-specific adapter:
 
-- Q: seven-argument ABI.
+- Q: seven-argument callsite.
 - MHI2: wide ABI with high stack arguments and unused incoming `r2`.
 
-The listener port still feeds the type-111 `dataPort` response descriptor.
+The listener created by this call is still the source of the type-111 `dataPort` response descriptor in the Q flow.
