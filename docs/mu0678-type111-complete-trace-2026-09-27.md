@@ -81,15 +81,22 @@ The cluster performs the proven sequence:
 
 MU0678's SessionUUID, ClientDeviceID, receive/auth/NTP end-time setters are no-ops in this image, so no fabricated state writes are needed.
 
-## Exact MU worker topology
+## MU worker topology
+
+The Q reference worker performs `SocketAccept -> NetSocket_CreateWithNative -> StartSession(B) -> ProcessFrames(B,...)`.
+
+MU0678 deliberately omits stock `StartSession(B)`: this image has a singleton native main Screen, and invoking the stock StartSession for B would risk rebinding the factory 110 output.
+
+The implemented MU worker therefore performs:
 
     SocketAccept(listener, 10, &nativeFd, 0)
     NetSocket_CreateWithNative(nativeFd)
-    StartSession(B)
     ctx  = *(session + 0x0c)
     arg3 = *(ctx + 0xc8)
     ProcessFrames(B, netSocket, arg3)
     NetSocket_Delete(netSocket)
+
+B's ScreenStream is created explicitly and its ProcessData boundary is intercepted for the secondary path.
 
 The +0xc8 context offset is deliberately MU-native; Q's +0x1c8 is not copied.
 
@@ -146,7 +153,7 @@ That is intentional: raw H.264 duplication is statically proven; the six AAF1 me
 
 Static architecture is now closed through:
 
-111 SETUP -> response port -> secondary listener -> SessionScreen B -> StartSession -> secondary ScreenStream -> secondary NvssVideoImpl -> raw access-unit tee -> AAF1 sink.
+111 SETUP -> response port -> secondary listener -> SessionScreen B -> explicit secondary ScreenStream -> secondary NvssVideoImpl/process-data boundary -> raw access-unit tee -> AAF1 sink.
 
 Genuinely hardware-dependent gates remain:
 
