@@ -8,7 +8,7 @@ This is a consistency audit between the supplied authoritative working Q package
 
 The functional architecture is correct. The important Q operations have been reproduced as the correct MHI2-side requirements, without copying Q-only offsets or constants.
 
-The audit found one bookkeeping error in repository wording: several STATUS statements said the "current MHI2 implementation already contains" the secondary path. The MHI2-AltScreen repository is currently the reverse-engineering/specification repository; it does not itself contain a completed MU0678 binary implementation. Those statements have therefore been corrected to describe the already-proven/traced MHI2 replica work rather than claim a finished patch.
+The audit found one bookkeeping error in repository wording: several STATUS statements said the "current MHI2 implementation already contains" the secondary path. The repository now contains the MU0678 external cluster implementation and target-DIO integration. Documentation distinguishes statically implemented behavior from hardware/runtime validation rather than claiming unverified hardware success.
 
 ## Operation-by-operation comparison
 
@@ -105,15 +105,7 @@ This preserves 110.
 
 ### Correction 1 — repository implementation status
 
-Replace wording such as:
-
-"Current MHI2 implementation already contains Type 111 detection, second SessionScreen, ..."
-
-with:
-
-"Current MHI2 reverse-engineering work has statically established the Type 111 detection, second SessionScreen lifecycle, security, listener, socket, ProcessFrames, and output-boundary requirements."
-
-The actual MU0678 patch/loader implementation is not contained in this documentation repository yet.
+The current repository contains the MU0678 cluster implementation and target-DIO integration. Claims of completed behavior remain limited to static implementation; iPhone negotiation, rendering, and reconnect behavior remain runtime gates.
 
 ### Correction 2 — MHI2 output closure wording
 
