@@ -29,6 +29,9 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 - Q libmhi2qcarplaycluster.so imports spawnl and has a direct callsite at 0x4578 that passes P_WAIT-shaped mode 1 and the embedded --live-carplay argument.
 - Q libmhi2qcarplaycluster.so embeds /eso/bin/apps/mhi2q-aa-cluster-display.
 - Q mhi2q-aa-cluster-display directly compares argv[1] with --live-carplay at 0x103140 and selects a 1440x540 geometry state for that mode.
+- Q live-CarPlay framing is closed: the helper reads an exact 32-byte header requiring AAF1, byte 4 = 2, byte 7 = 32; the Q cluster constructs the matching 32-byte header at 0xa600 and writes it through the timed write path at 0xa1e8.
+- Q live-CarPlay loopback endpoint is 127.0.0.1:15557.
+- Q and MU0678 ProcessFrames context translation is closed: both use session+0x0c as the host context, but Q reads context+0x1c8 while stock MU0678 reads context+0xc8 at _ScreenThread 0x204d0.
 - The Q display helper dynamically resolves QNX Screen/display APIs including screen_create_window, screen_create_window_type, screen_create_window_buffers, screen_post_window, and destruction/property APIs.
 - The helper also contains usage: %s stream.h264, establishing an H.264 input mode in addition to its live-CarPlay mode.
 
@@ -44,7 +47,7 @@ The MHI2 analysis has statically established the Type 111 detection, second Sess
 - Q loader DIO creation/registration operations are proven, but their exact linkage to the type-111 SessionScreen is across a callback boundary.
 - Current MHI2 manual UUID/client/end-time setters are not part of Q cluster's resolved API surface and should not define the replica lifecycle without proof.
 - Q uses OmxVideoImpl; MHI2 uses NvssVideoImpl. Translate only the decoder primitive.
-- The Q helper launch path is now proven at the process-call level, but the exact r4 path data-flow at spawnl and the exact frame handoff into the helper remain to be closed.
+- The Q helper launch path and frame handoff are now statically closed at the protocol boundary: the cluster produces the AAF1 header plus payload, and the helper parses the same header and consumes the exact payload over the loopback TCP connection.
 
 ## Remaining static trace targets
 
