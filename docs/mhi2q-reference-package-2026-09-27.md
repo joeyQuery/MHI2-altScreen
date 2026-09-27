@@ -46,8 +46,10 @@ AirPlay session
           |
           +-- second SessionScreen
           +-- secondary listener
-          +-- ProcessFrames
-          +-- secondary ScreenStream / decoder integration
+          +-- secondary listener / worker
+          +-- post-accept StartSession(B)
+          +-- Q-specific secondary decode/transport path
+          +-- MHI2 translation may use stock ProcessFrames/NvSS
           +-- dedicated display/output path
 ```
 
@@ -67,9 +69,9 @@ The audited Q trace establishes this order:
 10. open the secondary listener;
 11. advertise `{type:111,dataPort:N}`;
 12. accept the secondary connection;
-13. wrap it with `NetSocket_CreateWithNative`;
-14. call `StartSession(B,...)` in the post-accept worker;
-15. call `ProcessFrames(B,socket)`;
+13. enter the dedicated secondary worker;
+14. call `StartSession(B,...)` post-accept;
+15. continue into the Q-specific opaque transport/decode path;
 16. integrate the resulting secondary stream with DIO/decoder/output;
 17. tear the secondary path down alongside the main path.
 
@@ -135,9 +137,11 @@ SetSecurityInfo(B,keyA,keyB)
 
 The MHI2 replica must translate structure offsets and negotiated-value representation separately. Q offsets must not be copied blindly.
 
-## Socket path
+## Socket / worker path
 
-Q opens a second listener through its seven-argument `ServerSocketOpen` ABI, publishes the resulting port as the 111 `dataPort`, accepts the connection, wraps the native socket with `NetSocket_CreateWithNative`, and passes that socket into `ProcessFrames`.
+Q opens a second listener through its seven-argument `ServerSocketOpen` ABI, publishes the resulting port as the 111 `dataPort`, and accepts the connection in a dedicated worker. The worker is created by `pthread_create` at cluster address `0x4128`, with start routine `0x38fc`. Inside that worker, `SocketAccept` is directly loaded from API slot `0x10328` and called at `0x395c`; `AirPlayReceiverSessionScreen_StartSession` is directly loaded from slot `0x101e0` and called at `0x3b60` after the accept path succeeds.
+
+The previously asserted direct `NetSocket_CreateWithNative` and `ProcessFrames` calls are **not** supported by direct slot references in the cluster: their resolver slots (`0x102bc` and `0x10318`) occur only in the dlsym resolver's literal table. No second direct callsite to either slot was found in the supplied binary. They therefore remain unproven as Q worker operations.
 
 MHI2 uses the same seven-argument AAPCS shape, but the native values differ. Static tracing identifies the stock `0x23380` screen/media listener as the MHI2 translation target: `arg1=session+0x51 byte`, TCP (`1,6`), `arg4=0xFFFFE872`, `arg6=0xFFFD4000`, with independent arg5/arg7 outputs. The `0x23C48` listener is the RAOP event channel (`-5001`) and is not the screen listener.
 
@@ -201,7 +205,7 @@ accept + NetSocket
     |
 post-accept StartSession(B,...)
     |
-ProcessFrames(B,...)
+Q-specific secondary decode/transport boundary
     |
 secondary decode/output sink
 ```
@@ -221,9 +225,11 @@ The current MHI2 work has statically established many of these operations. The i
 - B receives the time synchronizer before security completion;
 - B security uses the stock AES/SHA512 helper;
 - a second listener is opened and its port is advertised as 111 dataPort;
-- the secondary socket is accepted and wrapped;
-- StartSession is called post-accept;
-- ProcessFrames is called for B;
+- the secondary socket has a dedicated pthread worker;
+- `SocketAccept` is directly called by that worker;
+- `StartSession(B,...)` is directly called post-accept;
+- the worker also contains a direct `OmxVideoImpl::decode` call through slot `0x10348` at `0x399c`;
+- direct `NetSocket_CreateWithNative` and `ProcessFrames` callsites are **not** established by the current binary trace.
 - the Q package contains a dedicated live-CarPlay display helper;
 - Q has executable native Screen creation/registration symbols and the SessionScreen-created delegate callback.
 
