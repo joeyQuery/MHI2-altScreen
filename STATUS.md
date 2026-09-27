@@ -119,3 +119,10 @@ The final local producer trace is now partially closed at the thread boundary. T
 Important precision: 0x38fc does not directly call the imported write symbol. The library does import write and has concrete write callsites at 0x6b68 and 0xa36c, but this stripped artifact does not yet establish which callback from the 0x38fc worker performs the final 15557 access-unit write. Therefore the writer-thread existence is proven; the final indirect callback-to-write edge is not.
 
 This is the correct remaining static boundary. Do not describe 0x38fc itself as a direct write(fd,buf,len) routine without further callback data-flow proof.
+
+
+## 2026-09-27 correction: Q 15557 listener vs worker
+
+The deeper binary trace separates two previously conflated roles. Function 0xad4c is the concrete 15557 TCP listener constructor: its caller supplies 0x3cc5 (15557), and the function creates/binds/listens on the IPv4 endpoint before initializing transport state and a pthread path. The pthread at 0x4128 starts 0x38fc, but 0x38fc is not proven to be the direct H.264 socket writer; it is a broader mutex/condition-driven worker/orchestration routine with indirect callback edges.
+
+The remaining static problem is therefore specifically the callback/data-flow from queued access units to the final socket-write primitive. The earlier wording that treated 0x38fc as the writer itself is corrected here.
