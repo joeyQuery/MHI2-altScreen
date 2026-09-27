@@ -8,6 +8,11 @@ set -eu
 REF=${1:-}
 OUT=${2:-package-mu0678}
 CLUSTER=${3:-build/libmhi2qcarplaycluster.so}
+DIO=${4:-}
+if [ -z "$DIO" ] || [ ! -f "$DIO" ]; then
+    echo "target MU0678 dio_manager missing: pass [dio-manager]" >&2
+    exit 1
+fi
 if [ ! -f "$CLUSTER" ]; then
     echo "built cluster missing: $CLUSTER" >&2
     exit 1
@@ -15,12 +20,14 @@ fi
 HELPER_SHA=0ad556112e427745da99e057affde5b18195db875398d2111cb131f790b7d65e
 
 if [ -z "$REF" ] || [ ! -f "$REF" ]; then
-    echo "usage: $0 /path/to/install.zip [output-dir] [cluster-so]" >&2
+    echo "usage: $0 /path/to/install.zip [output-dir] [cluster-so] [dio-manager]" >&2
     exit 2
 fi
 
 rm -rf "$OUT"
 mkdir -p "$OUT/eso/bin/apps" "$OUT/eso/lib"
+cp "$DIO" "$OUT/eso/bin/apps/dio_manager"
+chmod 755 "$OUT/eso/bin/apps/dio_manager"
 
 TMP=`mktemp -d`
 trap 'rm -rf "$TMP"' EXIT
@@ -40,6 +47,7 @@ ACTUAL=`sha256sum "$HELPER" | awk '{print $1}'`
 cp "$HELPER" "$OUT/eso/bin/apps/mhi2q-aa-cluster-display"
 chmod 755 "$OUT/eso/bin/apps/mhi2q-aa-cluster-display"
 
+echo "staged target MU0678 dio_manager: $OUT/eso/bin/apps/dio_manager"
 echo "staged MU0678 cluster: $OUT/eso/lib/libmhi2qcarplaycluster.so"
 echo "staged exact reference helper: $OUT/eso/bin/apps/mhi2q-aa-cluster-display"
 echo "sha256: $HELPER_SHA"
