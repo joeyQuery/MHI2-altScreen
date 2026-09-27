@@ -393,6 +393,11 @@ uint16_t mu0678_alt111_data_port(void)
     return g_media_port;
 }
 
+void *mu0678_alt111_screen_stream(void)
+{
+    return g_secondary_stream;
+}
+
 MU0678SessionScreen mu0678_alt111_screen(void)
 {
     return (MU0678SessionScreen)g_screen_b;
