@@ -9,7 +9,7 @@ Q reference sequence proven for the type-111 setup path:
 5. `Setup(B,stream111,CreateResult)`;
 6. `SetTimeSynchronizer(B,q_time_state,...)`;
 7. obtain negotiated 64-bit value;
-8. `DeriveAESKeySHA512ForScreen(session+0x1c0,16,value)`;
+8. `DeriveAESKeySHA512ForScreen(session+0x1c8,16,value)`;
 9. `SetSecurityInfo(B,keyA,keyB)`;
 10. open second listener;
 11. add `{type:111,dataPort:N}`;
