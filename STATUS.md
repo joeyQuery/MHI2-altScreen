@@ -12,7 +12,7 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 - Q calls UpdateState(B,1).
 - Q calls Setup(B,stream111,CreateResult); argument 3 is the actual Create result.
 - Q calls SetTimeSynchronizer before security completion.
-- Q derives B AES material with DeriveAESKeySHA512ForScreen(session+0x1c0,16,negotiated64) and calls SetSecurityInfo.
+- Q derives B AES material with DeriveAESKeySHA512ForScreen(session+0x1c8,16,negotiated64) and calls SetSecurityInfo.
 - Q opens a second listener through its 7-argument ServerSocketOpen ABI.
 - Q advertises {type:111,dataPort:N}.
 - Q creates a dedicated secondary worker (`pthread_create` at `0x4128`, start routine `0x38fc`).
