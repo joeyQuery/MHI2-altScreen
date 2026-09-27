@@ -25,11 +25,12 @@ The authoritative Q reference is `docs/mhi2q-reference-package-2026-09-27.md`. T
 
 ## Critical lifecycle correction
 
-Q resolves `AirPlayReceiverSessionScreen_StartSession`, but the proven type-111 setup block does **not** call it. Therefore the MHI2 replica must not insert a synthetic `StartSession(B)` merely to make the lifecycle look symmetric with stock MHI2 110.
+The Q type-111 **SETUP handler** does not call `AirPlayReceiverSessionScreen_StartSession` directly. The working Q implementation does call `StartSession` later from a separate secondary-socket worker, after `SocketAccept` and `NetSocket_CreateWithNative`. Therefore the MHI2 replica must not insert `StartSession(B)` into the initial SETUP hook, but it **must** reproduce the post-accept StartSession stage once the correct secondary Screen object is established.
 
-The proven Q functional sequence is:
+The proven Q lifecycle is split:
 
 ```
+SETUP handler:
 detect 111
  -> Create B
  -> UpdateState(B,1)
@@ -39,8 +40,11 @@ detect 111
  -> SetSecurityInfo
  -> secondary listener
  -> advertise 111/dataPort
- -> accept
+
+secondary worker:
+ -> SocketAccept
  -> NetSocket_CreateWithNative
+ -> StartSession(B,screen-context)
  -> ProcessFrames(B,socket)
 ```
 
@@ -69,6 +73,6 @@ This closes the previous socket-ABI uncertainty. The Q values (`session+0x55`, `
 Two Q observations are deliberately not promoted into replica requirements:
 
 1. `ScreenStreamCreate` reading `(*arg1)+0x38`; no later read of the captured Q-cluster value was found.
-2. Q resolving `StartSession`; no call through that pointer occurs in the traced type-111 setup block.
+2. `StartSession` is not called by the traced type-111 SETUP block; it is called later by the separate secondary-socket worker. The post-accept call is therefore functional and must be represented in the replica at the worker boundary.
 
 Both remain useful trace points, but neither is a required implementation operation without new evidence.
