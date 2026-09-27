@@ -126,3 +126,16 @@ This is the correct remaining static boundary. Do not describe 0x38fc itself as 
 The deeper binary trace separates two previously conflated roles. Function 0xad4c is the concrete 15557 TCP listener constructor: its caller supplies 0x3cc5 (15557), and the function creates/binds/listens on the IPv4 endpoint before initializing transport state and a pthread path. The pthread at 0x4128 starts 0x38fc, but 0x38fc is not proven to be the direct H.264 socket writer; it is a broader mutex/condition-driven worker/orchestration routine with indirect callback edges.
 
 The remaining static problem is therefore specifically the callback/data-flow from queued access units to the final socket-write primitive. The earlier wording that treated 0x38fc as the writer itself is corrected here.
+
+
+## 2026-09-27 final static closure: Q loopback writer
+
+The remaining writer boundary is now closed from the authoritative Q ELF. The imported write PLT is 0xf44. The 0x6b30/0x6b68 path is a separate file writer because 0x6b30 opens a file before writing. The loopback output path is instead 0xa738 -> 0xa844 -> 0xa1e8 -> 0xa36c -> write@0xf44.
+
+At 0xa844 the loopback drain supplies the transport descriptor, prepared buffer, and byte count to 0xa1e8. The latter performs the partial-write loop at 0xa36c and retries the remaining bytes after transient QNX socket conditions. The surrounding 0xa738 drain maintains mode-dependent 24/32-byte framing/byte accounting and is reached from the loopback transport state path.
+
+Therefore the previously unresolved callback-to-write edge is no longer unresolved. The Q static display transport is closed as:
+
+111 SessionScreen -> secondary listener -> accepted stream -> Q H.264/queue state -> loopback drain 0xa738 -> 0xa844 -> 0xa1e8 -> write@0xf44 -> TCP 127.0.0.1:15557 -> mhi2q-aa-cluster-display --live-carplay -> QNX Screen window.
+
+Remaining runtime-only questions are the physical display mapping and successful simultaneous 110+111 execution on MU0678. Do not claim the runtime descriptor identity or physical VC mapping without hardware evidence.
