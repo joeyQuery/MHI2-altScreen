@@ -116,6 +116,8 @@ Those values replace the Q-specific listener state because the MU0678 listener A
 
 Q resolves OMX lifecycle methods; MU0678 has NvSS. The actual MU0678 secondary decoder primitive is therefore translated to `NvssVideoImpl::decode` at the recovered raw call boundary `+0x7fb68`. This is a genuine architecture-specific translation.
 
+The Q AAF1 metadata words originate from the Q OMX object layout. They are not copied onto MU0678: the MU0678 `NvssVideoImpl` decode object is demonstrably different and already uses fields such as `+0x50` in the stock decode implementation. Until equivalent MU metadata fields are proven, the adapter preserves the reference AAF1 framing but does not fabricate Q object offsets.
+
 ### DIO executable
 
 The Q package's `dio_manager.mhi2q_carplay_loader` cannot be copied to MU0678. It is a different executable with different symbols, offsets, dependencies, and callbacks.
