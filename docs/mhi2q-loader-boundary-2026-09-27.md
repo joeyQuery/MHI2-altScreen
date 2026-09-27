@@ -177,3 +177,124 @@ Until the DIO audit is complete:
 **Do not modify or replace MU0678 `libairplay.so` as a proxy for reproducing the working Q patch.**
 
 The functional reference is the DIO loader + cluster architecture from `install.zip`.
+
+
+## New concrete finding from the current `install.zip`: runtime interposition, not file replacement
+
+The previous statement "the Q implementation does not touch libairplay" needs a precise distinction.
+
+It **does not replace the `libairplay.so` file**. However, `libmhi2qcarplaycluster.so` contains a runtime patch/interposition engine.
+
+Static disassembly proves:
+
+1. The cluster resolves symbols from the running process with `dlsym`.
+2. It resolves the DIO callback:
+   `_ZN3dio11CDIOManager28s_serverCopyPropertyCallbackEP28AirPlayReceiverServerPrivateP9CFLStringPKvPiPv`.
+3. It derives the containing executable/base address from the resolved callback address.
+4. It performs byte-level writes/copies into executable/runtime memory and validates expected instruction bytes.
+5. The cluster imports `mprotect`, consistent with changing executable-page permissions during this operation.
+6. The cluster's type-111 setup function is statically identifiable at approximately `0x3c60`. Its stream scan explicitly distinguishes:
+   - `type == 110`
+   - `type == 111`
+   and retains the 111 descriptor.
+7. That function then resolves/calls the SessionScreen APIs and the secondary listener APIs recovered previously.
+
+This is the crucial corrected model:
+
+```
+install.zip
+   |
+   +-- does NOT overwrite libairplay.so on disk
+   |
+   +-- installs custom dio_manager + carplaycluster
+                    |
+                    +-- dlsym() running AirPlay/DIO symbols
+                    |
+                    +-- runtime interposes selected code/callbacks
+                    |
+                    +-- executes parallel 111 SessionScreen path
+```
+
+So the correct MU0678 implementation target is **not** "leave libairplay untouched in memory." It is "leave the stock file intact, then reproduce the Q runtime interposition strategy against the MU0678 ABI."
+
+### Q cluster resolver map
+
+The current binary contains a bulk `dlsym` resolver beginning around `0x5828`. The following symbols are resolved into internal function-pointer slots:
+
+- `AirPlayReceiverSessionSetup`
+- `AirPlayReceiverSessionTearDown`
+- `AirPlayCopyServerInfo`
+- `AirPlayReceiverSessionSendCommand`
+- `AirPlayReceiverSessionForceKeyFrame`
+- `ScreenStreamCreate`
+- `dio::OmxVideoImpl::initialize`
+- `dio::OmxVideoImpl::decode`
+- `dio::OmxVideoImpl::configure`
+- `dio::OmxVideoImpl::start`
+- `dio::OmxVideoImpl::stop`
+- `dio::OmxVideoImpl::setVisibility`
+- the CoreFoundation dictionary/array/property-list primitives used by the cluster;
+- `AirPlayReceiverSessionScreen_Create`
+- `AirPlayReceiverSessionScreen_Delete`
+- `AirPlayReceiverSessionScreen_Setup`
+- `AirPlayReceiverSessionScreen_SetTimeSynchronizer`
+- `AirPlayReceiverSessionScreen_SetSecurityInfo`
+- `AirPlayReceiverSessionScreen_UpdateState`
+- `AirPlayReceiverSessionScreen_StartSession`
+- `AirPlayReceiverSessionScreen_ProcessFrames`
+- `AirPlayReceiverSessionScreen_StopSession`
+- `AirPlay_DeriveAESKeySHA512ForScreen`
+- `ServerSocketOpen`
+- `SocketAccept`
+- `NetSocket_CreateWithNative`
+- `NetSocket_Delete`
+- the DIO server-property callback above;
+- additional HID and iAP2 functions.
+
+### Type-111 handler
+
+The cluster's main secondary-screen setup routine starts around `0x3c60`.
+
+The disassembly contains an explicit stream loop:
+
+```
+stream[i] -> type
+       |
+       +-- 110 -> mark/retain normal stream
+       |
+       +-- 111 -> retain secondary descriptor
+```
+
+The 111 comparison is literal ARM code:
+
+```
+0x3d18: cmp r1,#0
+0x3d1c: cmpeq r0,#111
+```
+
+After the 111 descriptor is retained, the same routine proceeds through the secondary SessionScreen construction and security/listener sequence.
+
+The later portion has directly identified native MU0678-equivalent operations:
+
+```
+0x3f54 -> SessionScreen_Setup
+0x3f7c -> SessionScreen_UpdateState
+0x405c -> ServerSocketOpen
+```
+
+and the routine subsequently reaches the accept/secondary-worker path already mapped in the earlier audit.
+
+### Runtime patch boundary
+
+The cluster also has a separate runtime patching routine around `0x6200`.
+
+At `0x6294`, it calls `dlsym` for the DIO `s_serverCopyPropertyCallback` symbol. It then derives the containing executable base and writes/validates code/data at calculated addresses.
+
+This establishes that the Q solution uses **runtime interposition against the running executable/loaded libraries**, while preserving the original files on disk.
+
+The MU0678 replica therefore needs two layers:
+
+1. **Q-style runtime patch/interposition layer**, translated to MU0678 callback/code addresses and instruction encodings.
+2. **Q cluster 111 implementation**, translated to MU0678 SessionScreen/security/socket/NvSS ABI.
+
+The old `libairplay_patched_v6.so` remains useful only as a separate static reference for MU0678 instruction addresses/branch encoding. It should no longer be described as unrelated to the Q architecture: it is conceptually the same *kind* of runtime/code interposition, but the authoritative Q package implements that interposition from an external DIO cluster rather than shipping a modified `libairplay.so` file.
