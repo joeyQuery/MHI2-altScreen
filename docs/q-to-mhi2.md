@@ -76,3 +76,20 @@ Two Q observations are deliberately not promoted into replica requirements:
 2. `StartSession` is not called by the traced type-111 SETUP block; it is called later by the separate secondary-socket worker. The post-accept call is therefore functional and must be represented in the replica at the worker boundary.
 
 Both remain useful trace points, but neither is a required implementation operation without new evidence.
+
+
+## 2026-09-27 output-boundary correction
+
+A deeper audit of the supplied working package changes the native-Screen interpretation.
+
+The Q DIO loader has exactly one direct BL call to its imported ScreenCreate PLT entry: 0x158bd4. The same creation function reaches ScreenRegisterDelegates at 0x158e20 and ScreenRegister at 0x158e28. The known s_sessionScreenCreatedCallback at 0x154cdc only calls AirPlayReceiverSessionScreenSetDelegate; it is not a second Screen factory.
+
+The package also contains a separate production executable, mhi2q-aa-cluster-display, with --live-carplay and dynamic resolution of display_init, display_create_window, screen_create_window, screen_set_window_property_iv, screen_create_window_buffers, screen_post_window, and related QNX screen APIs. The CarPlay cluster binary embeds /eso/bin/apps/mhi2q-aa-cluster-display and --live-carplay, alongside the 111 metadata strings.
+
+Therefore the Q display sink cannot yet be reduced to “create a second native Screen in DIO and feed ScreenStream B into it”. The helper process is now a first-class candidate for the final output boundary.
+
+This does not change the proven Q transport lifecycle:
+
+SETUP 111 -> Create B -> UpdateState -> Setup/security -> secondary listener -> advertise dataPort -> accept -> NetSocket -> post-accept StartSession -> ProcessFrames.
+
+It changes only the display integration conclusion: the MHI2 implementation must reproduce the functional output boundary, not an assumed Q object layout. Do not globally modify ScreenCopyMain, and do not add a speculative second ScreenCreate merely to match an earlier hypothesis.
