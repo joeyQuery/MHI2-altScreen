@@ -110,11 +110,17 @@ The supplied `libairplay_patched_v6.so` remains useful only as evidence of one p
 
 ### Corrected implementation gate
 
-The stock MU0678 `/eso/bin/apps/dio_manager` has now been statically audited at the ELF/dynamic-symbol level. It already depends on `libairplay.so` and imports the same core AirPlay/Screen host APIs the Q loader uses, including `AirPlayReceiverSessionChangeModes`, `AirPlayReceiverSessionScreenSetDelegate`, `ScreenCreate`, `ScreenRegister`, and `ScreenRegisterDelegates`. It also contains the native DIO session callbacks, including `s_sessionScreenCreatedCallback @ 0x1362d0`.
+The authoritative Q implementation is now understood at the correct boundary.
 
-This establishes the correct host boundary: build a MU0678-compatible DIO executable/loader from the existing DIO architecture and add the 111 cluster implementation there. The remaining static work is startup/configuration preservation and exact hook placement in the MU0678 DIO executable; replacing `libairplay.so` is not required by the authoritative Q architecture.
+It preserves the stock `libairplay.so` file, loads `libmhi2qcarplaycluster.so` into the DIO process, resolves the live DIO/AirPlay APIs, and performs guarded runtime interposition with a 4-byte patch primitive.
 
-The previously established MU0678 AirPlay/SessionScreen/socket/NvSS traces remain valid as the native ABI map. They are the implementation substrate the external loader must call.
+The stock MU0678 DIO executable has the required exported host callbacks. The direct MU0678 translation map is documented in:
+
+`docs/mu0678-external-cluster-implementation-2026-09-27.md`
+
+The implementation target is therefore a MU0678-compatible external CarPlay cluster loaded into the existing DIO process, with MU0678-native AirPlay/Screen/NvSS calls.
+
+The previous assumption that the working Q patch was equivalent to shipping a patched `libairplay.so` is corrected. The supplied MU0678 `libairplay_patched_v6.so` remains useful as a separate source of MU0678 internal patch-site evidence, but the authoritative Q mechanism is runtime interposition from the external cluster.
 
 ### Remaining runtime gaps
 
