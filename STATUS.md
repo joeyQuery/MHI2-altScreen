@@ -171,3 +171,21 @@ The implementation pass has closed the source-level gaps identified by the direc
 - the exact reference display helper is reproducibly staged by `tools/package-mu0678.sh`, with SHA-256 `0ad556112e427745da99e057affde5b18195db875398d2111cb131f790b7d65e`.
 
 The remaining boundary is deliberately not guessed: Q teardown also calls `ScreenDeregister(vc_screen)`, but the MU0678 native VC Screen registration/association required to supply that object has not been proven. The current code therefore does not deregister the stock 110 screen. Runtime validation and the MU-native VC routing association remain hardware gates.
+
+
+## 2026-09-27 reference-package parity correction
+
+A fresh byte-level audit of the supplied `install.zip` found and corrected implementation defects that were not visible from the earlier source-level lifecycle summary:
+
+- SETUP veneer now reads the proven setup-result slot `[sp+0xa0]` after its 56-byte register save and passes the live current stream from `r9` plus key-base `r10`.
+- NvSS decode veneer literal placement and its `+0x34` branch entry are now internally consistent.
+- AirPlay/CF symbol resolution now uses the loaded `libairplay.so` handle with the observed QNX loader mode instead of relying on `dlsym(NULL,...)`.
+- Response dictionary creation no longer uses the unproven `session+0x1408` byte; it uses null allocator/zero capacity with the recovered callback tables.
+- Interposition installation rolls back the earlier hook if a later hook fails.
+- The external cluster has a load-time constructor that invokes MU0678 interposition initialization.
+- The build output and SONAME now use the reference `libmhi2qcarplaycluster.so` identity.
+- Packaging now stages the exact reference DIO loader together with the newly built cluster and the exact reference live-CarPlay display helper.
+
+See `docs/mu0678-reference-gap-audit-2026-09-27.md` for the exact evidence and boundaries.
+
+The remaining unsolved boundary is no longer a guessed static ABI: it is target runtime proof of DIO loading, 111 negotiation/receipt, secondary decode, MU-native display routing, and teardown/reconnect.
