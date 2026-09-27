@@ -6,14 +6,21 @@ The functional reference is the audited MHI2Q type-111 path in `docs/mhi2q-refer
 2. Create B and call `UpdateState(B,1)`.
 3. Pass the real CreateResult to `ScreenSetup`.
 4. Preserve Q time/security ordering using MU0678-native structure offsets and negotiated-value representation.
-5. Reconstruct the **MU0678** secondary `ServerSocketOpen` ABI; do not copy Q's seven-argument register/stack layout.
+5. Construct the MHI2 secondary listener using the **stock MU0678 screen/media ServerSocketOpen recipe** recovered at `0x23380`:
+   - arg1 = `*(uint8_t *)(session+0x51)`
+   - arg2 = `1`
+   - arg3 = `6`
+   - arg4 = `0xFFFFE872`
+   - arg5 = fresh bound-result output storage
+   - arg6 = `0xFFFD4000`
+   - arg7 = fresh socket-fd output storage
 6. Preserve the Q-proven 111/dataPort response and secondary accept.
 7. Wrap the accepted native socket with the MU0678 equivalent of `NetSocket_CreateWithNative`.
 8. Call `ProcessFrames(B,socket)`.
-9. Reproduce the Q SessionScreen-created DIO delegate relationship once the external dispatcher is proven.
+9. Reproduce the Q SessionScreen-created DIO delegate relationship once the external dispatcher is proven; do not invent a local callback trigger.
 10. Map Q's native ScreenCreate/RegisterDelegates/Register surface to the exact MU0678 equivalent.
 11. Translate Q OMX video operations to the MU0678 NvSS decoder primitive only; do not assume the surrounding Q object layout.
-12. Reproduce Q teardown ordering where proven.
+12. On teardown, preserve the Q-proven order: original AirPlay `SessionTearDown` first, then secondary listener close, accept-worker join, `ScreenStreamStop(streamB)`, `StopSession(screenB)`, `ScreenDeregister(vc_screen)`, and duplicate-state clearing.
 13. Keep the stock 110 path unchanged throughout.
 14. Add Q safety/fingerprint controls only after the functional replica works.
 
@@ -21,3 +28,5 @@ The functional reference is the audited MHI2Q type-111 path in `docs/mhi2q-refer
 
 - Do not add `StartSession(B)` merely because Q resolves the symbol.
 - Do not reproduce Q's `ScreenStreamCreate` `(*arg1)+0x38` capture unless a later xref proves it is functionally required.
+- Do not use the RAOP event listener recipe at `0x23C48` for the secondary screen listener.
+- Do not copy Q's `session+0x55`, `0x17D4`, or `-1` listener values into MHI2.
