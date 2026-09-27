@@ -27,7 +27,7 @@ The audit found one bookkeeping error in repository wording: several STATUS stat
 | Advertise 111/dataPort | Q inserts type 111 + dataPort | Same response structure | CORRECT |
 | Accept | Q accepts after advertisement | MU0678 SocketAccept | CORRECT |
 | NetSocket wrapper | Q wraps accepted fd | MU0678 NetSocket_CreateWithNative | CORRECT |
-| StartSession(B) | Q invokes it only in post-accept worker | MU0678 must reproduce post-accept stage | CORRECT; must not move into SETUP |
+| StartSession(B) | Q invokes it only in post-accept worker | **Not called on MU0678** because stock StartSession binds the singleton main Screen; B is translated to a sidecar ScreenStream/process-data path | ARCHITECTURE-SPECIFIC EXCEPTION |
 | ProcessFrames(B,socket) | Q calls after accepted socket + StartSession | MU0678 ProcessFrames(B, socket) | CORRECT |
 | Decoder | Q OMX lifecycle | MU0678 NvSS | CORRECT platform translation |
 | ScreenStream +0x38 | Q captures it but does not consume captured value later | Not required for parity | CORRECT |
@@ -139,7 +139,7 @@ The following were copied/reproduced correctly:
 - secondary listener;
 - 111/dataPort response;
 - accept + NetSocket;
-- post-accept StartSession;
+- post-accept worker ordering, with MU0678-specific omission of stock StartSession to preserve the singleton main Screen;
 - ProcessFrames;
 - independent decoder/output path;
 - preservation of 110.
