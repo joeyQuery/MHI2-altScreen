@@ -53,3 +53,12 @@ No complete successful live 111 run has shown the entire path through secondary 
 ## Deferred safety
 
 Q SHA/layout fingerprint and patch refusal controls are documented separately and intentionally deferred until functionality is established.
+
+
+## 2026-09-27 correction / MHI2Q reference audit
+
+The canonical repository is `joeyQuery/MHI2-AltScreen`. The MHI2Q reference has been audited against the supplied implementation package and recorded in `docs/mhi2q-reference-package-2026-09-27.md`.
+
+The important implementation rule is now explicit: Q preserves the 110 path and constructs/drives a parallel 111 SessionScreen path. The proven Q type-111 setup sequence does **not** call `AirPlayReceiverSessionScreen_StartSession`, despite resolving that symbol. The Q `ScreenStreamCreate` `+0x38` observation is diagnostic and not yet a proven functional dependency.
+
+Do not copy Q offsets or socket arguments directly into MHI2. The MHI2 replica must reproduce the Q operations at MU0678-native ABI/object boundaries.
