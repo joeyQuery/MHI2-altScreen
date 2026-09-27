@@ -194,3 +194,35 @@ At 0x4560-0x4578:
 - stack argument = 0.
 
 The path value in r4 is produced by the preceding executable-discovery/validation callback chain and is then passed through additional validation/use before this spawnl call. The embedded /eso/bin/apps/mhi2q-aa-cluster-display string is present in the same binary. Thus the launch edge is proven, while the final callback-level proof that the r4 value equals that exact embedded string on every branch remains intentionally unclaimed.
+
+
+## Final writer closure: socket write path
+
+### 12. The imported write PLT and the file/socket distinction
+The authoritative ELF relocation table places the imported write symbol at PLT entry 0xf44. The call at 0x6b68 is inside a separate helper at 0x6b30 that first opens a file with open(flags=0x301, mode=0644); that path is therefore file output, not the 15557 loopback writer.
+
+The loopback socket write is reached through a different internal path:
+
+- 0xa438 prepares a bounded transfer from an internal buffer/state area.
+- It loads the transport descriptor from the transport-global base at [r7].
+- It passes that descriptor, buffer pointer, and remaining length to 0xa1e8.
+- 0xa1e8 performs the write loop at 0xa36c: r0=descriptor, r1=buffer, r2=remaining length, then BL 0xf44 (write).
+- Partial writes are accumulated and retried; errno is inspected for the QNX transient condition before continuing.
+
+This closes the actual socket-write primitive rather than confusing it with the diagnostic/file writer at 0x6b30.
+
+### 13. The loopback viewer drain reaches that socket-write primitive
+The Q loopback worker/drain routine at 0xa738 reaches a direct send branch at 0xa844:
+- r0 is loaded from the loopback transport state descriptor at [state];
+- r1 is the associated buffer pointer prepared earlier in the routine;
+- r2 is the queued/remaining byte count;
+- it calls 0xa1e8.
+
+The same routine maintains the loopback transport's byte accounting using the +0x30 state counter and applies mode-dependent 24/32-byte framing overhead before the send. The surrounding caller path at 0xab88/0xaba8 invokes this drain when the transport state indicates queued loopback data.
+
+### 14. Closed writer architecture
+The static Q chain is now:
+
+queued loopback H.264 data -> Q transport drain (0xa738) -> 0xa844 -> 0xa1e8 -> 0xa36c -> write(fd,buffer,length) via PLT 0xf44 -> loopback TCP socket -> 127.0.0.1:15557 -> mhi2q-aa-cluster-display --live-carplay.
+
+The writer itself is therefore no longer an unresolved callback/data-flow edge. The only remaining platform-specific question is which runtime state field/accepted descriptor instance corresponds to the physical display session at runtime; the write ABI and producer/consumer path are statically closed.
