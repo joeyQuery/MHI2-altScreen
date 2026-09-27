@@ -56,7 +56,7 @@ int mu0678_interpose_init(void)
 {
     void *server_cb;
     if (g_installed) return 0;
-    server_cb = dlsym((void *)0, "s_serverCopyPropertyCallback");
+    server_cb = dlsym((void *)0, "_ZN3dio11CDIOManager23s_serverCopyPropertyCallbackEP28AirPlayReceiverServerPrivateP9CFLStringPKvPiPv");
     if (!server_cb) return -1;
 
     /* The MU0678 executable is ET_EXEC. Derive its load base from the
@@ -68,13 +68,12 @@ int mu0678_interpose_init(void)
     g_hid_deregister = (HidDeregisterFn)dlsym((void *)0, "HIDDeregisterDevice");
     if (!g_hid_register || !g_hid_deregister) return -3;
 
-    if (!guarded_store((volatile uint32_t *)(g_dio_base + 0x19d734u),
-                       0x00115288u, (uint32_t)(uintptr_t)hid_register_passthrough, 0))
-        return -4;
-    if (!guarded_store((volatile uint32_t *)(g_dio_base + 0x19d7ecu),
-                       0x00115288u, (uint32_t)(uintptr_t)hid_deregister_passthrough, 0))
-        return -5;
-
+    /*
+     * The two MU GOT slots are exact translations of Q operations 1/2, but
+     * their replacement ABI is not the stock HID API: Q replaces them with
+     * Q-owned hooks. Do not install a guessed passthrough signature here.
+     * The guarded primitive is ready for the proven MU-native replacement.
+     */
     g_installed = 1;
     return 0;
 }
