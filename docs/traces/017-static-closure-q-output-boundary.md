@@ -93,3 +93,25 @@ The Q reference now provides a stronger functional translation target: a seconda
 - a dedicated helper process analogous to the Q binary.
 
 The exact physical VC mapping remains a separate hardware/runtime question and must not be inferred from DMDT ID 33 or any generic NVSS output-device constant.
+
+## New closure: live-CarPlay TCP handoff
+
+### Helper side
+- mhi2q-aa-cluster-display compares argv[1] with --live-carplay at 0x103140.
+- Equality selects port constant 0x3cc5 = 15557; the alternate file-input path uses 0x3cc3 = 15555.
+- The live branch creates socket(AF_INET=2, SOCK_STREAM=1, protocol=0) at 0x103508.
+- It builds sockaddr for 127.0.0.1:15557 and calls connect() at 0x103558.
+- Therefore live-CarPlay input is an active localhost TCP connection, not stdin, a file, or an inherited decoder pipe.
+
+### Cluster side
+- libmhi2qcarplaycluster.so passes 0x3cc5 (15557) at 0x4168 into its internal loopback/listener setup function at 0xad4c.
+- The cluster contains the H.264 viewer strings: loopback ready, viewer connected, waiting for complete IDR, non-IDR unsynchronized, codec configuration, viewer synchronized, and viewer disconnected.
+- The cluster then verifies the display executable and reaches the real spawnl call at 0x4578 with --live-carplay.
+
+### Closed functional architecture
+111 SessionScreen -> secondary listener -> accepted socket -> ProcessFrames -> Q H.264/video integration -> localhost TCP producer :15557 -> spawn mhi2q-aa-cluster-display --live-carplay -> connect 127.0.0.1:15557 -> QNX Screen window.
+
+The exact writer-thread function that performs each queued access-unit write onto the 15557 connection remains the final local code trace. The producer/consumer endpoint, mode selection, and display-process boundary are proven.
+
+### MHI2 consequence
+Do not add a speculative second native ScreenCreate solely to reproduce Q. The authoritative Q reference now supplies a concrete display-boundary model: secondary H.264 access units can be exposed through a local TCP producer and consumed by a dedicated display helper running an explicit alternate-display mode. On MHI2, direct NvSS/ScreenStream binding remains preferable only if it can be shown to select the intended output without modifying 110. Otherwise a helper can reproduce the Q boundary.
