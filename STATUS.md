@@ -13,40 +13,42 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 - Q calls `Setup(B,stream111,CreateResult)`; argument 3 is the actual Create result.
 - Q calls `SetTimeSynchronizer` before security completion.
 - Q derives B AES material with `DeriveAESKeySHA512ForScreen(session+0x1c0,16,negotiated64)` and calls `SetSecurityInfo`.
-- Q opens a second listener through a 7-argument `ServerSocketOpen` ABI.
+- Q opens a second listener through its 7-argument `ServerSocketOpen` ABI.
 - Q advertises `{type:111,dataPort:N}`.
 - Q accepts the secondary socket, wraps it with `NetSocket_CreateWithNative`, and calls `ProcessFrames(B,socket)`.
-- Q hooks `ScreenStreamCreate` and reads four bytes through its second argument at `(*arg1)+0x38`; the destination is not subsequently read in the Q cluster, so this is currently treated as diagnostic/bookkeeping rather than a required functional step.
-- Q DIO loader has `s_sessionScreenCreatedCallback -> AirPlayReceiverSessionScreenSetDelegate`.
-- Q resolves the native DIO Screen operations `ScreenCreate -> ScreenRegisterDelegates -> ScreenRegister`.
+- Q resolves `StartSession`, but the proven type-111 setup block does not call it.
+- Q `ScreenStreamCreate` observes `(*arg1)+0x38`; the captured value is not subsequently read in the Q cluster, so this is not proven functionally required.
+- Q DIO callback `s_sessionScreenCreatedCallback -> AirPlayReceiverSessionScreenSetDelegate` is proven.
+- Q DIO loader contains executable `ScreenCreate`, `ScreenRegisterDelegates`, and `ScreenRegister` callsites.
+- The exact callback trigger is a cross-module boundary; the loader itself does not contain a direct type-111 call into that callback.
 - Q resolves OMX initialize/configure/start/decode/stop/visibility.
 - MHI2 stock frame path is `ProcessFrames -> ScreenStreamProcessData -> ScreenStream/_ScreenStreamDecodeAll -> NvssVideoImpl::decode`.
 - MU0678 `SetTimeSynchronizer` copies 12 bytes to `screen+0x20` and ignores extra args.
+- Stock MU0678 `ServerSocketOpen` is at `0x79910`; its observable ABI consumes r0/r1/r3 plus stack arguments 14/15/16 and does not consume incoming r2 as an input.
 
 ## Current MHI2 implementation already contains
 
 Type 111 detection, second SessionScreen, UpdateState, ScreenSetup, AES derivation, SetSecurityInfo, secondary listener, 111 response descriptor, accept worker, NetSocket wrapper, ProcessFrames, and an NvSS decode tee.
 
-## Q divergences
+## Q divergences / required platform translation
 
 - ScreenSetup can receive zero as arg 3; Q passes the real Create result.
-- Current socket code uses a different argument layout; Q uses seven arguments. Equality with stock MHI2 remains unproven until the stock MU0678 `libairplay.so` callsite is available.
-- Q captures `(*arg1)+0x38` after ScreenStreamCreate; current MHI2 does not reproduce it.
-- Q loader contains executable `ScreenCreate`, `ScreenRegisterDelegates`, and `ScreenRegister` callsites; the exact call-by-call linkage of those operations to the type-111 SessionScreen remains unresolved.
+- Q's listener ABI is seven arguments; stock MHI2 ServerSocketOpen is a different wide ABI. The existing MHI2 socket call must not be treated as literal Q parity.
+- Q's `+0x38` ScreenStream capture is diagnostic/unproven functional state and should not be copied solely for parity.
+- Q loader DIO creation/registration operations are proven, but their exact linkage to the type-111 SessionScreen is across a callback boundary.
 - Current MHI2 manual UUID/client/end-time setters are not part of Q cluster's resolved API surface and should not define the replica lifecycle without proof.
 - Q uses OmxVideoImpl; MHI2 uses NvssVideoImpl. Translate only the decoder primitive.
 
 ## Remaining trace targets
 
-- exact Q `StartSession(B)` callsite and arguments;
-- exact Q type-111 SessionScreen -> DIO Screen creation/registration chain;
-- stock MHI2 `ServerSocketOpen` ABI;
+- exact semantic values and stack construction for stock MHI2 ServerSocketOpen arguments 1/2/4/14/15/16;
+- exact external dispatcher that invokes `s_sessionScreenCreatedCallback`;
 - Q normal-session teardown ordering;
 - successful live 111 run through secondary decode/display.
 
 ## Runtime gaps
 
-No complete successful live 111 run has shown the entire path through secondary decode/display. The raw 857727-byte stock MU0678 `libairplay.so` is not currently in the active file set, leaving some exact stock-MHI2 internal ABIs unresolved.
+No complete successful live 111 run has shown the entire path through secondary decode/display.
 
 ## Deferred safety
 
