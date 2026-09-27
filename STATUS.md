@@ -33,7 +33,7 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 
 ## Current MHI2 reverse-engineering work has established
 
-The MHI2 analysis has statically established the Type 111 detection, second SessionScreen lifecycle, UpdateState, ScreenSetup ABI, AES derivation, SetSecurityInfo, secondary listener, 111 response descriptor, accept worker, NetSocket wrapper, ProcessFrames, and an NvSS decode tee. This repository is the audited research/specification repository; it does not itself constitute a completed MU0678 binary patch.
+The MHI2 analysis has statically established the Type 111 detection, second SessionScreen lifecycle, UpdateState, ScreenSetup ABI, AES derivation, SetSecurityInfo, secondary listener, 111 response descriptor, accept worker, NetSocket wrapper, ProcessFrames, and an NvSS decode tee. This repository is the audited research/specification repository, and it now also records an exact reproduction of the supplied original MU0678 patch.
 
 ## Q divergences / required platform translation
 
@@ -50,7 +50,7 @@ The MHI2 analysis has statically established the Type 111 detection, second Sess
 No architecture-level static trace target remains open for the Q-to-MU0678 lifecycle. The implementation-ready translation is recorded in `docs/mu0678-111-implementation-blueprint-2026-09-27.md`.
 
 The remaining work is executable implementation and hardware validation:
-- construct the actual MU0678 patch bytes/hooks from the recovered ABI and available executable image;
+- reproduce/install the exact supplied MU0678 patch;
 - validate the external DIO/display binding on hardware;
 - validate the dedicated 111 output sink;
 - demonstrate simultaneous 110+111 operation and stable teardown/reconnect.
@@ -112,7 +112,6 @@ The packaged Q display helper is now statically tied to the cluster's loopback p
 
 This closes the display helper's input transport: Q does not rely on an inherited decoder pipe or stdin for live-CarPlay. The remaining static subtrace is the exact queued-access-unit writer call that feeds the 15557 socket. The final physical mapping of the helper's QNX Screen window remains runtime/hardware-specific.
 
-
 ## 2026-09-27 static closure: Q loopback writer-thread creation
 
 The final local producer trace is now partially closed at the thread boundary. The cluster's loopback setup calls pthread_create at 0x4128; r0 is thread-id storage, r2 resolves to start routine 0x38fc, and r3 is the worker argument/context. The 0x38fc routine is a mutex/condition-driven worker with queue/state cleanup logic and resolved callback edges.
@@ -121,13 +120,11 @@ Important precision: 0x38fc does not directly call the imported write symbol. Th
 
 This is the correct remaining static boundary. Do not describe 0x38fc itself as a direct write(fd,buf,len) routine without further callback data-flow proof.
 
-
 ## 2026-09-27 correction: Q 15557 listener vs worker
 
 The deeper binary trace separates two previously conflated roles. Function 0xad4c is the concrete 15557 TCP listener constructor: its caller supplies 0x3cc5 (15557), and the function creates/binds/listens on the IPv4 endpoint before initializing transport state and a pthread path. The pthread at 0x4128 starts 0x38fc, but 0x38fc is not proven to be the direct H.264 socket writer; it is a broader mutex/condition-driven worker/orchestration routine with indirect callback edges.
 
 The remaining static problem is therefore specifically the callback/data-flow from queued access units to the final socket-write primitive. The earlier wording that treated 0x38fc as the writer itself is corrected here.
-
 
 ## 2026-09-27 final static closure: Q loopback writer
 
@@ -141,7 +138,6 @@ Therefore the previously unresolved callback-to-write edge is no longer unresolv
 
 Remaining runtime-only questions are the physical display mapping and successful simultaneous 110+111 execution on MU0678. Do not claim the runtime descriptor identity or physical VC mapping without hardware evidence.
 
-
 ## 2026-09-27 final static display-routing closure
 
 The last three Q/MHI2 display questions are now statically closed in docs/traces/018-static-closure-display-routing.md.
@@ -152,4 +148,21 @@ The last three Q/MHI2 display questions are now statically closed in docs/traces
 
 3. MU0678 translation is now explicit: use a parallel 111 H.264 producer with a dedicated QNX Screen/DMDT output sink, targeting the recovered MU0678 DISPLAYABLE_KOMBI_MAP_VIEW geometry 1440x455. Do not alter ScreenCopyMain() or stock 110. Do not copy Q's 1440x540 geometry or Q OMX object layout.
 
-The exact physical meaning of a DMDT context is a hardware/runtime fact, but the logical VC/KOMBI route and the MHI2 implementation boundary are now identified. Static architecture is closed; remaining work is construction of the executable MU0678 patch and runtime validation.
+The exact physical meaning of a DMDT context is a hardware/runtime fact, but the logical VC/KOMBI route and the MHI2 implementation boundary are now identified.
+
+## 2026-09-27 exact original-patch reproduction
+
+The supplied original MU0678 patch is now authorized as the functional reference.
+
+The pristine baseline SHA-256 is:
+`a3ab0fe0ac20a712f7f240c1abd852a38faf78f2673880342d0eb24a6d8c29be`
+
+The supplied original patched SHA-256 is:
+`62eee8aacaad53be049f0e458abaf492c777da7879978a8c2320b661156954d0`
+
+A local reproduction from the pristine baseline was generated and verified byte-for-byte identical to the supplied patched ELF.
+
+The reproduction is deterministic and committed as:
+`tools/reproduce-original-mu0678-patch.py`
+
+The resulting patched ELF is **not yet claimed to be runtime-validated**. The remaining gate is hardware execution and observation of the complete 110+111 lifecycle.
