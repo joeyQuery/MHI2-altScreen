@@ -59,6 +59,7 @@ static void *g_session;
 static void *g_screen_b;
 static int g_viewer=-1;
 static int g_sink=-1;
+static int g_helper_started;
 static unsigned long g_sink_thread;
 static volatile int g_running;
 static volatile int g_capture_active;
@@ -147,8 +148,11 @@ int mu0678_alt111_init(void)
         }
     }
     g_running=1;
-    if(spawnl(1,AAF1_HELPER,AAF1_HELPER,"--live-carplay",(char *)0)<0) {
-        close(g_sink); g_sink=-1; g_running=0; return -1;
+    if(!g_helper_started) {
+        if(spawnl(1,AAF1_HELPER,AAF1_HELPER,"--live-carplay",(char *)0)<0) {
+            close(g_sink); g_sink=-1; g_running=0; return -1;
+        }
+        g_helper_started=1;
     }
     if(pthread_create(&g_sink_thread,(const void *)0,sink_worker,(void *)0)!=0) {
         close(g_sink); g_sink=-1; g_running=0; return -1;
