@@ -120,38 +120,25 @@ The evidence-supported model is:
 
 ```
 111 listener
-
    |
-
 pthread_create @ 0x4128
-
    |
-
 worker 0x38fc
-
    |
-
 SocketAccept @ 0x395c
-
    |
-
+NetSocket_CreateWithNative @ 0x3a70
+   |
 StartSession(B) @ 0x3b60
-
    |
-
-Q-specific secondary transport/decode path
-
+ProcessFrames(B, NetSocket, [r6+0x1c8]) @ 0x3bbc
    |
-
-OmxVideoImpl::decode @ 0x399c
-
+secondary ScreenStream / decoder path
    |
-
 Q output/display integration
-
 ```
 
-The exact handoff between `StartSession` and the OMX decode call is still an opaque inter-module/object boundary.
+The exact identity of `[r6+0x1c8]` is the remaining narrow Q-context question. It is passed as ProcessFrames argument #3; it must not be guessed.
 
 ## Consequence for MU0678
 
@@ -161,10 +148,12 @@ The MU0678 implementation must reproduce the **function**, not the previously as
 2. create/configure SessionScreen B;
 3. create the secondary listener;
 4. accept the secondary connection in a dedicated worker;
-5. call MU0678 `StartSession(B,...)` after accept;
-6. feed the resulting 111 media into an independent MU0678 decoder instance;
-7. route decoded frames to the dedicated VC/KOMBI output sink;
-8. keep 110 completely untouched.
+5. wrap the accepted native socket with MU0678 `NetSocket_CreateWithNative`;
+6. call MU0678 `StartSession(B,...)` after accept;
+7. call MU0678 `ProcessFrames(B, NetSocket, context)`;
+8. feed the resulting 111 media into an independent MU0678 decoder instance;
+9. route decoded frames to the dedicated VC/KOMBI output sink;
+10. keep 110 completely untouched.
 
 MU0678's existing stock path:
 
