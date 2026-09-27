@@ -139,3 +139,16 @@ Therefore the previously unresolved callback-to-write edge is no longer unresolv
 111 SessionScreen -> secondary listener -> accepted stream -> Q H.264/queue state -> loopback drain 0xa738 -> 0xa844 -> 0xa1e8 -> write@0xf44 -> TCP 127.0.0.1:15557 -> mhi2q-aa-cluster-display --live-carplay -> QNX Screen window.
 
 Remaining runtime-only questions are the physical display mapping and successful simultaneous 110+111 execution on MU0678. Do not claim the runtime descriptor identity or physical VC mapping without hardware evidence.
+
+
+## 2026-09-27 final static display-routing closure
+
+The last three Q/MHI2 display questions are now statically closed in docs/traces/018-static-closure-display-routing.md.
+
+1. Accepted descriptor identity is closed: Q transport+0x4 is the 15557 listening descriptor; accept() at 0xa100 stores the accepted display-helper connection at transport+0; the writer at 0xa738/0xa844 passes that same transport+0 descriptor through 0xa1e8 to write() PLT 0xf44.
+
+2. Q display routing is explicitly selected: mhi2q-aa-cluster-display sets IVRDISPLAY=SCREEN, loads libdisplayinit/libscreen/libEGL, and resolves the display/window stack. Its VC-routing code embeds and invokes the DMDT argument vector /eso/bin/apps/dmdt, dmdt, sc, 74, sb, dc, 70, 98, 101, 102, 3, 20 plus a 16-byte value. The helper's live-CarPlay geometry is 1440x540 and is Q-specific.
+
+3. MU0678 translation is now explicit: use a parallel 111 H.264 producer with a dedicated QNX Screen/DMDT output sink, targeting the recovered MU0678 DISPLAYABLE_KOMBI_MAP_VIEW geometry 1440x455. Do not alter ScreenCopyMain() or stock 110. Do not copy Q's 1440x540 geometry or Q OMX object layout.
+
+The exact physical meaning of a DMDT context is a hardware/runtime fact, but the logical VC/KOMBI route and the MHI2 implementation boundary are now identified. Remaining work is implementation and runtime validation, not an unresolved static architecture question.
