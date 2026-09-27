@@ -197,7 +197,7 @@ The following are not acceptable parity claims:
 ### Closed
 
 - exact reference helper;
-- AAF1 framing structure;
+- AAF1 32-byte framing structure (Q object metadata remains target-specific/open);
 - MU0678 SessionScreen B lifecycle;
 - MU0678 security input;
 - MU0678 time-sync ordering;
