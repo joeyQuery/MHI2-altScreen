@@ -83,86 +83,47 @@ AirPlayReceiverSessionScreen_StartSession @ 0x25fd0 creates the stream and then 
 
 ## Final static conclusion — 2026-09-27
 
-The MU0678 StartSession limitation is proven, but the Q output boundary is now narrower and more precise: the working package contains a separate CarPlay-aware display executable, and the Q CarPlay cluster has a real spawnl launch edge using --live-carplay. A second native Screen cannot be assumed to be the complete Q replica.
+The authoritative MHI2Q implementation is **not a libairplay replacement**.
 
-MU0678 AirPlayReceiverSessionScreen_StartSession @ 0x25fd0 creates the ScreenStream through ScreenStreamCreate, then obtains the native main Screen and clones its properties into the newly created stream before ScreenStreamStart. The StartSession argument #2 is configuration/context input; it is not a native Screen selector.
+The supplied `install.zip` verifies and preserves the target `/eso/lib/libairplay.so` ABI. Its CarPlay implementation is delivered through a replacement DIO executable (`dio_manager.mhi2q_carplay_loader`) and `libmhi2qcarplaycluster.so`, which dynamically resolve the existing AirPlay SessionScreen/Screen APIs.
 
-Therefore a second MHI2 SessionScreen cannot be made to target a different native Screen merely by passing a different StartSession argument.
+Therefore the correct MU0678 implementation target is:
 
-The correct static construction for B is the transport/decoder half plus an explicit output-boundary implementation:
+```
+stock MU0678 libairplay.so
+        |
+        +-- existing 110/main AirPlay path
+        |
+        +-- DIO-side extension / loader
+                |
+                +-- detect 111
+                +-- SessionScreen B
+                +-- Q-equivalent Setup/time/security
+                +-- secondary listener + dataPort
+                +-- accept + NetSocket
+                +-- post-accept StartSession
+                +-- ProcessFrames
+                +-- independent decode/output sink
+```
 
-1. Create SessionScreen B and complete its AirPlay setup/security state.
-2. Do not rely on stock StartSession's main-Screen lookup as a selector for B.
-3. Reproduce the post-accept Q StartSession/ScreenStream stage using the MU0678-native ABI.
-4. Bind B's decoded output explicitly to the intended MHI2 display path; do not globally alter ScreenCopyMain().
-5. Preserve B's stream state independently; the recovered ScreenStream type field is +0x94, which must identify the secondary stream as 111 before ProcessFrames.
-6. Feed the accepted 111 socket to ProcessFrames(B,...).
-7. If the native ScreenStream path cannot be bound to the intended output, the Q reference now gives a concrete alternative architecture: a dedicated H.264/display helper process with live-CarPlay mode and QNX Screen-window output.
-8. Keep stock 110 behaviour unchanged.
+The supplied `libairplay_patched_v6.so` remains useful only as evidence of one possible MU0678 binary-injection mechanism. It is not the functional Q reference and must not be described as such.
 
-### What remains genuinely unproven
+### Corrected implementation gate
 
-The exact Q-side argument/data-flow edge from the launch helper's r4 into the embedded cluster-display path is not yet fully reconstructed, nor is the exact handoff of frame data into the helper. The physical mapping from the helper's QNX Screen window to the cluster is also not proven. Runtime validation is still required to prove simultaneous 110+111 output.
+The next static implementation task is to audit the stock MU0678 `/eso/bin/apps/dio_manager` startup/linkage and production DIO configuration. We need to establish exactly how a Q-style external DIO loader can coexist with the existing MU0678 DIO responsibilities.
 
-These are narrower unknowns than the previous “candidate helper” state: the existence of the launch call, live-CarPlay mode, helper display implementation, and 1440x540 geometry selection are now statically proven.
+Only after that should the MU0678 loader/cluster binary be constructed.
 
-## 2026-09-27 static closure: Q live-CarPlay input transport
+The previously established MU0678 AirPlay/SessionScreen/socket/NvSS traces remain valid as the native ABI map. They are the implementation substrate the external loader must call.
 
-The packaged Q display helper is now statically tied to the cluster's loopback producer. In live-CarPlay mode, mhi2q-aa-cluster-display selects port 15557, creates an IPv4 TCP socket, and connects to 127.0.0.1:15557. The Q CarPlay cluster passes the same 15557 constant into its loopback/listener setup and contains H.264 viewer/IDR synchronization state. The cluster then launches the helper with --live-carplay.
+### Remaining runtime gaps
 
-This closes the display helper's input transport: Q does not rely on an inherited decoder pipe or stdin for live-CarPlay. The remaining static subtrace is the exact queued-access-unit writer call that feeds the 15557 socket. The final physical mapping of the helper's QNX Screen window remains runtime/hardware-specific.
+No complete successful live 111 run has shown the entire path through secondary decode/display.
 
-## 2026-09-27 static closure: Q loopback writer-thread creation
+The implementation still requires:
 
-The final local producer trace is now partially closed at the thread boundary. The cluster's loopback setup calls pthread_create at 0x4128; r0 is thread-id storage, r2 resolves to start routine 0x38fc, and r3 is the worker argument/context. The 0x38fc routine is a mutex/condition-driven worker with queue/state cleanup logic and resolved callback edges.
+- MU0678 DIO loader integration;
+- dedicated secondary output sink;
+- hardware validation of 110+111 simultaneous operation;
+- stable teardown/reconnect.
 
-Important precision: 0x38fc does not directly call the imported write symbol. The library does import write and has concrete write callsites at 0x6b68 and 0xa36c, but this stripped artifact does not yet establish which callback from the 0x38fc worker performs the final 15557 access-unit write. Therefore the writer-thread existence is proven; the final indirect callback-to-write edge is not.
-
-This is the correct remaining static boundary. Do not describe 0x38fc itself as a direct write(fd,buf,len) routine without further callback data-flow proof.
-
-## 2026-09-27 correction: Q 15557 listener vs worker
-
-The deeper binary trace separates two previously conflated roles. Function 0xad4c is the concrete 15557 TCP listener constructor: its caller supplies 0x3cc5 (15557), and the function creates/binds/listens on the IPv4 endpoint before initializing transport state and a pthread path. The pthread at 0x4128 starts 0x38fc, but 0x38fc is not proven to be the direct H.264 socket writer; it is a broader mutex/condition-driven worker/orchestration routine with indirect callback edges.
-
-The remaining static problem is therefore specifically the callback/data-flow from queued access units to the final socket-write primitive. The earlier wording that treated 0x38fc as the writer itself is corrected here.
-
-## 2026-09-27 final static closure: Q loopback writer
-
-The remaining writer boundary is now closed from the authoritative Q ELF. The imported write PLT is 0xf44. The 0x6b30/0x6b68 path is a separate file writer because 0x6b30 opens a file before writing. The loopback output path is instead 0xa738 -> 0xa844 -> 0xa1e8 -> 0xa36c -> write@0xf44.
-
-At 0xa844 the loopback drain supplies the transport descriptor, prepared buffer, and byte count to 0xa1e8. The latter performs the partial-write loop at 0xa36c and retries the remaining bytes after transient QNX socket conditions. The surrounding 0xa738 drain maintains mode-dependent 24/32-byte framing/byte accounting and is reached from the loopback transport state path.
-
-Therefore the previously unresolved callback-to-write edge is no longer unresolved. The Q static display transport is closed as:
-
-111 SessionScreen -> secondary listener -> accepted stream -> Q H.264/queue state -> loopback drain 0xa738 -> 0xa844 -> 0xa1e8 -> write@0xf44 -> TCP 127.0.0.1:15557 -> mhi2q-aa-cluster-display --live-carplay -> QNX Screen window.
-
-Remaining runtime-only questions are the physical display mapping and successful simultaneous 110+111 execution on MU0678. Do not claim the runtime descriptor identity or physical VC mapping without hardware evidence.
-
-## 2026-09-27 final static display-routing closure
-
-The last three Q/MHI2 display questions are now statically closed in docs/traces/018-static-closure-display-routing.md.
-
-1. Accepted descriptor identity is closed: Q transport+0x4 is the 15557 listening descriptor; accept() at 0xa100 stores the accepted display-helper connection at transport+0; the writer at 0xa738/0xa844 passes that same transport+0 descriptor through 0xa1e8 to write() PLT 0xf44.
-
-2. Q display routing is explicitly selected: mhi2q-aa-cluster-display sets IVRDISPLAY=SCREEN, loads libdisplayinit/libscreen/libEGL, and resolves the display/window stack. Its VC-routing code embeds and invokes the DMDT argument vector /eso/bin/apps/dmdt, dmdt, sc, 74, sb, dc, 70, 98, 101, 102, 3, 20 plus a 16-byte value. The helper's live-CarPlay geometry is 1440x540 and is Q-specific.
-
-3. MU0678 translation is now explicit: use a parallel 111 H.264 producer with a dedicated QNX Screen/DMDT output sink, targeting the recovered MU0678 DISPLAYABLE_KOMBI_MAP_VIEW geometry 1440x455. Do not alter ScreenCopyMain() or stock 110. Do not copy Q's 1440x540 geometry or Q OMX object layout.
-
-The exact physical meaning of a DMDT context is a hardware/runtime fact, but the logical VC/KOMBI route and the MHI2 implementation boundary are now identified.
-
-## 2026-09-27 exact original-patch reproduction
-
-The supplied original MU0678 patch is now authorized as the functional reference.
-
-The pristine baseline SHA-256 is:
-`a3ab0fe0ac20a712f7f240c1abd852a38faf78f2673880342d0eb24a6d8c29be`
-
-The supplied original patched SHA-256 is:
-`62eee8aacaad53be049f0e458abaf492c777da7879978a8c2320b661156954d0`
-
-A local reproduction from the pristine baseline was generated and verified byte-for-byte identical to the supplied patched ELF.
-
-The reproduction is deterministic and committed as:
-`tools/reproduce-original-mu0678-patch.py`
-
-The resulting patched ELF is **not yet claimed to be runtime-validated**. The remaining gate is hardware execution and observation of the complete 110+111 lifecycle.
