@@ -4,7 +4,7 @@ The functional reference is the audited MHI2Q type-111 path in `docs/mhi2q-refer
 
 1. Preserve 110 and detect 111.
 2. Create B and call `UpdateState(B,1)`.
-3. Pass the real CreateResult to `ScreenSetup`.
+3. Call MU0678 `ScreenSetup` using its native ABI. Q passes its CreateResult as arg3, but MU0678 `0x26400` overwrites caller `r2` with an internal `sp+4` output pointer, so no third-argument CreateResult dependency is required.
 4. Preserve Q time/security ordering using MU0678-native structure offsets and negotiated-value representation.
 5. Construct the MHI2 secondary listener using the **stock MU0678 screen/media ServerSocketOpen recipe** recovered at `0x23380`:
    - arg1 = `*(uint8_t *)(session+0x51)`
