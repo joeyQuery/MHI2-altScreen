@@ -18,6 +18,14 @@ if [ ! -f "$CLUSTER" ]; then
     echo "built cluster missing: $CLUSTER" >&2
     exit 1
 fi
+if ! readelf -d "$CLUSTER" 2>/dev/null | grep -E "SONAME.*libmhi2qcarplaycluster.so" >/dev/null 2>&1; then
+    echo "cluster SONAME mismatch: expected libmhi2qcarplaycluster.so" >&2
+    exit 1
+fi
+if ! readelf -d "$CLUSTER" 2>/dev/null | grep -F "libsocket.so.3" >/dev/null 2>&1; then
+    echo "cluster dependency mismatch: expected libsocket.so.3" >&2
+    exit 1
+fi
 HELPER_SHA=0ad556112e427745da99e057affde5b18195db875398d2111cb131f790b7d65e
 
 if [ -z "$REF" ] || [ ! -f "$REF" ]; then
