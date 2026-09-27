@@ -138,15 +138,29 @@ The current source's shared-library constructor is only effective after the clus
 
 ### /info
 
-The reference cluster resolves `AirPlayCopyServerInfo` and contains the 111 `altScreen`/display metadata strings. The current MU implementation does not yet have an equivalent verified `AirPlayCopyServerInfo` interposition.
+The MU0678 target has now been translated at the exact DIO callback boundary. Its
+s_serverCopyPropertyCallback is a R_ARM_GLOB_DAT at 0x19d9d8, and the
+cluster derives the DIO image base from the exported callback symbol before
+guardedly replacing that slot.
 
-Therefore `/info` parity is **not closed**.
+The MU hook reproduces the reference's first /info mechanism:
+
+1. call AirPlayCopyServerInfo(server);
+2. CFPropertyListCreateDeepCopy(NULL, info, 2);
+3. add altScreen = 1 with CFDictionarySetInt64;
+4. return the copied dictionary.
+
+The reference also adds additional display/stream metadata
+(streamConnectionID, dataPort, features, displays, and display geometry);
+those fields remain open until their exact value construction is statically
+mapped rather than guessed.
 
 ### AirPlay teardown
 
-The reference cluster resolves `AirPlayReceiverSessionTearDown`. The current MU implementation has an internal teardown routine but has not yet proven the corresponding MU0678 AirPlay teardown interception boundary.
-
-Therefore teardown parity is **not closed**.
+The MU0678 s_sessionFinalizedCallback is a R_ARM_GLOB_DAT at 0x19da00.
+The cluster now replaces that exact slot with a wrapper that performs the
+secondary stop/delete path before invoking the original callback. This closes
+the previously missing target-side teardown boundary.
 
 ### SendCommand / ForceKeyFrame
 
