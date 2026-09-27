@@ -1,5 +1,7 @@
 # Evidence register
 
+Authoritative Q lifecycle reference: `docs/mhi2q-reference-package-2026-09-27.md`.
+
 ## Proven
 
 1. `111` is the alternate stream.
@@ -16,6 +18,13 @@
 12. Q hooks OMX lifecycle.
 13. MHI2 stock processing ends in NvssVideoImpl::decode.
 14. Stock MU0678 ServerSocketOpen implementation is at `0x79910` and consumes r0/r1/r3 plus stack arguments 14/15/16; incoming r2 is not consumed as an input.
+
+## Interpretation rules
+
+- Q's resolved StartSession symbol is **not** evidence that B must call StartSession.
+- Q's `(*arg1)+0x38` capture is **not** evidence that MHI2 must reproduce that state access.
+- Q DIO symbol resolution is not by itself proof of the external callback dispatcher.
+- Q socket/register/stack layouts must not be copied into MHI2 where the MU0678 ABI differs.
 
 ## Unresolved
 
