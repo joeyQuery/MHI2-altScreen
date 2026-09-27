@@ -29,13 +29,13 @@ extern int munmap(void *,unsigned int);
 #define MAP_ANON 0x20
 #define AAF1_HELPER "/eso/bin/apps/mhi2q-aa-cluster-display"
 
-typedef void *(*ScreenCreateFn)(void *,void *);
-typedef void *(*StreamCreateFn)(void *,void *);
+typedef int (*ScreenCreateFn)(void *,void *);
+typedef int (*StreamCreateFn)(void *,void *);
 typedef int (*ScreenSetupFn)(void *,void *,void *);
 typedef void (*UpdateFn)(void *,int);
 typedef void (*TimeFn)(void *,void *);
 typedef void (*SecurityFn)(void *,void *,void *);
-typedef int (*StartFn)(void *);
+typedef int (*StartFn)(void *,void *);
 typedef int (*FramesFn)(void *,void *,void *);
 typedef void (*StopFn)(void *);
 typedef void (*DeleteFn)(void *);
@@ -329,8 +329,11 @@ int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
     unsigned char a[16],b[16];
     if(!resolve_all()||!session||!stream) return -1;
     if(!g_running && mu0678_alt111_init()!=0) return -1;
-    g_screen_b=ScreenCreate(session,(void *)0);
-    if(!g_screen_b) return -1;
+    {
+        MU0678SessionScreen created=(MU0678SessionScreen)0;
+        if(ScreenCreate(session,&created)!=0 || !created) return -1;
+        g_screen_b=created;
+    }
     g_session=session;
     UpdateState(g_screen_b,1);
     if(ScreenSetup(g_screen_b,stream,setup_result)!=0) return -1;
@@ -351,7 +354,7 @@ int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
      * consumption and forwards the encoded access units to the dedicated
      * live-CarPlay sink.
      */
-    if(!StreamCreate(g_screen_b,(unsigned char *)g_screen_b+0x1f4)) return -1;
+    if(StreamCreate(g_screen_b,(unsigned char *)g_screen_b+0x1f4)!=0) return -1;
     g_secondary_stream=*(void **)((unsigned char *)g_screen_b+0x1f4);
     if(!g_secondary_stream) return -1;
     return 0;
