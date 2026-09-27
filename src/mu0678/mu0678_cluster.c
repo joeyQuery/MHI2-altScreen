@@ -304,7 +304,7 @@ int mu0678_alt111_publish_decode(void *video_impl,void *data_pp,unsigned int len
     if(!video_impl||video_impl!=g_secondary_video_impl||!data_pp||!length) return 0;
     data=*(const unsigned char **)data_pp;
     if(!data) return 0;
-    return mu0678_alt111_publish_h264(data,length,1,0, *(const unsigned int *)((const unsigned char *)video_impl+0x18), *(const unsigned int *)((const unsigned char *)video_impl+0x04), *(const unsigned int *)((const unsigned char *)video_impl+0x08), *(const unsigned int *)((const unsigned char *)video_impl+0x0c), *(const unsigned int *)((const unsigned char *)video_impl+0x14), *(const unsigned int *)((const unsigned char *)video_impl+0x10));
+    return mu0678_alt111_publish_h264(data,length,1,0,0,0,0,0,0,0);
 }
 
 static void *media_worker(void *arg)
