@@ -221,7 +221,7 @@ The `ProcessFrames` call uses `r0=B`, `r1=wrapped NetSocket`, and a Q-specific c
 Use the MU0678-native recipe already recovered:
 
 ```
-session + 0x1c0
+session + 0x1c8
         |
         +-- 16 bytes
         +
