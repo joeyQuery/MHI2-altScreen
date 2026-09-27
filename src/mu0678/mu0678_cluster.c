@@ -30,6 +30,8 @@ typedef void (*StopFn)(void *);
 typedef void (*DeleteFn)(void *);
 typedef void (*DeriveFn)(void *,int,unsigned int,unsigned int,void *,void *);
 typedef void *(*WrapFn)(int,int *);
+typedef int (*ServerOpenFn)(unsigned int,unsigned int,unsigned int,int,int *,int,int *);
+typedef int (*SocketAcceptFn)(int,unsigned int,void *,unsigned int *);
 
 static ScreenCreateFn ScreenCreate;
 static ScreenSetupFn ScreenSetup;
@@ -42,6 +44,8 @@ static StopFn StopSession;
 static DeleteFn DeleteScreen;
 static DeriveFn DeriveAES;
 static WrapFn WrapSocket;
+static ServerOpenFn ServerOpen;
+static SocketAcceptFn SocketAccept;
 
 static void *g_session;
 static void *g_screen_b;
@@ -64,8 +68,10 @@ static int resolve_all(void) {
     DeleteScreen=(DeleteFn)resolve("AirPlayReceiverSessionScreen_Delete");
     DeriveAES=(DeriveFn)resolve("AirPlay_DeriveAESKeySHA512ForScreen");
     WrapSocket=(WrapFn)resolve("NetSocket_CreateWithNative");
+    ServerOpen=(ServerOpenFn)resolve("ServerSocketOpen");
+    SocketAccept=(SocketAcceptFn)resolve("SocketAccept");
     return ScreenCreate&&ScreenSetup&&UpdateState&&SetTime&&SetSecurity&&
-           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&DeriveAES&&WrapSocket;
+           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&DeriveAES&&WrapSocket&&ServerOpen&&SocketAccept;
 }
 
 static void be32(unsigned char *p,unsigned int v) {
@@ -147,17 +153,36 @@ int mu0678_alt111_set_time(MU0678SessionScreen B, void *time_blob) {
     return 0;
 }
 
-int mu0678_alt111_accept(MU0678Session session,MU0678SessionScreen B,int native_fd) {
-    int err=0;
-    void *ns,*ctx,*arg3;
-    if(!session||!B||native_fd<0||!ProcessFrames) return -1;
-    ns=WrapSocket(native_fd,&err);
+int mu0678_alt111_open_media_listener(MU0678Session session, unsigned short *data_port, int *listener_fd) {
+    unsigned int port=0; int fd=-1;
+    unsigned int owner=(unsigned int)(*(unsigned char *)((unsigned char *)session+0x51));
+    if(!session||!ServerOpen||!data_port||!listener_fd) return -1;
+    /* Exact MU0678 stock screen/media listener recipe recovered from 0x23380. */
+    if(ServerOpen(owner,1,6,0xffffe872,(int *)&port,0xfffd4000,&fd)!=0) return -1;
+    *data_port=(unsigned short)port;
+    *listener_fd=fd;
+    return 0;
+}
+
+int mu0678_alt111_accept_media(MU0678Session session,MU0678SessionScreen B,int listener_fd) {
+    int err=0; void *ns,*ctx,*arg3; unsigned int zero=0;
+    if(!session||!B||listener_fd<0||!ProcessFrames||!SocketAccept) return -1;
+    {
+        int native=SocketAccept(listener_fd,10,(void *)0,&zero);
+        if(native<0) return -1;
+        ns=WrapSocket(native,&err);
+    }
     if(!ns) return -1;
     ctx=*(void **)((unsigned char *)session+0x0c);
     if(!ctx) return -1;
     arg3=*(void **)((unsigned char *)ctx+0xc8);
     if(StartSession(B)!=0) return -1;
     return ProcessFrames(B,ns,arg3);
+}
+
+int mu0678_alt111_accept_viewer(void) {
+    if(g_viewer>=0) return 0;
+    return (g_sink>=0) ? 0 : -1;
 }
 
 int mu0678_alt111_publish_h264(const unsigned char *data,unsigned int length,
