@@ -66,3 +66,7 @@ The canonical repository is `joeyQuery/MHI2-AltScreen`. The MHI2Q reference has 
 The important implementation rule is now explicit: Q preserves the 110 path and constructs/drives a parallel 111 SessionScreen path. The proven Q type-111 setup sequence does **not** call `AirPlayReceiverSessionScreen_StartSession`, despite resolving that symbol. The Q `ScreenStreamCreate` `+0x38` observation is diagnostic and not yet a proven functional dependency.
 
 Do not copy Q offsets or socket arguments directly into MHI2. The MHI2 replica must reproduce the Q operations at MU0678-native ABI/object boundaries.
+
+## Final static SessionScreen association
+
+`AirPlayReceiverSessionScreen_StartSession @ 0x25fd0` creates the stream and then obtains the native main Screen to clone display geometry/properties into that stream. No hidden SessionScreen→native-Screen selector remains identified. The secondary 111 path therefore requires an explicit native Screen selection/property-cloning step for B; global `ScreenCopyMain()` changes are not acceptable because they would affect 110.
