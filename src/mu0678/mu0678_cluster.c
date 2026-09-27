@@ -134,7 +134,7 @@ int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
     g_session=session;
     UpdateState(g_screen_b,1);
     if(ScreenSetup(g_screen_b,stream,setup_result)!=0) return -1;
-    material=(unsigned char *)session+0x1c0;
+    material=(unsigned char *)session+0x1c8;
     DeriveAES(material,16,(unsigned int)negotiated64,
               (unsigned int)(negotiated64>>32),a,b);
     SetSecurity(g_screen_b,a,b);
