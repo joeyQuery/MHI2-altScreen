@@ -110,3 +110,12 @@ These are narrower unknowns than the previous “candidate helper” state: the 
 The packaged Q display helper is now statically tied to the cluster's loopback producer. In live-CarPlay mode, mhi2q-aa-cluster-display selects port 15557, creates an IPv4 TCP socket, and connects to 127.0.0.1:15557. The Q CarPlay cluster passes the same 15557 constant into its loopback/listener setup and contains H.264 viewer/IDR synchronization state. The cluster then launches the helper with --live-carplay.
 
 This closes the display helper's input transport: Q does not rely on an inherited decoder pipe or stdin for live-CarPlay. The remaining static subtrace is the exact queued-access-unit writer call that feeds the 15557 socket. The final physical mapping of the helper's QNX Screen window remains runtime/hardware-specific.
+
+
+## 2026-09-27 static closure: Q loopback writer-thread creation
+
+The final local producer trace is now partially closed at the thread boundary. The cluster's loopback setup calls pthread_create at 0x4128; r0 is thread-id storage, r2 resolves to start routine 0x38fc, and r3 is the worker argument/context. The 0x38fc routine is a mutex/condition-driven worker with queue/state cleanup logic and resolved callback edges.
+
+Important precision: 0x38fc does not directly call the imported write symbol. The library does import write and has concrete write callsites at 0x6b68 and 0xa36c, but this stripped artifact does not yet establish which callback from the 0x38fc worker performs the final 15557 access-unit write. Therefore the writer-thread existence is proven; the final indirect callback-to-write edge is not.
+
+This is the correct remaining static boundary. Do not describe 0x38fc itself as a direct write(fd,buf,len) routine without further callback data-flow proof.
