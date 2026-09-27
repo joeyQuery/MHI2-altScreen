@@ -12,7 +12,7 @@ extern int close(int);
 extern int setsockopt(int,int,int,const void *,unsigned int);
 extern int write(int,const void *,unsigned int);
 extern void *memcpy(void *,const void *,unsigned int);
-extern void *memset(void *,int,unsigned int);
+extern void *memset(void *,int,unsigned int);\nextern int spawnl(int,const char *,const char *,const char *,...);
 
 #define AF_INET 2
 #define SOCK_STREAM 1
