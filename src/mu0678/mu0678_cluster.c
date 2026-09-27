@@ -72,6 +72,12 @@ static unsigned char g_media_ctx[12];
 
 static void *resolve(const char *n) { return mu0678_resolve_airplay(n); }
 
+__attribute__((constructor))
+static void mu0678_cluster_constructor(void)
+{
+    (void)mu0678_interpose_init();
+}
+
 static int resolve_all(void)
 {
     ScreenCreate=(ScreenCreateFn)resolve("AirPlayReceiverSessionScreen_Create");
