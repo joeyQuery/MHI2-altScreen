@@ -62,6 +62,10 @@ ACTUAL=`sha256sum "$HELPER" | awk '{print $1}'`
 cp "$HELPER" "$OUT/eso/bin/apps/mhi2q-aa-cluster-display"
 chmod 755 "$OUT/eso/bin/apps/mhi2q-aa-cluster-display"
 
+# Ship the transactional target-side experiment controller beside the payload.
+cp "$ROOT/tools/runtime-mu0678-experiment.sh" "$OUT/runtime-mu0678-experiment.sh"
+chmod 755 "$OUT/runtime-mu0678-experiment.sh"
+
 echo "staged target MU0678 dio_manager: $OUT/eso/bin/apps/dio_manager"
 CLUSTER_SHA=`sha256sum "$OUT/eso/lib/libmhi2qcarplaycluster.so" | awk '{print $1}'`
 echo "staged MU0678 cluster: $OUT/eso/lib/libmhi2qcarplaycluster.so"
