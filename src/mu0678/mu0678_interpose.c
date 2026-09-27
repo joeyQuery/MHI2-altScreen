@@ -132,7 +132,7 @@ int mu0678_interpose_init(void)
 
     got=(volatile uint32_t *)(g_libairplay_base+MU0678_GOT_SCREEN_STREAM_CREATE);
     if(!guarded_store(got,(uint32_t)(g_libairplay_base+0x17d2cu),
-                      (uint32_t)(uintptr_t)screen_stream_create_hook,0)) return -3;
+                      (uint32_t)(uintptr_t)screen_stream_create_hook,(uint32_t)(g_libairplay_base+0x7f544u))) return -3;
     if(install_code_hooks()!=0) return -4;
     g_installed=1;
     return 0;
