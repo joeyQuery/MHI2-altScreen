@@ -46,6 +46,7 @@ The MHI2 analysis has statically established the Type 111 detection, second Sess
 - Q's +0x38 ScreenStream capture is diagnostic/unproven functional state and should not be copied solely for parity.
 - Q loader DIO creation/registration operations are proven, but their exact linkage to the type-111 SessionScreen is across a callback boundary.
 - Current MHI2 manual UUID/client/end-time setters are not part of Q cluster's resolved API surface and should not define the replica lifecycle without proof.
+- The guarded-interposition audit now distinguishes the two concrete MU0678 host GOT hooks (HIDRegisterDevice/HIDDeregisterDevice) from Q-owned runtime hook/object state; see `docs/mu0678-guarded-interposition-audit-2026-09-27.md`.
 - Q uses OmxVideoImpl; MHI2 uses NvssVideoImpl. Translate only the decoder primitive.
 - The Q helper launch path and frame handoff are now statically closed at the protocol boundary: the cluster produces the AAF1 header plus payload, and the helper parses the same header and consumes the exact payload over the loopback TCP connection.
 
