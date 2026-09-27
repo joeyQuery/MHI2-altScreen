@@ -53,11 +53,12 @@ The MHI2 analysis has statically established the Type 111 detection, second Sess
 
 No architecture-level static trace target remains open for the Q-to-MU0678 lifecycle. The implementation-ready translation is recorded in `docs/mu0678-111-implementation-blueprint-2026-09-27.md`.
 
-The remaining work is executable implementation and hardware validation:
-- reproduce/install the exact supplied MU0678 patch;
-- validate the external DIO/display binding on hardware;
-- validate the dedicated 111 output sink;
-- demonstrate simultaneous 110+111 operation and stable teardown/reconnect.
+The remaining work is the final target-specific integration and hardware validation:
+- bind the new MU0678 cluster into the exact MU0678 DIO image using the proven callback/interposition boundary;
+- connect the 111 SETUP response to the MU0678 secondary listener/dataPort path;
+- feed MU0678 NvSS encoded access units into the AAF1-compatible local output sink;
+- bind the output sink to a MU0678-native Screen/DMDT route targeting DISPLAYABLE_KOMBI_MAP_VIEW;
+- validate simultaneous 110+111 operation and stable teardown/reconnect.
 
 ## Static closure
 
@@ -137,3 +138,4 @@ The implementation still requires:
 - hardware validation of 110+111 simultaneous operation;
 - stable teardown/reconnect.
 
+\n\n## 2026-09-27 implementation pass\n\nAn ARM EABI5 MU0678 external-cluster implementation has now been added under `src/mu0678/`. It preserves stock `libairplay.so`, resolves the existing SessionScreen lifecycle APIs dynamically, implements the MU0678-native ProcessFrames context translation (`session+0x0c` then `+0xc8`), reproduces the Q AAF1 32-byte live-output header, and exposes explicit entry points for SETUP, time-sync, accept, encoded-frame publication, and teardown.\n\nThe implementation is intentionally not labelled installable yet: the exact MU0678 DIO executable required for the final guarded interposition/SETUP trampoline is not present in the current authoritative upload, so inventing those patch sites would violate the evidence boundary. The source is therefore the implementation core, with the remaining integration boundary explicitly exposed rather than guessed.\n
