@@ -2,7 +2,7 @@
 
 ## Q ABI
 
-Q's type-111 listener callsite uses a seven-argument call:
+Q's type-111 listener callsite uses a seven-argument AAPCS call:
 
 ```c
 ServerSocketOpen(
@@ -11,46 +11,128 @@ ServerSocketOpen(
     6,
     0x17D4,
     sp+0x30,
-    r5,
+    -1,
     sp+0x34
 );
 ```
 
-This is a proven seven-argument Q callsite. `0x17D4` is only identified as argument 4; its semantic meaning is not assumed here.
+The important point is that Q is not using a proprietary argument-count ABI here. It is the same seven-argument ARM calling shape as stock MU0678.
 
 ## Stock MU0678 ABI
 
-The stock MU0678 `libairplay.so` is present in the repository dump. Its `ServerSocketOpen` implementation starts at `0x79910` and is 788 bytes.
+Stock MU0678 `ServerSocketOpen` starts at `0x79910`.
 
-The entry code preserves:
+The prologue is:
 
-- argument 1 from `r0`;
-- argument 2 from `r1`;
-- argument 4 from `r3`.
+```asm
+push {r4-r11,lr}
+sub  sp, #0x44
+```
 
-The incoming `r2` is not consumed as an input before being reused internally.
+The saved-register push consumes `0x24` bytes, so the callee's `[sp+0x68]`, `[sp+0x6c]`, and `[sp+0x70]` are the ordinary caller stack arguments 5, 6 and 7.
 
-After the function's `0x44)-byte local stack frame is established, the implementation reads caller-supplied stack locations corresponding to:
+Therefore the MHI2 ABI is:
 
-- `+0x24) — argument 14;
-- `+0x28) — argument 15;
-- `+0x2C) — argument 16.
+```c
+ServerSocketOpen(
+    family,
+    socket_type,
+    protocol,
+    requested_endpoint,
+    bound_result_out,
+    receive_buffer_value,
+    socket_fd_out
+);
+```
 
-Therefore stock MHI2 `ServerSocketOpen` is **not** Q's seven-argument ABI. The current replica must not copy Q's register/stack layout literally.
+Proven roles:
 
-## What is solved vs. not solved
+- arg1: address-family/domain selector;
+- arg2: socket type;
+- arg3: protocol;
+- arg4: requested local endpoint;
+- arg5: bound-result output;
+- arg6: receive-buffer/socket-option value;
+- arg7: created socket descriptor output.
 
-**Solved:** the ABI shape and the exact caller-stack positions consumed by stock MHI2 are known.
+Stock combinations establish `arg2=1,arg3=6` as TCP/SOCK_STREAM and `arg2=2,arg3=17` as UDP/SOCK_DGRAM.
 
-**Not yet solved:** the semantic names/values represented by MHI2 arguments 1, 2, 4, 14, 15 and 16. Those require tracing the stock helper chain and/or a native callsite that supplies them.
+## The exact MHI2 CarPlay screen/media listener
 
-This distinction matters: the ABI mismatch is a concrete platform boundary, but it is not evidence by itself that any particular Q argument should be assigned to any particular MHI2 argument.
+Static callsite analysis found eight direct calls through the ServerSocketOpen PLT. The two relevant TCP calls inside `AirPlayReceiverSessionSetup` are:
 
-## Replica consequence
+### `0x23C48` — RAOP event listener
 
-Treat `ServerSocketOpen` as an unavoidable platform-specific adapter:
+```
+arg1 = *(uint8_t *)(session + 0x51)
+arg2 = 1
+arg3 = 6
+arg4 = 0xFFFFEC77 = -5001
+arg5 = session + 0xD0B
+arg6 = -1
+arg7 = session + 0xFAF
+```
 
-- Q: seven-argument callsite.
-- MHI2: wide ABI with high stack arguments and unused incoming `r2`.
+The requested endpoint is 5001, identifying this branch as the AirPlay/RAOP event listener.
 
-The listener created by this call is still the source of the type-111 `dataPort` response descriptor in the Q flow.
+### `0x23380` — screen/media TCP listener
+
+```
+arg1 = *(uint8_t *)(session + 0x51)
+arg2 = 1
+arg3 = 6
+arg4 = 0xFFFFE872
+arg5 = local output storage
+arg6 = 0xFFFD4000
+arg7 = local output storage
+```
+
+This is the other TCP listener in the AirPlay session setup and is therefore the stock screen/media listener. Its endpoint value is MHI2-native and must not be replaced by the Q constant.
+
+The stock socket implementation takes the absolute value of the negative endpoint before constructing the local endpoint, so `0xFFFFE872` corresponds to effective endpoint **60302**.
+
+The MHI2 screen/media listener therefore has a concrete replica target:
+
+```c
+ServerSocketOpen(
+    *(uint8_t *)(session + 0x51),
+    1,
+    6,
+    0xFFFFE872,
+    &bound_result,
+    0xFFFD4000,
+    &socket_fd
+);
+```
+
+Fresh local output storage should follow the stock `0x23380` call pattern.
+
+## Q-to-MHI2 translation
+
+Q uses:
+
+```
+family/domain = *(uint8_t *)(session + 0x55)
+endpoint      = 0x17D4
+receive buf   = -1
+```
+
+MHI2 stock screen/media uses:
+
+```
+family/domain = *(uint8_t *)(session + 0x51)
+endpoint      = 0xFFFFE872
+receive buf   = 0xFFFD4000
+```
+
+These are platform-specific object/layout values. Do not copy Q's constants into MHI2.
+
+The current MHI2 adapter previously used zero for the family and endpoint and `-1` for arg6. That is not a literal replica of the proven stock MHI2 screen/media listener and should be corrected when the runtime patch is applied.
+
+## Static status
+
+**Solved:** ABI shape, relevant stock callsite, family source, requested endpoint, receive-buffer argument, and output-pointer pattern.
+
+**No longer an unresolved socket ABI problem.**
+
+The remaining runtime question is whether the corrected secondary listener receives the iPhone's type-111 connection once `changeModes=111` is actually observed.
