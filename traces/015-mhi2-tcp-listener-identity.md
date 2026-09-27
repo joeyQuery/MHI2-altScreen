@@ -58,7 +58,7 @@ The stock MHI2 screen/media listener supplies:
 
 This is the exact value constructed by the stock MHI2 caller. It must be treated as the MHI2 platform value rather than replaced by Q's `0x17D4` merely because the Q listener uses that value.
 
-The stock socket implementation consumes arg4 in its local-endpoint path, so this is a genuine MHI2 endpoint-selection value.
+The stock socket implementation tests arg4 for zero and, when negative, takes its absolute value before constructing the local endpoint. Therefore the screen/media branch's effective requested endpoint is **60302** (`abs(0xFFFFE872)`), while the event branch's `0xFFFFEC77` becomes **5001**. This confirms that the two TCP calls request different local TCP endpoints.
 
 ## Receive-buffer argument
 
