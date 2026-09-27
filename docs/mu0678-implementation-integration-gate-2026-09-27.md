@@ -1,0 +1,34 @@
+# MU0678 implementation integration gate — 2026-09-27
+
+## What is implemented offline
+
+The new src/mu0678/ cluster core implements:
+
+1. Dynamic resolution of the existing AirPlay SessionScreen APIs.
+2. Second SessionScreen creation.
+3. UpdateState(B,1).
+4. Setup(B,111-stream,CreateResult).
+5. Stock MU0678 AES derivation boundary: AirPlay_DeriveAESKeySHA512ForScreen(session+0x1c0,16,negotiated64).
+6. SetSecurityInfo(B,keyA,keyB).
+7. MU0678-native post-accept StartSession(B) ABI.
+8. MU0678-native ProcessFrames(B,NetSocket,[session+0xc]+0xc8).
+9. Dedicated local TCP output sink on 127.0.0.1:15557.
+10. Q-compatible 32-byte AAF1 framing.
+11. Explicit time-synchronizer entry point.
+12. Teardown of duplicate SessionScreen state.
+
+## What cannot safely be fabricated
+
+The authoritative upload contains the Q implementation but not the target MU0678 DIO executable. The final loader/interposition layer needs that exact target image to derive guarded patch addresses, import/GOT or callback replacement locations, the exact SETUP trampoline ABI, the callback/Screen registration handoff, and the MU0678 DIO loader integration point.
+
+The repo already records the stock MU0678 callback anchors and the Q runtime-interposition architecture. The remaining step is therefore a deterministic target-image operation, not another architectural reverse-engineering exercise.
+
+## Output
+
+The Q helper proves loopback endpoint 127.0.0.1:15557, a 32-byte AAF1 header, byte 4 = 2, byte 7 = 32, and payload immediately following the header.
+
+MU0678 must keep its own display geometry and routing. The recovered logical target is DISPLAYABLE_KOMBI_MAP_VIEW, ID 33, 1440x455. The physical route remains a hardware fact.
+
+## Runtime gate
+
+No static work can prove iPhone 111 negotiation, receipt by the secondary listener, independent decode from 110, physical DMDT routing, or stable reconnect/teardown. Those are the final hardware tests after the exact MU0678 DIO image is available.
