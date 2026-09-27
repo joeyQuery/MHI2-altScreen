@@ -1,33 +1,53 @@
 # Trace 008 — Stock MHI2 ServerSocketOpen ABI
 
-## Target
+## Correction
 
-Stock MU0678 `libairplay.so`, exported `ServerSocketOpen`.
+The earlier interpretation of the stack offsets was wrong.
 
-## Evidence
+`ServerSocketOpen` at `0x79910` saves 0x24 bytes of registers and then subtracts `0x44` from SP. The total caller-SP displacement is therefore `0x68`. Consequently callee `[sp+0x68]`, `[sp+0x6c]`, and `[sp+0x70]` are ordinary caller arguments 5, 6, and 7.
 
-The implementation begins at `0x79910` and is 788 bytes.
+The stock MHI2 ABI is therefore a normal **seven-argument AAPCS call**, not a 16-argument ABI.
 
-At entry it preserves:
+## Proven argument roles
 
-- `r0` — argument 1;
-- `r1` — argument 2;
-- `r3` — argument 4.
+The proven high-level shape is:
 
-The incoming `r2` is not consumed as an input before being reused internally.
+    ServerSocketOpen(
+        family,
+        socket_type,
+        protocol,
+        requested_endpoint,
+        bound_result_out,
+        receive_buffer_value,
+        socket_fd_out
+    )
 
-The function establishes a `0x44)-byte local stack frame and then reads:
+Observed stock combinations include `arg2=1,arg3=6` for TCP/SOCK_STREAM and `arg2=2,arg3=17` for UDP/SOCK_DGRAM.
 
-- `[sp+0x68]` → caller stack `+0x24` → argument 14;
-- `[sp+0x6C]` → caller stack `+0x28` → argument 15;
-- `[sp+0x70]` → caller stack `+0x2C` → argument 16.
+The fourth argument is saved by the function and controls the local endpoint/bind path. The fifth argument is written with the bound-result value. The sixth argument feeds the socket-option path, which uses option `0x1002` (`SO_RCVBUF`); its negative/sentinel handling is implementation-specific. The seventh argument is written with the created socket descriptor.
 
-Therefore the stock MHI2 ABI is materially wider than the Q type-111 seven-argument callsite.
+## Consequence for Q parity
 
-## Conclusion
+The Q seven-argument call is ABI-compatible in shape. No MHI2 argument-count adapter is required.
 
-The ABI shape is solved.
+Q secondary listener:
 
-The semantic identity of arguments 1, 2, 4, 14, 15 and 16 is not yet solved. No Q argument is assigned to one of these slots without further evidence.
+    arg1 = *(uint8_t *)(session+0x55)
+    arg2 = 1
+    arg3 = 6
+    arg4 = 0x17d4
+    arg5 = output pointer
+    arg6 = -1
+    arg7 = output pointer
 
-The MHI2 implementation therefore requires a native socket adapter rather than literal reuse of the Q seven-argument call layout.
+Current MHI2 implementation at `0x3608`:
+
+    arg1 = 0
+    arg2 = 1
+    arg3 = 6
+    arg4 = 0
+    arg5 = sp+0x3c
+    arg6 = -1
+    arg7 = sp+0x40
+
+Thus the current call is structurally ABI-correct, but its family/domain and endpoint arguments are zero. The two stock MHI2 TCP callers that must be distinguished for the screen-data listener are `0x23380` and `0x23c48`.
