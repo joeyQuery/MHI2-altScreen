@@ -1,4 +1,5 @@
 #include "mu0678_cluster.h"
+#include "mu0678_interpose.h"
 
 extern void *dlsym(void *, const char *);
 extern int pthread_create(unsigned long *, const void *, void *(*)(void *), void *);
