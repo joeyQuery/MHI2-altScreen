@@ -2,6 +2,37 @@
 
 This document records the MHI2Q implementation evidence used as the functional reference for the MHI2 replica.
 
+## Authoritative package boundary
+
+The supplied `install.zip` is the authoritative working implementation.
+
+Its installer explicitly verifies the existing `/eso/lib/libairplay.so` SHA-256 and does **not** replace it:
+
+```sh
+# These dependencies are NOT replaced: hooks still require their exact ABI.
+run_mmx "$TOOL" verify "$AIRPLAY_SHA" /eso/lib/libairplay.so || fail "libairplay incompatible"
+```
+
+Therefore the working implementation must be understood as:
+
+```
+/eso/bin/apps/dio_manager
+        |
+        +-- mhi2q_carplay loader
+        |      |
+        |      +-- existing libairplay.so APIs
+        |      +-- libmhi2qcarplaycluster.so
+        |      +-- DIO callbacks / Screen APIs
+        |
+        +-- 110 normal path remains in stock AirPlay
+        |
+        +-- 111 parallel SessionScreen / transport / output path
+```
+
+The package contains `dio_manager.mhi2q_carplay_loader`, whose NEEDED list includes `libmhi2qcarplaycluster.so` and `libairplay.so). The loader imports AirPlay Session/Screen APIs including `AirPlayReceiverSessionChangeModes`, `AirPlayReceiverSessionScreenSetDelegate`, `AirPlayReceiverSessionTearDown`, `ScreenRegisterDelegates`, `ScreenCreate`, and `ScreenRegister`.
+
+This is the critical architectural distinction: **the working Q patch extends DIO/CarPlay externally around stock AirPlay; it does not implement the feature by replacing `libairplay.so`.**
+
 ## Core architecture
 
 The working Q implementation is a parallel secondary-screen path. It does not replace the normal 110/main path.
@@ -17,6 +48,7 @@ AirPlay session
           +-- secondary listener
           +-- ProcessFrames
           +-- secondary ScreenStream / decoder integration
+          +-- dedicated display/output path
 ```
 
 ## Proven Q type-111 sequence
@@ -36,31 +68,31 @@ The audited Q trace establishes this order:
 11. advertise `{type:111,dataPort:N}`;
 12. accept the secondary connection;
 13. wrap it with `NetSocket_CreateWithNative`;
-14. call `ProcessFrames(B,socket)`;
-15. integrate the resulting secondary stream with DIO/decoder/output;
-16. tear the secondary path down alongside the main path.
+14. call `StartSession(B,...)` in the post-accept worker;
+15. call `ProcessFrames(B,socket)`;
+16. integrate the resulting secondary stream with DIO/decoder/output;
+17. tear the secondary path down alongside the main path.
 
 ## Important correction: StartSession is post-accept
 
-Q dynamically resolves `AirPlayReceiverSessionScreen_StartSession`, but the **initial type-111 SETUP handler does not call it**. The separate secondary-socket worker does call it after `SocketAccept` and `NetSocket_CreateWithNative`.
+Q dynamically resolves `AirPlayReceiverSessionScreen_StartSession`, but the **initial type-111 SETUP handler does not call it**. The separate secondary-socket worker calls it after `SocketAccept` and `NetSocket_CreateWithNative`.
 
 The worker loads the StartSession argument 2 through:
 
-```text
+```
 worker context
   -> [r9 + 0x0c]
   -> [that object + 0x1d0]
   -> StartSession(B, arg2)
 ```
 
-The binary proves this object/offset chain. The exact C++ class identity of the `+0x1d0` owner is not recovered from the stripped Q cluster alone. Independently, MU0678 StartSession analysis proves that its corresponding argument #2 is configuration/context input, not a hidden native Screen-B selector. Therefore the Q `+0x1d0` field must not be renamed `ScreenB`; it is the Q-side StartSession context object.
+The binary proves this object/offset chain. The exact C++ class identity of the stripped Q cluster object is not recovered. Independently, MU0678 StartSession analysis proves that its corresponding argument #2 is configuration/context input, not a hidden native Screen-B selector.
 
 Therefore:
 
 - do not add `StartSession(B)` to the initial SETUP handler;
 - reproduce the post-accept StartSession stage;
 - resolve the MU0678 equivalent of the Q worker's argument-2 object before binding B to a native Screen.
-
 
 ## ScreenStreamCreate / +0x38
 
@@ -101,7 +133,7 @@ AirPlay_DeriveAESKeySHA512ForScreen
 SetSecurityInfo(B,keyA,keyB)
 ```
 
-The MHI2 replica must translate the structure offsets and negotiated-value representation separately. Q offsets must not be copied blindly.
+The MHI2 replica must translate structure offsets and negotiated-value representation separately. Q offsets must not be copied blindly.
 
 ## Socket path
 
@@ -122,14 +154,40 @@ MHI2: NvSS lifecycle
 
 Only the actual decoder primitive should be translated; surrounding Q object/offset assumptions require separate MHI2 evidence.
 
+## Output architecture
+
+The working Q package contains a separate executable:
+
+```
+/eso/bin/apps/mhi2q-aa-cluster-display
+```
+
+The Q CarPlay cluster imports `spawnl` and has a direct launch edge using the embedded `--live-carplay` argument. The helper's live mode consumes the local H.264 stream and uses QNX Screen/display APIs plus a DMDT route.
+
+Thus the functional Q output architecture is:
+
+```
+111 SessionScreen
+   -> secondary transport
+   -> H.264/decoder path
+   -> local producer/loopback transport
+   -> mhi2q-aa-cluster-display --live-carplay
+   -> QNX Screen window
+   -> Q-specific DMDT/VC route
+```
+
+The Q geometry, DMDT constants, and helper internals are not hardware-independent. For MU0678, the recovered logical KOMBI target is `DISPLAYABLE_KOMBI_MAP_VIEW` (1440x455), but physical panel mapping remains a runtime/hardware fact.
+
 ## What this proves for the MHI2 replica
 
-The functional specification is not “make stock 110 StartSession accept 111”.
+The functional specification is not “replace libairplay” and not “make stock 110 StartSession accept 111”.
 
 It is:
 
 ```
 preserve 110
+    |
+stock AirPlay + DIO loader boundary
     |
 detect existing 111 stream
     |
@@ -141,35 +199,45 @@ secondary listener + 111 dataPort
     |
 accept + NetSocket
     |
+post-accept StartSession(B,...)
+    |
 ProcessFrames(B,...)
     |
-secondary decode/display path
+secondary decode/output sink
 ```
 
-The current MHI2 implementation already contains many of these operations. The remaining work is to make each operation match the Q behaviour at the exact ABI/object boundary, without disturbing 110.
+The current MHI2 work has statically established many of these operations. The implementation must reproduce them at MU0678-native ABI/object boundaries.
 
 ## Evidence boundary
 
 ### Q-proven
 
-- 110 and 111 are separately identified.
-- B is a second SessionScreen.
-- B receives UpdateState and Setup.
-- Setup receives the real CreateResult as argument 3.
-- B receives the time synchronizer before security completion.
-- B security uses the stock AES/SHA512 helper.
-- A second listener is opened and its port is advertised as 111 dataPort.
-- The secondary socket is accepted and wrapped.
-- ProcessFrames is called for B.
-- Q resolves StartSession, but the traced type-111 path does not call it.
+- the working installer preserves stock `libairplay.so`;
+- the DIO loader dynamically links against stock AirPlay;
+- 110 and 111 are separately identified;
+- B is a second SessionScreen;
+- B receives UpdateState and Setup;
+- Setup receives the real CreateResult as argument 3;
+- B receives the time synchronizer before security completion;
+- B security uses the stock AES/SHA512 helper;
+- a second listener is opened and its port is advertised as 111 dataPort;
+- the secondary socket is accepted and wrapped;
+- StartSession is called post-accept;
+- ProcessFrames is called for B;
+- the Q package contains a dedicated live-CarPlay display helper;
 - Q has executable native Screen creation/registration symbols and the SessionScreen-created delegate callback.
 
 ### MHI2-specific and separate
 
-- MU0678 native offsets, negotiated-value fields, and delegate bookkeeping.
-- The exact external dispatcher equivalent to Q's session-screen-created callback.
-- The exact MU0678 third-argument/CreateResult construction for the secondary ScreenSetup, if not already preserved by the adapter.
-- MU0678 ScreenStream/NvSS implementation.
-- Successful end-to-end live 111 decode/display.
+- MU0678 native offsets, negotiated-value fields, and delegate bookkeeping;
+- the exact external dispatcher equivalent to Q's session-screen-created callback;
+- the exact MU0678 third-argument/CreateResult construction for secondary ScreenSetup, if not already preserved by the adapter;
+- MU0678 ScreenStream/NvSS implementation;
+- successful end-to-end live 111 decode/display.
 
 These must be established independently on MHI2.
+
+### Critical non-reference artifacts
+
+The experimental MU0678 `libairplay_*111*` variants and `libairplay_patched_v6.so` are **not** the functional reference. The supplied original MU0678 patch remains useful only as evidence of a possible binary-injection mechanism; it must not be described as the working Q implementation.
+
