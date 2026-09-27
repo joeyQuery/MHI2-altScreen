@@ -29,7 +29,5 @@ Authoritative Q lifecycle reference: `docs/mhi2q-reference-package-2026-09-27.md
 
 ## Unresolved
 
-- exact semantic values/stack construction for stock MHI2 ServerSocketOpen arguments 1/2/4/14/15/16;
-- exact external dispatcher that invokes the Q SessionScreen-created callback;
-- exact teardown ordering across secondary stop/delete and original AirPlay teardown;
+- final MHI2-specific SessionScreen ↔ DIO/native Screen association;
 - successful complete live 111 run through secondary decode/display.
