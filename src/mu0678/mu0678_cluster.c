@@ -30,6 +30,7 @@ extern int munmap(void *,unsigned int);
 #define AAF1_HELPER "/eso/bin/apps/mhi2q-aa-cluster-display"
 
 typedef void *(*ScreenCreateFn)(void *,void *);
+typedef void *(*StreamCreateFn)(void *,void *);
 typedef int (*ScreenSetupFn)(void *,void *,void *);
 typedef void (*UpdateFn)(void *,int);
 typedef void (*TimeFn)(void *,void *);
@@ -45,6 +46,7 @@ typedef int (*SocketAcceptFn)(int,unsigned int,int *,void *);
 typedef void (*SocketDeleteFn)(void *);
 
 static ScreenCreateFn ScreenCreate;
+static StreamCreateFn StreamCreate;
 static ScreenSetupFn ScreenSetup;
 static UpdateFn UpdateState;
 static TimeFn SetTime;
@@ -204,6 +206,7 @@ static void mu0678_cluster_constructor(void)
 static int resolve_all(void)
 {
     ScreenCreate=(ScreenCreateFn)resolve("AirPlayReceiverSessionScreen_Create");
+    StreamCreate=(StreamCreateFn)resolve("ScreenStreamCreate");
     ScreenSetup=(ScreenSetupFn)resolve("AirPlayReceiverSessionScreen_Setup");
     UpdateState=(UpdateFn)resolve("AirPlayReceiverSessionScreen_UpdateState");
     SetTime=(TimeFn)resolve("AirPlayReceiverSessionScreen_SetTimeSynchronizer");
@@ -241,7 +244,7 @@ static int resolve_all(void)
     SocketAccept=(SocketAcceptFn)resolve("SocketAccept");
     DeleteSocket=(SocketDeleteFn)resolve("NetSocket_Delete");
     return ScreenCreate&&ScreenSetup&&UpdateState&&SetTime&&SetSecurity&&
-           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&StreamStop&&
+           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&StreamStop&&StreamCreate&&
            SendCommand&&ForceKeyFrame&&CopyServerInfo&&
            CFArrayCreateMutable&&CFArrayCreateMutableCopy&&CFArrayGetCount&&
            CFArrayGetValueAtIndex&&CFArrayAppendValue&&
@@ -334,6 +337,23 @@ int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
     DeriveAES((unsigned char *)session+0x1c8,16,
               (unsigned int)negotiated64,(unsigned int)(negotiated64>>32),a,b);
     SetSecurity(g_screen_b,a,b);
+
+    /*
+     * MU0678 has one native DIO Screen and stock StartSession selects that
+     * main Screen. Calling it for B would bind a second stream to the
+     * primary output. The Q reference can call StartSession(B) because it
+     * owns a second native Screen.
+     *
+     * MU0678 therefore uses a protocol/stream sidecar: create B's
+     * ScreenStream object without starting its stock NvSS renderer.
+     * ProcessFrames still receives 111 frames; the proven
+     * ScreenStreamProcessData boundary is intercepted before stock
+     * consumption and forwards the encoded access units to the dedicated
+     * live-CarPlay sink.
+     */
+    if(!StreamCreate(g_screen_b,(unsigned char *)g_screen_b+0x1f4)) return -1;
+    g_secondary_stream=*(void **)((unsigned char *)g_screen_b+0x1f4);
+    if(!g_secondary_stream) return -1;
     return 0;
 }
 
@@ -415,11 +435,12 @@ static void *media_worker(void *arg)
         if(SocketAccept(listener,10,&native,(void *)0)!=0 || native<0) continue;
         ns=WrapSocket(native,&err);
         if(!ns) { close(native); continue; }
+        /*
+         * Do not call MU0678 stock StartSession(B): it selects the singleton
+         * native main Screen. B is deliberately a sidecar stream object and
+         * is consumed by the ProcessFrames tee below.
+         */
         g_capture_active=1;
-        if(StartSession(screen)!=0) {
-            g_capture_active=0; DeleteSocket(ns); continue;
-        }
-        g_capture_active=0;
         ctx=*(void **)((unsigned char *)session+0x0c);
         arg3=ctx?*(void **)((unsigned char *)ctx+0xc8):(void *)0;
         if(ctx&&arg3) ProcessFrames(screen,ns,arg3);
