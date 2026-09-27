@@ -12,6 +12,8 @@ void mu0678_alt111_capture_video_impl(void *video_impl);
 void mu0678_alt111_capture_stream(void *stream);
 int mu0678_alt111_capture_active(void);
 int mu0678_alt111_publish_decode(void *video_impl, void *data_pp, uint32_t length);
+int mu0678_alt111_publish_process_data(void *stream, const uint8_t *data, uint32_t length);
+int mu0678_alt111_process_capture_seen(void);
 int mu0678_alt111_start_worker(MU0678Session session, MU0678SessionScreen screen_b, int listener_fd);
 MU0678SessionScreen mu0678_alt111_screen(void);
 int mu0678_alt111_create(MU0678Session session, MU0678Stream stream, uint32_t stream_index, uint64_t negotiated64, void *setup_result);
