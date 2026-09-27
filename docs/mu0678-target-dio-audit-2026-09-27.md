@@ -74,3 +74,19 @@ The exact 12 Q patch sites are not copied to MU0678. They are Q-loader-specific 
 ## Important correction
 
 Earlier repository text said the target MU0678 DIO executable was not available. That is superseded by this audit: the exact target binary is present in the dump repository and its ELF/symbol table has now been directly verified.
+
+## Secondary listener is now implemented against the target ABI
+
+The implementation core now resolves the stock MU0678 `ServerSocketOpen` and `SocketAccept` APIs dynamically. It uses the exact screen/media listener constants recovered from stock caller `0x23380`:
+
+- arg1 = byte at `session+0x51`
+- arg2 = `1`
+- arg3 = `6`
+- arg4 = `0xFFFFE872`
+- arg5 = fresh data-port output
+- arg6 = `0xFFFD4000`
+- arg7 = fresh listener-fd output
+
+The post-accept call uses the exact MU0678 `SocketAccept(listener,10,&native_fd,0)` shape, then `NetSocket_CreateWithNative`, then `StartSession(B)`, then `ProcessFrames(B,NetSocket,[session+0x0c]+0xc8)`.
+
+This listener is deliberately separate from the Q live-viewer socket `127.0.0.1:15557`. The latter is an output sink consumed by the display helper; it is not the AirPlay 111 media listener.
