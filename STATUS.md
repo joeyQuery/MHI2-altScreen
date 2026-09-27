@@ -32,8 +32,8 @@ Type 111 detection, second SessionScreen, UpdateState, ScreenSetup, AES derivati
 
 ## Q divergences / required platform translation
 
-- ScreenSetup can receive zero as arg 3; Q passes the real Create result.
-- Q's listener ABI is seven arguments; stock MHI2 ServerSocketOpen is a different wide ABI. The existing MHI2 socket call must not be treated as literal Q parity.
+- Q passes its Create result as ScreenSetup arg 3, but MU0678 `ScreenSetup @ 0x26400` overwrites caller `r2` with internal `sp+4` storage, so there is no MHI2 third-argument dependency.
+- Q and MHI2 both use the seven-argument AAPCS ServerSocketOpen shape; MHI2 requires the native screen/media values recovered from stock caller `0x23380`.
 - Q's `+0x38` ScreenStream capture is diagnostic/unproven functional state and should not be copied solely for parity.
 - Q loader DIO creation/registration operations are proven, but their exact linkage to the type-111 SessionScreen is across a callback boundary.
 - Current MHI2 manual UUID/client/end-time setters are not part of Q cluster's resolved API surface and should not define the replica lifecycle without proof.
