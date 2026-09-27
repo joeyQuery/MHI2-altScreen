@@ -21,7 +21,7 @@ Q reference sequence proven for the type-111 setup path:
 
 ### Important correction
 
-Q resolves `AirPlayReceiverSessionScreen_StartSession`, but the traced type-111 setup block contains **no call through that pointer**. Do not insert a synthetic `StartSession(B)` into the replica.
+Q resolves `AirPlayReceiverSessionScreen_StartSession`, and the traced type-111 setup block contains **no direct call through that pointer**. The separate secondary-socket worker calls it after `SocketAccept` and `NetSocket_CreateWithNative`. Do not insert it into the initial SETUP hook; reproduce it at the post-accept worker boundary.
 
 The ScreenStreamCreate `(*arg1)+0x38` capture is also not proven functionally required; the captured destination is not read elsewhere in the Q cluster.
 
