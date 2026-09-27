@@ -449,6 +449,7 @@ static void *media_worker(void *arg)
         ctx=*(void **)((unsigned char *)session+0x0c);
         arg3=ctx?*(void **)((unsigned char *)ctx+0xc8):(void *)0;
         if(ctx&&arg3) ProcessFrames(screen,ns,arg3);
+        g_capture_active=0;
         DeleteSocket(ns);
     }
     return (void *)0;
