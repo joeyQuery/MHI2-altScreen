@@ -110,9 +110,9 @@ The supplied `libairplay_patched_v6.so` remains useful only as evidence of one p
 
 ### Corrected implementation gate
 
-The next static implementation task is to audit the stock MU0678 `/eso/bin/apps/dio_manager` startup/linkage and production DIO configuration. We need to establish exactly how a Q-style external DIO loader can coexist with the existing MU0678 DIO responsibilities.
+The stock MU0678 `/eso/bin/apps/dio_manager` has now been statically audited at the ELF/dynamic-symbol level. It already depends on `libairplay.so` and imports the same core AirPlay/Screen host APIs the Q loader uses, including `AirPlayReceiverSessionChangeModes`, `AirPlayReceiverSessionScreenSetDelegate`, `ScreenCreate`, `ScreenRegister`, and `ScreenRegisterDelegates`. It also contains the native DIO session callbacks, including `s_sessionScreenCreatedCallback @ 0x1362d0`.
 
-Only after that should the MU0678 loader/cluster binary be constructed.
+This establishes the correct host boundary: build a MU0678-compatible DIO executable/loader from the existing DIO architecture and add the 111 cluster implementation there. The remaining static work is startup/configuration preservation and exact hook placement in the MU0678 DIO executable; replacing `libairplay.so` is not required by the authoritative Q architecture.
 
 The previously established MU0678 AirPlay/SessionScreen/socket/NvSS traces remain valid as the native ABI map. They are the implementation substrate the external loader must call.
 
