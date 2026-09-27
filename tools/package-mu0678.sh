@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 
 # Build/package the MU0678 external cluster together with the exact Q reference
 # live-CarPlay display helper. The helper is intentionally copied byte-for-byte
