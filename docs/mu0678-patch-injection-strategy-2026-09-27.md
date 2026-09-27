@@ -2,110 +2,120 @@
 
 ## Decision
 
-Use the same binary-injection mechanism demonstrated by the supplied original patched ELF.
+Use the **exact binary-injection mechanism and functional payload of the supplied original MU0678 patch**.
 
-The original mechanism is not an in-place code-cave implementation. It:
+The supplied reference is:
 
-1. preserves the existing RX LOAD;
-2. appends a page-aligned executable payload at file offset 0xd2000;
-3. maps that payload at virtual address 0xac000;
-4. adds a fifth program header of type PT_LOAD;
-5. marks the new segment RWE;
-6. redirects selected stock instructions with ARM branch instructions into the injected payload;
-7. returns from the payload to the original continuation addresses.
+- pristine baseline: `libairplay.so`
+- stock SHA-256: `a3ab0fe0ac20a712f7f240c1abd852a38faf78f2673880342d0eb24a6d8c29be`
+- original patched reference: `libairplay_patched_v6.so`
+- patched SHA-256: `62eee8aacaad53be049f0e458abaf492c777da7879978a8c2320b661156954d0`
 
-The reference patched ELF has:
+The user has explicitly authorized using that supplied patch as the functional reference.
 
-PT_LOAD offset   0xd2000
-PT_LOAD vaddr    0xac000
-PT_LOAD filesz   0x428
-PT_LOAD memsz    0x428
-PT_LOAD flags    RWE (0x7)
-PT_LOAD align    0x1000
+## Exact reproduction result
 
-The stock ELF has four program headers; the patched reference has five.
+The original patched ELF has been reproduced from the pristine MU0678 baseline.
 
-## Why this is the chosen mechanism
+The reproduction process:
 
-The pristine MU0678 ELF does not contain a large executable cave suitable for the required handler. The demonstrated patch solves exactly that problem by extending the ELF with a new executable LOAD rather than consuming uncertain padding inside existing sections.
+1. verifies the pristine stock SHA-256;
+2. verifies the supplied original-patch SHA-256;
+3. applies every byte difference in the original file range;
+4. appends the exact post-stock payload/program-header region;
+5. verifies the resulting SHA-256 against the supplied patch.
 
-Therefore the MU0678 replica should use the same mechanism.
+The resulting file is **byte-identical** to the supplied `libairplay_patched_v6.so`.
 
-## Hook model
+A reproducible script is committed as:
 
-The payload is reached from stock code through ARM B instructions. The supplied patched ELF demonstrates this at:
+`tools/reproduce-original-mu0678-patch.py`
 
-- 0x20348
-- 0x214d0
-- 0x23260
-- 0x2569c
-- 0x2602c
-- 0x7fd9c
+## ELF mechanism
 
-The 111 SETUP interception is specifically:
+The original patch:
 
-0x2325c: cmp r0,#110       ; stock
-0x23260: bne 0x231f0      ; stock continuation
+- preserves the existing RX LOAD;
+- appends a page-aligned payload at file offset `0xd2000`;
+- maps it at virtual address `0xac000`;
+- adds a fifth PT_LOAD;
+- uses flags `0x7` (RWE);
+- uses `0x1000` alignment;
+- has payload/filesz/memsz `0x428`;
+- redirects selected stock ARM instructions into the injected payload;
+- returns to stock continuation addresses.
 
-patched:
-0x2325c: cmp r0,#110       ; preserve
-0x23260: bne 0xac000      ; enter injected dispatcher
+The patched ELF still has 35 section headers; the new payload is represented through the new PT_LOAD rather than a new section.
 
-The injected dispatcher begins by testing r0 == 111 and handles the alternate-screen path. The exact reference payload must not be copied as the functional implementation because it is an experimental implementation; only its ELF injection mechanism is being reproduced.
+## Exact hooks in the supplied patch
 
-## New MU0678 patch construction
+The supplied reference changes these stock locations:
 
-The final patch should therefore be constructed as:
+- `0x20348`
+- `0x214d0`
+- `0x23260`
+- `0x2569c`
+- `0x2602c`
+- `0x7fd9c`
 
-stock libairplay.so
-        |
-        +-- modify selected ARM B instructions
-        |
-        +-- append page-aligned payload
-        |
-        +-- add PT_LOAD:
-              file offset 0xd2000
-              vaddr      0xac000
-              flags      RWE
-              size       = actual payload
+The critical 111 dispatch is:
 
-The payload should contain:
+```
+0x2325c: cmp r0,#110
+0x23260: bne 0x231f0       ; stock
+```
 
-- 111 SETUP dispatcher;
-- persistent B-state handling;
-- SessionScreen B lifecycle;
-- MU0678-native security derivation;
+becoming:
+
+```
+0x2325c: cmp r0,#110
+0x23260: bne 0xac000       ; injected dispatcher
+```
+
+The injected payload begins at `0xac000` and starts with:
+
+```
+cmp r0,#111
+```
+
+Thus the supplied patch's dispatcher preserves the ordinary path while routing the alternate stream into the injected implementation.
+
+## Functional payload
+
+Because the user has authorized exact replication of the supplied patch, the reference payload itself is now the functional implementation reference. It is not being replaced by a newly invented MU0678 design.
+
+The payload contains the original patch's:
+
+- type-111 dispatcher;
+- persistent secondary state;
+- SessionScreen creation/state setup;
 - secondary listener;
-- 111/dataPort response construction;
-- accept/NetSocket wrapping;
-- post-accept StartSession;
-- ProcessFrames;
-- dedicated output transport;
-- teardown;
-- return trampolines.
+- security/state setup;
+- accepted-socket handling;
+- secondary ScreenStream/session path;
+- return trampolines;
+- additional lifecycle hooks.
 
-## Critical relocation rule
+The payload's embedded addresses are MU0678-specific and are therefore reproduced exactly rather than translated from Q.
 
-The injected payload must use absolute addresses only where the MU0678 image's existing relocation model makes that safe. The reference payload encodes MU0678-relative addresses directly because it is injected into a fixed firmware image.
+## Verification
 
-Every branch/call target in the new payload must be calculated against the actual MU0678 virtual address map, not against the Q package.
+The locally reproduced binary has:
 
-## Reference-vs-replica rule
+- size: `861384` bytes;
+- SHA-256: `62eee8aacaad53be049f0e458abaf492c777da7879978a8c2320b661156954d0`;
+- 5 program headers;
+- new PT_LOAD at file offset `0xd2000`;
+- new PT_LOAD virtual address `0xac000`;
+- new PT_LOAD flags `RWE`;
+- new PT_LOAD size `0x428`.
 
-The supplied patched ELF establishes the mechanism:
+A byte-for-byte `cmp` against the supplied `libairplay_patched_v6.so` succeeds.
 
-- appended PT_LOAD;
-- RWE permissions;
-- page alignment;
-- ARM branch redirection;
-- return to original continuations.
+## Important distinction
 
-It does not establish the correctness of its experimental 111 lifecycle. The audited Q package remains the functional reference for what the new payload must do.
+This establishes **exact reproduction of the supplied patch**, not successful hardware execution.
 
-## Current state
+The patch has not been independently runtime-validated on the target MU0678 in this session. The next gate is therefore installation/runtime testing of this exact binary, followed by capture of the 110/111 lifecycle and simultaneous output.
 
-The pristine uploaded MU0678 baseline is unchanged.
-
-No branch has yet been redirected in the user's uploaded file, and no patched binary is being represented as flash-ready until the new payload has been assembled and byte-audited.
-
-The next implementation step is to build the MU0678-specific injected payload using the audited lifecycle while retaining this exact ELF-extension strategy.
+The pristine `/mnt/data/libairplay.so` remains untouched.
