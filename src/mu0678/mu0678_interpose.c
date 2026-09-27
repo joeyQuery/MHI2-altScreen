@@ -17,7 +17,7 @@ extern int munmap(void *, unsigned int);
 #define _SC_PAGESIZE 11
 #define MAP_FAILED ((void *)-1)
 
-typedef void *(*ScreenStreamCreateFn)(void *,void *);
+typedef int (*ScreenStreamCreateFn)(void *,void *);
 typedef int (*ScreenStreamProcessDataFn)(void *,const void *,unsigned int);
 static ScreenStreamCreateFn g_screen_stream_create;
 static ScreenStreamProcessDataFn g_screen_stream_process_data;
@@ -183,14 +183,15 @@ static int screen_stream_process_data_hook(void *stream,const void *data,unsigne
         ? g_screen_stream_process_data(stream,data,length) : 0;
 }
 
-static void *screen_stream_create_hook(void *a,void *b)
+static int screen_stream_create_hook(void *a,void *b)
 {
-    void *stream=g_screen_stream_create?g_screen_stream_create(a,b):(void *)0;
-    if(stream&&mu0678_alt111_capture_active()) {
+    int rc=g_screen_stream_create?g_screen_stream_create(a,b):-1;
+    void *stream=(b?*(void **)b:(void *)0);
+    if(rc==0&&stream&&mu0678_alt111_capture_active()) {
         mu0678_alt111_capture_stream(stream);
         mu0678_alt111_capture_video_impl(*(void **)((unsigned char *)stream+0x48));
     }
-    return stream;
+    return rc;
 }
 
 void *mu0678_resolve_airplay(const char *name)
