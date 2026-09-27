@@ -39,7 +39,7 @@ tag, value = struct.unpack_from("<II", d, DYNAMIC + DEBUG_INDEX * 8)
 if tag != 0x15 or value != 0:
     raise SystemExit("unexpected DT_DEBUG entry; refusing to patch")
 
-struct.pack_into("<II", d, DYNAMIC + DEBUG_INDEX * 8, 0x1, old_vaddr)
+struct.pack_into("<II", d, DYNAMIC + DEBUG_INDEX * 8, 0x1, OLD_OFF)
 
 open(dst, "wb").write(d)
 print(hashlib.sha256(d).hexdigest())
