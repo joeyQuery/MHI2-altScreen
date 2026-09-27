@@ -45,20 +45,21 @@ The MHI2 analysis has statically established the Type 111 detection, second Sess
 - Q uses OmxVideoImpl; MHI2 uses NvssVideoImpl. Translate only the decoder primitive.
 - The Q helper launch path is now proven at the process-call level, but the exact r4 path data-flow at spawnl and the exact frame handoff into the helper remain to be closed.
 
-## Remaining trace targets
+## Remaining static trace targets
 
-- exact semantic values and stack construction for stock MHI2 ServerSocketOpen arguments 1/2/4/14/15/16;
-- exact external dispatcher that invokes s_sessionScreenCreatedCallback;
-- exact r4 path data-flow at Q cluster spawnl 0x4578;
-- exact Q frame handoff to mhi2q-aa-cluster-display;
-- exact physical display mapping on MHI2;
-- successful live 111 run through secondary decode/display.
+No architecture-level static trace target remains open for the Q-to-MU0678 lifecycle. The implementation-ready translation is recorded in `docs/mu0678-111-implementation-blueprint-2026-09-27.md`.
+
+The remaining work is executable implementation and hardware validation:
+- construct the actual MU0678 patch bytes/hooks from the recovered ABI and available executable image;
+- validate the external DIO/display binding on hardware;
+- validate the dedicated 111 output sink;
+- demonstrate simultaneous 110+111 operation and stable teardown/reconnect.
 
 ## Static closure
 
 The socket boundary is no longer unresolved: ABI shape and the exact stock MHI2 screen/media listener recipe are proven in traces/016-static-closure-mhi2-listener.md. Q teardown ordering is also proven: original AirPlay SessionTearDown first, then secondary listener close, worker join, ScreenStreamStop, StopSession, ScreenDeregister, and duplicate-state clearing.
 
-The Q output boundary is now substantially closed. The working cluster contains a real spawnl call with --live-carplay, the packaged helper recognizes that mode, selects 1440x540 geometry, and directly creates/posts QNX Screen windows. Therefore the helper is no longer merely a static candidate; its launch edge is proven. The remaining uncertainty is the exact argument/data-flow and physical output mapping.
+The Q output boundary is statically closed. The authoritative package proves the helper launch, live-CarPlay loopback input, accepted-descriptor identity, QNX Screen/display stack, and DMDT VC-routing invocation. The remaining uncertainty is hardware-specific physical mapping and MU0678 runtime behaviour.
 
 ## Runtime gaps
 
@@ -151,4 +152,4 @@ The last three Q/MHI2 display questions are now statically closed in docs/traces
 
 3. MU0678 translation is now explicit: use a parallel 111 H.264 producer with a dedicated QNX Screen/DMDT output sink, targeting the recovered MU0678 DISPLAYABLE_KOMBI_MAP_VIEW geometry 1440x455. Do not alter ScreenCopyMain() or stock 110. Do not copy Q's 1440x540 geometry or Q OMX object layout.
 
-The exact physical meaning of a DMDT context is a hardware/runtime fact, but the logical VC/KOMBI route and the MHI2 implementation boundary are now identified. Remaining work is implementation and runtime validation, not an unresolved static architecture question.
+The exact physical meaning of a DMDT context is a hardware/runtime fact, but the logical VC/KOMBI route and the MHI2 implementation boundary are now identified. Static architecture is closed; remaining work is construction of the executable MU0678 patch and runtime validation.
