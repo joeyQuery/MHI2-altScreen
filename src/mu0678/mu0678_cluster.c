@@ -48,7 +48,50 @@ static FramesFn ProcessFrames;
 static StopFn StopSession;
 static DeleteFn DeleteScreen;
 typedef void (*StreamStopFn)(void *);
+typedef int (*SendCommandFn)(void *,void *);
+typedef int (*ForceKeyFrameFn)(void *);
+typedef void *(*CopyServerInfoFn)(void *);
+typedef void *(*CFArrayFn)(void *,unsigned int,void *,void *);
+typedef unsigned int (*CFArrayCountFn)(void *);
+typedef void *(*CFArrayIndexFn)(void *,unsigned int);
+typedef int (*CFArrayAppendFn)(void *,void *);
+typedef void *(*CFDictCreateFn)(void *,unsigned int,void *,void *);
+typedef void *(*CFDictGetFn)(void *,void *);
+typedef void (*CFDictSetFn)(void *,void *,void *);
+typedef uint64_t (*CFDictGetIntFn)(void *,void *,void *);
+typedef void (*CFDictSetIntFn)(void *,void *,unsigned int,unsigned int);
+typedef void *(*CFStringCreateFn)(void *,const char *,unsigned int);
+typedef void *(*CFDataCreateFn)(void *,void *,unsigned int);
+typedef unsigned int (*CFDataLenFn)(void *);
+typedef const unsigned char *(*CFDataBytesFn)(void *);
+typedef void (*CFReleaseFn)(void *);
+typedef void *(*HIDVirtualFn)(void *);
+typedef int (*HIDRegisterFn)(void *,void *);
+typedef int (*HIDDeregisterFn)(void *);
+typedef int (*HIDPostFn)(void *,void *,unsigned int);
 static StreamStopFn StreamStop;
+static SendCommandFn SendCommand;
+static ForceKeyFrameFn ForceKeyFrame;
+static CopyServerInfoFn CopyServerInfo;
+static CFArrayFn CFArrayCreateMutable;
+static CFArrayFn CFArrayCreateMutableCopy;
+static CFArrayCountFn CFArrayGetCount;
+static CFArrayIndexFn CFArrayGetValueAtIndex;
+static CFArrayAppendFn CFArrayAppendValue;
+static CFDictCreateFn CFDictionaryCreateMutable;
+static CFDictGetFn CFDictionaryGetValue;
+static CFDictSetFn CFDictionarySetValue;
+static CFDictGetIntFn CFDictionaryGetInt64;
+static CFDictSetIntFn CFDictionarySetInt64;
+static CFStringCreateFn CFStringCreateWithCString;
+static CFDataCreateFn CFPropertyListCreateData;
+static CFDataLenFn CFDataGetLength;
+static CFDataBytesFn CFDataGetBytePtr;
+static CFReleaseFn CFRelease;
+static HIDVirtualFn HIDDeviceCreateVirtual;
+static HIDRegisterFn HIDRegisterDevice;
+static HIDDeregisterFn HIDDeregisterDevice;
+static HIDPostFn HIDDevicePostReport;
 static DeriveFn DeriveAES;
 static WrapFn WrapSocket;
 static ServerOpenFn ServerOpen;
@@ -90,14 +133,43 @@ static int resolve_all(void)
     StopSession=(StopFn)resolve("AirPlayReceiverSessionScreen_StopSession");
     DeleteScreen=(DeleteFn)resolve("AirPlayReceiverSessionScreen_Delete");
     StreamStop=(StreamStopFn)resolve("ScreenStreamStop");
+    SendCommand=(SendCommandFn)resolve("AirPlayReceiverSessionSendCommand");
+    ForceKeyFrame=(ForceKeyFrameFn)resolve("AirPlayReceiverSessionForceKeyFrame");
+    CopyServerInfo=(CopyServerInfoFn)resolve("AirPlayCopyServerInfo");
+    CFArrayCreateMutable=(CFArrayFn)resolve("CFArrayCreateMutable");
+    CFArrayCreateMutableCopy=(CFArrayFn)resolve("CFArrayCreateMutableCopy");
+    CFArrayGetCount=(CFArrayCountFn)resolve("CFArrayGetCount");
+    CFArrayGetValueAtIndex=(CFArrayIndexFn)resolve("CFArrayGetValueAtIndex");
+    CFArrayAppendValue=(CFArrayAppendFn)resolve("CFArrayAppendValue");
+    CFDictionaryCreateMutable=(CFDictCreateFn)resolve("CFDictionaryCreateMutable");
+    CFDictionaryGetValue=(CFDictGetFn)resolve("CFDictionaryGetValue");
+    CFDictionarySetValue=(CFDictSetFn)resolve("CFDictionarySetValue");
+    CFDictionaryGetInt64=(CFDictGetIntFn)resolve("CFDictionaryGetInt64");
+    CFDictionarySetInt64=(CFDictSetIntFn)resolve("CFDictionarySetInt64");
+    CFStringCreateWithCString=(CFStringCreateFn)resolve("CFStringCreateWithCString");
+    CFPropertyListCreateData=(CFDataCreateFn)resolve("CFPropertyListCreateData");
+    CFDataGetLength=(CFDataLenFn)resolve("CFDataGetLength");
+    CFDataGetBytePtr=(CFDataBytesFn)resolve("CFDataGetBytePtr");
+    CFRelease=(CFReleaseFn)resolve("CFRelease");
+    HIDDeviceCreateVirtual=(HIDVirtualFn)resolve("HIDDeviceCreateVirtual");
+    HIDRegisterDevice=(HIDRegisterFn)resolve("HIDRegisterDevice");
+    HIDDeregisterDevice=(HIDDeregisterFn)resolve("HIDDeregisterDevice");
+    HIDDevicePostReport=(HIDPostFn)resolve("HIDDevicePostReport");
     DeriveAES=(DeriveFn)resolve("AirPlay_DeriveAESKeySHA512ForScreen");
     WrapSocket=(WrapFn)resolve("NetSocket_CreateWithNative");
     ServerOpen=(ServerOpenFn)resolve("ServerSocketOpen");
     SocketAccept=(SocketAcceptFn)resolve("SocketAccept");
     DeleteSocket=(SocketDeleteFn)resolve("NetSocket_Delete");
     return ScreenCreate&&ScreenSetup&&UpdateState&&SetTime&&SetSecurity&&
-           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&StreamStop&&DeriveAES&&
-           WrapSocket&&ServerOpen&&SocketAccept&&DeleteSocket;
+           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&StreamStop&&
+           SendCommand&&ForceKeyFrame&&CopyServerInfo&&
+           CFArrayCreateMutable&&CFArrayCreateMutableCopy&&CFArrayGetCount&&
+           CFArrayGetValueAtIndex&&CFArrayAppendValue&&
+           CFDictionaryCreateMutable&&CFDictionaryGetValue&&CFDictionarySetValue&&
+           CFDictionaryGetInt64&&CFDictionarySetInt64&&CFStringCreateWithCString&&
+           CFPropertyListCreateData&&CFDataGetLength&&CFDataGetBytePtr&&CFRelease&&
+           HIDDeviceCreateVirtual&&HIDRegisterDevice&&HIDDeregisterDevice&&HIDDevicePostReport&&
+           DeriveAES&&WrapSocket&&ServerOpen&&SocketAccept&&DeleteSocket;
 }
 
 static void be32(unsigned char *p,unsigned int v)
