@@ -49,7 +49,7 @@ int mu0678_interpose_patch_word(volatile uint32_t *target, uint32_t expected, ui
 static void *screen_stream_create_hook(void *a, void *b)
 {
     void *stream = g_screen_stream_create ? g_screen_stream_create(a,b) : (void *)0;
-    if (stream && g_secondary_starting) {
+    if (stream && mu0678_alt111_capture_active()) {
         void *video = *(void **)((unsigned char *)stream + 0x48);
         mu0678_alt111_capture_video_impl(video);
     }
@@ -164,7 +164,7 @@ int mu0678_interpose_setup111(void *session, void *stream, void *setup_result, v
     set64(response,key_type,111u,0u);
     set64(response,key_port,(uint32_t)port,0u);
     if (add(response,setup_result)!=0) return -14;
-    err=mu0678_alt111_start_worker(session,g_secondary_screen(),listener);
+    err=mu0678_alt111_start_worker(session,mu0678_alt111_screen(),listener);
     if (err!=0) return -15;
     return 0;
 }
