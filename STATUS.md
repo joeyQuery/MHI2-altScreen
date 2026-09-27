@@ -31,9 +31,9 @@ The working MHI2Q AltScreen package is the functional specification. The objecti
 - The Q display helper dynamically resolves QNX Screen/display APIs including screen_create_window, screen_create_window_type, screen_create_window_buffers, screen_post_window, and destruction/property APIs.
 - The helper also contains usage: %s stream.h264, establishing an H.264 input mode in addition to its live-CarPlay mode.
 
-## Current MHI2 implementation already contains
+## Current MHI2 reverse-engineering work has established
 
-Type 111 detection, second SessionScreen, UpdateState, ScreenSetup, AES derivation, SetSecurityInfo, secondary listener, 111 response descriptor, accept worker, NetSocket wrapper, ProcessFrames, and an NvSS decode tee.
+The MHI2 analysis has statically established the Type 111 detection, second SessionScreen lifecycle, UpdateState, ScreenSetup ABI, AES derivation, SetSecurityInfo, secondary listener, 111 response descriptor, accept worker, NetSocket wrapper, ProcessFrames, and an NvSS decode tee. This repository is the audited research/specification repository; it does not itself constitute a completed MU0678 binary patch.
 
 ## Q divergences / required platform translation
 
