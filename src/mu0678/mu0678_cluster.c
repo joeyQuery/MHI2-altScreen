@@ -31,7 +31,7 @@ typedef void (*DeleteFn)(void *);
 typedef void (*DeriveFn)(void *,int,unsigned int,unsigned int,void *,void *);
 typedef void *(*WrapFn)(int,int *);
 typedef int (*ServerOpenFn)(unsigned int,unsigned int,unsigned int,int,int *,int,int *);
-typedef int (*SocketAcceptFn)(int,unsigned int,void *,unsigned int *);
+typedef int (*SocketAcceptFn)(int,unsigned int,int *,void *);
 
 static ScreenCreateFn ScreenCreate;
 static ScreenSetupFn ScreenSetup;
@@ -168,7 +168,8 @@ int mu0678_alt111_accept_media(MU0678Session session,MU0678SessionScreen B,int l
     int err=0; void *ns,*ctx,*arg3; unsigned int zero=0;
     if(!session||!B||listener_fd<0||!ProcessFrames||!SocketAccept) return -1;
     {
-        int native=SocketAccept(listener_fd,10,(void *)0,&zero);
+        int native=-1;
+        SocketAccept(listener_fd,10,&native,(void *)0);
         if(native<0) return -1;
         ns=WrapSocket(native,&err);
     }
