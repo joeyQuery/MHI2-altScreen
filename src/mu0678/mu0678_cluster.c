@@ -3,6 +3,7 @@
 
 extern void *dlsym(void *, const char *);
 extern int pthread_create(unsigned long *, const void *, void *(*)(void *), void *);
+extern int pthread_join(unsigned long, void **);
 extern int socket(int,int,int);
 extern int bind(int,const void *,unsigned int);
 extern int listen(int,int);
@@ -19,6 +20,7 @@ extern void *memset(void *,int,unsigned int);\nextern int spawnl(int,const char 
 #define SOL_SOCKET 0xffff
 #define SO_REUSEADDR 4
 #define AAF1_PORT 15557
+#define AAF1_HELPER "/eso/bin/apps/mhi2q-aa-cluster-display"
 
 typedef void *(*ScreenCreateFn)(void *,void *);
 typedef int (*ScreenSetupFn)(void *,void *,void *);
@@ -44,6 +46,8 @@ static StartFn StartSession;
 static FramesFn ProcessFrames;
 static StopFn StopSession;
 static DeleteFn DeleteScreen;
+typedef void (*StreamStopFn)(void *);
+static StreamStopFn StreamStop;
 static DeriveFn DeriveAES;
 static WrapFn WrapSocket;
 static ServerOpenFn ServerOpen;
@@ -58,6 +62,7 @@ static unsigned long g_sink_thread;
 static volatile int g_running;
 static volatile int g_capture_active;
 static void *g_secondary_video_impl;
+static void *g_secondary_stream;
 static unsigned long g_media_thread;
 static volatile int g_media_thread_running;
 static int g_media_listener=-1;
@@ -76,13 +81,14 @@ static int resolve_all(void)
     ProcessFrames=(FramesFn)resolve("AirPlayReceiverSessionScreen_ProcessFrames");
     StopSession=(StopFn)resolve("AirPlayReceiverSessionScreen_StopSession");
     DeleteScreen=(DeleteFn)resolve("AirPlayReceiverSessionScreen_Delete");
+    StreamStop=(StreamStopFn)resolve("ScreenStreamStop");
     DeriveAES=(DeriveFn)resolve("AirPlay_DeriveAESKeySHA512ForScreen");
     WrapSocket=(WrapFn)resolve("NetSocket_CreateWithNative");
     ServerOpen=(ServerOpenFn)resolve("ServerSocketOpen");
     SocketAccept=(SocketAcceptFn)resolve("SocketAccept");
     DeleteSocket=(SocketDeleteFn)resolve("NetSocket_Delete");
     return ScreenCreate&&ScreenSetup&&UpdateState&&SetTime&&SetSecurity&&
-           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&DeriveAES&&
+           StartSession&&ProcessFrames&&StopSession&&DeleteScreen&&StreamStop&&DeriveAES&&
            WrapSocket&&ServerOpen&&SocketAccept&&DeleteSocket;
 }
 
@@ -110,7 +116,7 @@ static void *sink_worker(void *unused)
     while(g_running && g_sink>=0) {
         unsigned int len=0;
         int fd=accept(g_sink,(void *)0,&len);
-        if(fd<0) continue;
+        if(fd<0) { if(!g_running) break; continue; }
         g_viewer=fd;
         while(g_running && g_viewer==fd) {
             pollfd_t p; p.fd=fd; p.events=1; p.revents=0;
@@ -140,7 +146,13 @@ int mu0678_alt111_init(void)
         }
     }
     g_running=1;
-    return pthread_create(&g_sink_thread,(const void *)0,sink_worker,(void *)0)==0 ? 0 : -1;
+    if(spawnl(1,AAF1_HELPER,AAF1_HELPER,"--live-carplay",(char *)0)<0) {
+        close(g_sink); g_sink=-1; g_running=0; return -1;
+    }
+    if(pthread_create(&g_sink_thread,(const void *)0,sink_worker,(void *)0)!=0) {
+        close(g_sink); g_sink=-1; g_running=0; return -1;
+    }
+    return 0;
 }
 
 int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
@@ -184,6 +196,16 @@ int mu0678_alt111_open_media_listener(MU0678Session session,
 void mu0678_alt111_capture_video_impl(void *video)
 {
     if(g_capture_active) g_secondary_video_impl=video;
+}
+
+void mu0678_alt111_capture_stream(void *stream)
+{
+    if(g_capture_active) g_secondary_stream=stream;
+}
+
+MU0678SessionScreen mu0678_alt111_screen(void)
+{
+    return (MU0678SessionScreen)g_screen_b;
 }
 
 int mu0678_alt111_capture_active(void)
@@ -264,9 +286,12 @@ void mu0678_alt111_stop(MU0678Session session)
     (void)session;
     g_running=0; g_capture_active=0; g_media_thread_running=0;
     if(g_media_listener>=0){close(g_media_listener);g_media_listener=-1;}
+    if(g_media_thread) { pthread_join(g_media_thread,(void **)0); g_media_thread=0; }
     if(g_viewer>=0){close(g_viewer);g_viewer=-1;}
     if(g_sink>=0){close(g_sink);g_sink=-1;}
+    if(g_sink_thread) { pthread_join(g_sink_thread,(void **)0); g_sink_thread=0; }
+    if(g_secondary_stream&&StreamStop) StreamStop(g_secondary_stream);
     if(g_screen_b&&StopSession) StopSession(g_screen_b);
     if(g_screen_b&&DeleteScreen) DeleteScreen(g_screen_b);
-    g_screen_b=(void *)0; g_session=(void *)0; g_secondary_video_impl=(void *)0;
+    g_screen_b=(void *)0; g_session=(void *)0; g_secondary_video_impl=(void *)0; g_secondary_stream=(void *)0;
 }
