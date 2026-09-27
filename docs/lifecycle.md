@@ -1,6 +1,6 @@
 # Secondary SessionScreen lifecycle
 
-Q reference sequence:
+Q reference sequence proven for the type-111 setup path:
 
 1. inspect SETUP streams;
 2. detect `type == 111`;
@@ -16,8 +16,13 @@ Q reference sequence:
 12. accept secondary connection;
 13. `NetSocket_CreateWithNative`;
 14. `ProcessFrames(B,socket)`;
-15. ScreenStreamCreate hook captures Q state;
-16. Q's DIO/decoder integration operates around the secondary stream; the exact cross-subsystem call ordering is still being traced;
-17. teardown includes the secondary stop/delete path alongside the original AirPlay teardown; exact final ordering remains to be established.
+15. DIO/decoder integration around the secondary stream;
+16. teardown includes secondary stop/delete alongside original AirPlay teardown; exact final ordering remains unresolved.
 
-The replica must preserve the proven Q ordering and must not invent ordering for the unresolved portions.
+### Important correction
+
+Q resolves `AirPlayReceiverSessionScreen_StartSession`, but the traced type-111 setup block contains **no call through that pointer**. Do not insert a synthetic `StartSession(B)` into the replica.
+
+The ScreenStreamCreate `(*arg1)+0x38` capture is also not proven functionally required; the captured destination is not read elsewhere in the Q cluster.
+
+The replica must preserve proven Q ordering and must not invent ordering for unresolved portions.
