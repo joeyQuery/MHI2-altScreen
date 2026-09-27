@@ -66,7 +66,7 @@ The audited Q trace establishes this order:
 5. call `Setup(B,stream111,CreateResult)`;
 6. set the time synchronizer;
 7. obtain the negotiated 64-bit stream value;
-8. call `AirPlay_DeriveAESKeySHA512ForScreen(session+0x1c0,16,negotiated64)`;
+8. call `AirPlay_DeriveAESKeySHA512ForScreen(session+0x1c8,16,negotiated64)`;
 9. call `SetSecurityInfo(B,keyA,keyB)`;
 10. open the secondary listener;
 11. advertise `{type:111,dataPort:N}`;
