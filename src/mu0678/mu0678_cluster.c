@@ -165,7 +165,7 @@ int mu0678_alt111_open_media_listener(MU0678Session session, unsigned short *dat
 }
 
 int mu0678_alt111_accept_media(MU0678Session session,MU0678SessionScreen B,int listener_fd) {
-    int err=0; void *ns,*ctx,*arg3; unsigned int zero=0;
+    int err=0; void *ns,*ctx,*arg3;
     if(!session||!B||listener_fd<0||!ProcessFrames||!SocketAccept) return -1;
     {
         int native=-1;
