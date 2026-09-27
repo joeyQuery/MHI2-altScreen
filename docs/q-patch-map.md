@@ -1,5 +1,7 @@
 # MHI2Q patch map
 
+This file documents the Q binary patch map only. It is not a specification that every Q hook must be reproduced on MHI2. The functional reference and current replica boundary are recorded in `docs/mhi2q-reference-package-2026-09-27.md`.
+
 | Stock callsite | Replacement |
 |---:|---:|
 | `0x6420` | `0x53A4` |
@@ -16,6 +18,8 @@
 | `0x669C` | `0x19F4` |
 
 Functional wrappers include SETUP (`0x3C60`), TearDown (`0x33F0`), `/info` (`0x48C4`), ScreenStreamCreate (`0x4710`), ScreenSetup (`0x46D4`), and OMX lifecycle hooks (`0x1954`,`0x19B8`,`0x1C04`,`0x1B8C`,`0x19F4`).
+
+These hook locations describe Q's implementation mechanics. They do not establish that every wrapper is functionally required for the type-111 path.
 
 Q patch primitive: `0x47F8`. It validates expected bytes and synchronizes modified code/cache state. Internal fingerprint is anchored from resolved `AirPlayReceiverSessionScreen_Create`.
 
