@@ -10,8 +10,7 @@ The new src/mu0678/ cluster core implements:
 4. Setup(B,111-stream,CreateResult).
 5. Stock MU0678 AES derivation boundary: AirPlay_DeriveAESKeySHA512ForScreen(session+0x1c8,16,negotiated64).
 6. SetSecurityInfo(B,keyA,keyB).
-7. MU0678-native post-accept StartSession(B) ABI.
-8. MU0678-native ProcessFrames(B,NetSocket,[session+0xc]+0xc8).
+7. MU0678-native post-accept ProcessFrames(B,NetSocket,[session+0xc]+0xc8), with stock StartSession(B) deliberately bypassed because MU0678 has one native Screen.
 9. Dedicated local TCP output sink on 127.0.0.1:15557.
 10. Q-compatible 32-byte AAF1 framing.
 11. Explicit time-synchronizer entry point.
