@@ -70,7 +70,7 @@ static int write_veneer_words(void)
     w[7]=0xe59fc00cu;
     w[8]=0xe12fff3cu;
     w[9]=0xe8bd5fffu;
-    w[10]=0xeafddc70u;
+    w[10]=arm_branch((uintptr_t)g_veneer+0x28u,g_libairplay_base+0x231f0u,0);
     w[11]=0xe1a00000u;
     w[12]=0xe59d3014u;
     w[13]=0xe92d400fu;
@@ -103,10 +103,10 @@ static int install_code_hooks(void)
     if (mprotect(g_veneer,0x1000,PROT_READ|PROT_EXEC)!=0) return -3;
 
     if (!guarded_store((volatile uint32_t *)(g_libairplay_base+MU0678_SETUP_BRANCH),
-                       0x1affffe2u,(uint32_t)(0xea000000u | ((((g_veneer-(unsigned char *)g_libairplay_base)-MU0678_SETUP_BRANCH-8u)>>2)&0x00ffffffu)),0))
+                       0x1affffe2u,arm_branch(g_libairplay_base+MU0678_SETUP_BRANCH,(uintptr_t)g_veneer,0),0))
         return -4;
     if (!guarded_store((volatile uint32_t *)(g_libairplay_base+MU0678_NVSS_DECODE_CALL),
-                       0xebfe6021u,(uint32_t)(0xeb000000u | ((((uintptr_t)g_veneer+0x40u-(g_libairplay_base+MU0678_NVSS_DECODE_CALL)-8u)>>2)&0x00ffffffu)),0))
+                       0xebfe6021u,arm_branch(g_libairplay_base+MU0678_NVSS_DECODE_CALL,(uintptr_t)g_veneer+0x40u,1),0))
         return -5;
     return 0;
 }
