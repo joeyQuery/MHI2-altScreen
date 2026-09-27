@@ -58,16 +58,16 @@ static void augment_alt_info(void *dict)
     typedef void *(*StringFn)(void *,const char *,unsigned int);
     typedef void (*SetFn)(void *,void *,void *);
     typedef void (*ReleaseFn)(void *);
-    typedef void *(*DictCreateFn)(void *,unsigned int,void *,void *);
     ArrayCreateFn ac=(ArrayCreateFn)mu0678_resolve_airplay("CFArrayCreateMutable");
     ArrayAppendFn aa=(ArrayAppendFn)mu0678_resolve_airplay("CFArrayAppendValue");
     StringFn make=(StringFn)mu0678_resolve_airplay("CFStringCreateWithCString");
     SetFn set=(SetFn)mu0678_resolve_airplay("CFDictionarySetValue");
     ReleaseFn rel=(ReleaseFn)mu0678_resolve_airplay("CFRelease");
-    DictCreateFn dc=(DictCreateFn)mu0678_resolve_airplay("CFDictionaryCreateMutable");
-    void *k,*v,*arr,*displays,*display;
+    void *k,*v,*arr;
     if(!dict||!ac||!aa||!make||!set) return;
 
+    /* Mirror the reference's enabled-feature advertisement without
+       fabricating a second physical Screen descriptor. */
     k=make((void *)0,"enabledFeatures",0x08000100u);
     arr=ac((void *)0,0,(void *)0,(void *)0);
     v=make((void *)0,"altScreen",0x08000100u);
@@ -79,30 +79,6 @@ static void augment_alt_info(void *dict)
     if(rel&&v) rel(v);
     if(rel&&arr) rel(arr);
 
-    /* MU0678's logical secondary target is the 1440x455
-       DISPLAYABLE_KOMBI_MAP_VIEW resource. Only target facts established
-       by the firmware are advertised here; physical UUID/DSI is omitted. */
-    if(!dc) return;
-    k=make((void *)0,"displays",0x08000100u);
-    displays=ac((void *)0,0,(void *)0,(void *)0);
-    display=dc((void *)0,0,(void *)0,(void *)0);
-    if(k&&displays&&display) {
-        void *dk=make((void *)0,"widthPixels",0x08000100u);
-        void *hk=make((void *)0,"heightPixels",0x08000100u);
-        void *tk=make((void *)0,"type",0x08000100u);
-        void *tv=make((void *)0,"DISPLAYABLE_KOMBI_MAP_VIEW",0x08000100u);
-        set_info_int(display,dk,1440u);
-        set_info_int(display,hk,455u);
-        if(tk&&tv) set(display,tk,tv);
-        aa(displays,display);
-        set(dict,k,displays);
-        if(rel&&dk) rel(dk); if(rel&&hk) rel(hk);
-        if(rel&&tk) rel(tk); if(rel&&tv) rel(tv);
-    }
-    if(rel&&k) rel(k);
-    if(rel&&display) rel(display);
-    if(rel&&displays) rel(displays);
-
     {
         unsigned int port=mu0678_alt111_data_port();
         if(port) {
@@ -111,7 +87,6 @@ static void augment_alt_info(void *dict)
         }
     }
 }
-
 static void *resolve_dio(const char *name)
 {
     if(!g_dio_handle) g_dio_handle=dlopen((const char *)0,0x80000100);
