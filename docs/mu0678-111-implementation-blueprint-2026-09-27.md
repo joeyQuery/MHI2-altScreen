@@ -34,7 +34,7 @@ SETUP streams[]
   -> dedicated 111 output sink
 ```
 
-The Q reference proves that the type-111 setup block itself does not call `StartSession`; the start occurs after the secondary socket is accepted. MU0678 must preserve that ordering.
+The Q reference proves that the type-111 setup block itself does not call `StartSession`; the start occurs after the secondary socket is accepted. MU0678 now preserves that ordering in the implementation.
 
 ## MU0678-native security sequence
 
@@ -84,9 +84,9 @@ ProcessFrames
 
 `ScreenStream` stores its stream type at `+0x94`. The new 111 stream must remain independently identified as 111.
 
-The decoder must be a fresh MU0678 `NvssVideoImpl` instance. Do not port Q's `OmxVideoImpl` layout.
+The decoder must be a fresh MU0678 `NvssVideoImpl` instance created by the stock B StartSession path. Do not port Q's `OmxVideoImpl` layout.
 
-`NvssVideoImpl` has a per-instance handle at `+0x50`, so independent decoder state is structurally supported.
+The MU0678 implementation therefore lets B's native StartSession create the stream and uses the existing stream/decode interposition only to observe the resulting secondary objects. It must not manufacture a sidecar stream before StartSession.
 
 ## Native display boundary
 

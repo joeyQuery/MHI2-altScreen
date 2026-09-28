@@ -175,3 +175,8 @@ The accurate statement is:
 > The Q **type-111 SETUP handler** does not call StartSession directly. The working Q **overall type-111 implementation does call StartSession later from its secondary-socket worker, after SocketAccept and NetSocket_CreateWithNative, and then calls ProcessFrames.**
 
 This resolves the apparent contradiction between the Q symbol import list and the earlier observation that the setup block itself contained no StartSession call.
+
+
+## 2026-09-28 porting decision
+
+The MU0678 implementation now follows the reference SETUP/worker split in code: the 111 SETUP path stops after B construction, security, listener creation, and the 111/dataPort response. The secondary worker accepts and wraps the 111 socket first, then calls MU0678 AirPlayReceiverSessionScreen_StartSession(B, ...), and only after successful start calls MU0678 AirPlayReceiverSessionScreen_ProcessFrames(B, ...). The previous MU0678 sidecar behavior that deliberately skipped StartSession has been removed because it was not present in the working reference.

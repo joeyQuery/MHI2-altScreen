@@ -120,7 +120,12 @@ static unsigned long g_media_thread;
 static volatile int g_media_thread_running;
 static int g_media_listener=-1;
 static unsigned short g_media_port;
-static unsigned char g_media_ctx[12];
+typedef struct {
+    MU0678Session session;
+    MU0678SessionScreen screen;
+    int listener;
+} MU0678MediaWorkerCtx;
+static MU0678MediaWorkerCtx g_media_ctx;
 static volatile int g_have_codec_config;
 static volatile int g_process_capture_seen;
 static volatile int g_synced_viewer;
@@ -342,22 +347,12 @@ int mu0678_alt111_create(MU0678Session session,MU0678Stream stream,
     SetSecurity(g_screen_b,a,b);
 
     /*
-     * MU0678 has one native DIO Screen and stock StartSession selects that
-     * main Screen. Calling it for B would bind a second stream to the
-     * primary output. The Q reference can call StartSession(B) because it
-     * owns a second native Screen.
-     *
-     * MU0678 therefore uses a protocol/stream sidecar: create B's
-     * ScreenStream object without starting its stock NvSS renderer.
-     * ProcessFrames still receives 111 frames; the proven
-     * ScreenStreamProcessData boundary is intercepted before stock
-     * consumption and forwards the encoded access units to the dedicated
-     * live-CarPlay sink.
+     * Match the working reference: the initial SETUP path only constructs
+     * and secures SessionScreen B. StartSession is deferred until after the
+     * 111 data socket is accepted by the secondary worker. StartSession then
+     * creates B's native ScreenStream; the existing MU0678 stream/decode
+     * interposition observes that object without changing the 110 path.
      */
-    if(StreamCreate(g_screen_b,(unsigned char *)g_screen_b+0x1f4)!=0) return -1;
-    g_secondary_stream=*(void **)((unsigned char *)g_screen_b+0x1f4);
-    if(!g_secondary_stream) return -1;
-    g_secondary_video_impl=*(void **)((unsigned char *)g_secondary_stream+0x48);
     return 0;
 }
 
@@ -436,24 +431,31 @@ int mu0678_alt111_publish_decode(void *video_impl,void *data_pp,unsigned int len
 
 static void *media_worker(void *arg)
 {
-    MU0678Session session=*(MU0678Session *)(arg+0);
-    MU0678SessionScreen screen=*(MU0678SessionScreen *)(arg+4);
-    int listener=*(int *)(arg+8);
+    MU0678MediaWorkerCtx *w=(MU0678MediaWorkerCtx *)arg;
+    MU0678Session session=w->session;
+    MU0678SessionScreen screen=w->screen;
+    int listener=w->listener;
     while(g_media_thread_running) {
         int native=-1,err=0; void *ns,*ctx,*arg3;
         if(SocketAccept(listener,10,&native,(void *)0)!=0 || native<0) continue;
         ns=WrapSocket(native,&err);
         if(!ns) { close(native); continue; }
         /*
-         * Do not call MU0678 stock StartSession(B): it selects the singleton
-         * native main Screen. B is deliberately a sidecar stream object and
-         * is consumed by the ProcessFrames tee below.
+         * Match the working reference lifecycle: accept and wrap the 111
+         * socket first; only then start SessionScreen B. StartSession creates
+         * the secondary MU0678 ScreenStream through the stock path, allowing
+         * the existing stream/decode hooks to observe B without touching 110.
          */
-        g_capture_active=1;
         ctx=*(void **)((unsigned char *)session+0x0c);
         arg3=ctx?*(void **)((unsigned char *)ctx+0xc8):(void *)0;
-        if(ctx&&arg3) ProcessFrames(screen,ns,arg3);
+        g_capture_active=1;
+        if(!StartSession || StartSession(screen,ctx)!=0) {
+            g_capture_active=0;
+            DeleteSocket(ns);
+            continue;
+        }
         g_capture_active=0;
+        if(ctx&&arg3) ProcessFrames(screen,ns,arg3);
         DeleteSocket(ns);
     }
     return (void *)0;
@@ -463,12 +465,12 @@ int mu0678_alt111_start_worker(MU0678Session session,
                                MU0678SessionScreen screen,int listener_fd)
 {
     if(!session||!screen||listener_fd<0) return -1;
-    *(MU0678Session *)(g_media_ctx+0)=session;
-    *(MU0678SessionScreen *)(g_media_ctx+4)=screen;
-    *(int *)(g_media_ctx+8)=listener_fd;
+    g_media_ctx.session=session;
+    g_media_ctx.screen=screen;
+    g_media_ctx.listener=listener_fd;
     g_media_listener=listener_fd;
     g_media_thread_running=1;
-    if(pthread_create(&g_media_thread,(const void *)0,media_worker,g_media_ctx)!=0) {
+    if(pthread_create(&g_media_thread,(const void *)0,media_worker,&g_media_ctx)!=0) {
         g_media_thread_running=0; g_media_listener=-1; return -1;
     }
     return 0;
