@@ -260,11 +260,11 @@ static int install_code_hooks(void)
 }
 int mu0678_interpose_init(void)
 {
-    void *setup,*screen_create,*server_cb,*final_cb,*process_data;
-    volatile uint32_t *airplay_got,*process_got;
+    void *setup,*screen_create,*server_cb,*final_cb;
+    volatile uint32_t *airplay_got;
     volatile uint32_t *server_got,*final_got;
     uintptr_t dio_base;
-    uint32_t old_airplay_got,old_process_got,old_server_got,old_final_got;
+    uint32_t old_airplay_got,old_server_got,old_final_got;
 
     if(g_installed) return 0;
 
