@@ -18,9 +18,7 @@ extern int munmap(void *, unsigned int);
 #define MAP_FAILED ((void *)-1)
 
 typedef int (*ScreenStreamCreateFn)(void *,void *);
-typedef int (*ScreenStreamProcessDataFn)(void *,const void *,unsigned int);
 static ScreenStreamCreateFn g_screen_stream_create;
-static ScreenStreamProcessDataFn g_screen_stream_process_data;
 static uintptr_t g_libairplay_base;
 static unsigned char *g_veneer;
 static int g_installed;
@@ -173,16 +171,6 @@ int mu0678_interpose_patch_word(volatile uint32_t *target,uint32_t expected,
     return guarded_store(target,expected,replacement,alternate);
 }
 
-static int screen_stream_process_data_hook(void *stream,const void *data,unsigned int length)
-{
-    if(stream && stream==mu0678_alt111_screen_stream() && data && length) {
-        (void)mu0678_alt111_publish_process_data(stream,(const uint8_t *)data,length);
-        return 0;
-    }
-    return g_screen_stream_process_data
-        ? g_screen_stream_process_data(stream,data,length) : 0;
-}
-
 static int screen_stream_create_hook(void *a,void *b)
 {
     int rc=g_screen_stream_create?g_screen_stream_create(a,b):-1;
@@ -308,28 +296,18 @@ int mu0678_interpose_init(void)
 
     setup=mu0678_resolve_airplay("AirPlayReceiverSessionSetup");
     screen_create=mu0678_resolve_airplay("ScreenStreamCreate");
-    process_data=mu0678_resolve_airplay("ScreenStreamProcessData");
-    if(!setup||!screen_create||!process_data) goto airplay_fail;
+    if(!setup||!screen_create) goto airplay_fail;
 
     g_libairplay_base=(uintptr_t)setup-0x22fd8u;
     g_screen_stream_create=(ScreenStreamCreateFn)screen_create;
-    g_screen_stream_process_data=(ScreenStreamProcessDataFn)process_data;
 
     airplay_got=(volatile uint32_t *)(g_libairplay_base+MU0678_GOT_SCREEN_STREAM_CREATE);
-    process_got=(volatile uint32_t *)(g_libairplay_base+MU0678_GOT_SCREEN_STREAM_PROCESS_DATA);
     old_airplay_got=*airplay_got;
-    old_process_got=*process_got;
 
     if(!guarded_store(airplay_got,(uint32_t)(g_libairplay_base+0x17d2cu),
                       (uint32_t)(uintptr_t)screen_stream_create_hook,
                       (uint32_t)(g_libairplay_base+0x7f544u))) goto airplay_fail;
-    if(!guarded_store(process_got,(uint32_t)(g_libairplay_base+0x7ea2cu),
-                      (uint32_t)(uintptr_t)screen_stream_process_data_hook,0)) {
-        guarded_store(airplay_got,(uint32_t)(uintptr_t)screen_stream_create_hook,old_airplay_got,0);
-        goto airplay_fail;
-    }
     if(install_code_hooks()!=0) {
-        guarded_store(process_got,(uint32_t)(uintptr_t)screen_stream_process_data_hook,old_process_got,0);
         guarded_store(airplay_got,(uint32_t)(uintptr_t)screen_stream_create_hook,old_airplay_got,0);
         goto airplay_fail;
     }

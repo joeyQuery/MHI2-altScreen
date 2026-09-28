@@ -86,7 +86,7 @@ ProcessFrames
 
 The decoder must be a fresh MU0678 `NvssVideoImpl` instance created by the stock B StartSession path. Do not port Q's `OmxVideoImpl` layout.
 
-The MU0678 implementation therefore lets B's native StartSession create the stream and uses the existing stream/decode interposition only to observe the resulting secondary objects. It must not manufacture a sidecar stream before StartSession.
+The MU0678 implementation therefore lets B's native StartSession create the stream and uses the existing stream/decode interposition only to observe the resulting secondary objects. It does not short-circuit ScreenStreamProcessData; native MU0678 ProcessFrames/ScreenStream/NvSS processing remains intact. It must not manufacture a sidecar stream before StartSession.
 
 ## Native display boundary
 
