@@ -53,3 +53,35 @@ Both are decompiled from upstream's car (an A3 on a different HMI build) and sha
 The arrow comes from row 1. Options, from least to most invasive: (a) blank the descriptor symbol on the small dials only
 ([`tools/HudSymbolPatch.java`](../tools/HudSymbolPatch.java), v3 — untested; may blank the HUD too if it reads the same field); (b) find the BAP state that
 decides whether the cluster draws a maneuver on the small dials. Neither has been run on the car.
+
+## Which HMI classes the jar should and should not override (linkage audit)
+
+[`tools/LinkCheck.java`](../tools/LinkCheck.java) resolves every method and field the jar references against this unit's stock classes (`lsd.jxe` converted to a jar).
+The jar contains 61 classes; **exactly two stock classes are overridden** (`ClusterService`, and `DisplayManagerMIB2High` with its two inner classes). Everything else is new
+`com.mhi2.*` code. Only **two** references fail to resolve on this unit:
+
+| Unresolved reference | From | Consequence |
+| --- | --- | --- |
+| `Util.formatDistance(int,int,int,String)` (the unit has the 2-arg and the 5-arg overloads only) | the jar's `ClusterService.updateDistanceToDestination(int,boolean)` | `NoSuchMethodError` whenever a distance to destination is updated — **native navigation** hits this, not only CarPlay. Likely contributor to the odd navigation state seen after the HUD test (not proven). |
+| `IFunctionSynchronizationHandler.isSyncCancelled()` | `BAPBridge.logClusterState` | The `sync threw NoSuchMethodError` line at every shutdown. A diagnostic dump; harmless. |
+
+**`DisplayManagerMIB2High` — should not be overridden.** The HUD needs nothing from it. It adds contexts 80/81 and displayable 98, drops stock context 34, and gates
+`switchContext`. Its only effect on the HUD is the `rgd_blank.png` "presentation ready" gate (above), which a one-method byte patch removes. Without the override the
+display manager is exactly stock.
+
+**`ClusterService` — needed, but not as upstream shipped it.** It is the jar's bootstrap: its `setCombiBAPService` hands the BAP service to `NavStatusGate` and starts
+`RgdService`, and it exposes `getCombiBAPListenerCombiService` (and, for optional features, `setRgiDataValid`, `getDSIResponseContainer`, `rgdRefreshManeuverDistance`, the GAL hold).
+A source-level diff against the stock class shows these *other* differences that change native behaviour on this car:
+
+| Difference from stock | Effect | Action |
+| --- | --- | --- |
+| 4-arg `Util.formatDistance` (above) | breaks distance-to-destination | patch to the 5-arg overload |
+| `satMapProviderChanged = true` and `setOnlineNavigationState(n==1 && !changed)` | online-navigation state reported as false; nothing on this unit clears the flag | default the flag to false (restores stock) |
+| `updateRgActive(false)` also calls `updateDestinationInfo(null,0,0)` | clears BAP destination info when guidance ends | keep (it helps the HUD clear) but note it also applies to native routes |
+| `onMagnificationChanged` → `ScreenModule.onRollerZoom` | no-op without `/dev/shmem/altscreen_live` | harmless |
+| `getInvalidDistance("","")` → `""` | identical result | none |
+| logging helpers, GAL hold | inert unless `rgd_stock_info` | none |
+
+Proposed v4 jar (not built): v3 + patch 5 (`staticOverlayReady()` → true) + the DisplayManager classes removed + the two `ClusterService` fixes; `rgd_blank.png` no longer installed.
+Replacing `ClusterService` with a converted copy of the unit's own class was considered and rejected: an earlier converted-class experiment crashed navigation
+([open-issues.md](open-issues.md)), so a javac-built class with two verified byte fixes is the lower risk.
