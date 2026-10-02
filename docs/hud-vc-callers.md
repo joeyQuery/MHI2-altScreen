@@ -51,7 +51,7 @@ Both are decompiled from upstream's car (an A3 on a different HMI build) and sha
 ## Consequences for the small-dial arrow
 
 The arrow comes from row 1. Options, from least to most invasive: (a) blank the descriptor symbol on the small dials only
-([`tools/HudSymbolPatch.java`](../tools/HudSymbolPatch.java), v3 — untested; may blank the HUD too if it reads the same field); (b) find the BAP state that
+([`tools/HudJarPatch.java`](../tools/HudJarPatch.java) patch A — untested; may blank the HUD too if it reads the same field); (b) find the BAP state that
 decides whether the cluster draws a maneuver on the small dials. Neither has been run on the car.
 
 ## Which HMI classes the jar should and should not override (linkage audit)
@@ -82,6 +82,10 @@ A source-level diff against the stock class shows these *other* differences that
 | `getInvalidDistance("","")` → `""` | identical result | none |
 | logging helpers, GAL hold | inert unless `rgd_stock_info` | none |
 
-Proposed v4 jar (not built): v3 + patch 5 (`staticOverlayReady()` → true) + the DisplayManager classes removed + the two `ClusterService` fixes; `rgd_blank.png` no longer installed.
+**v4 jar (built 2026-10-02, not yet run on the car):** [`tools/HudJarPatch.java`](../tools/HudJarPatch.java) applies, after the three byte patches of `patch_rgd_hook_jar.py`:
+A small-dial symbol blanking, B `staticOverlayReady()` → true, C the 5-arg `formatDistance`, D `hasSatMapProviderChanged()` → false, E the three `DisplayManagerMIB2High*` classes
+removed. `rgd_blank.png` is no longer installed. Re-running `LinkCheck` on the v4 jar leaves three unresolved references: the diagnostic `isSyncCancelled()` and two references to the
+*stock* `DisplayManagerMIB2High` (`currentSkin()` inside a `try/catch Throwable`, and `isManeuverOverlayAvailable()` in `ScreenModule` code that returns earlier while `ctxEnabled()` is false) —
+neither is reachable in the HUD-only path.
 Replacing `ClusterService` with a converted copy of the unit's own class was considered and rejected: an earlier converted-class experiment crashed navigation
 ([open-issues.md](open-issues.md)), so a javac-built class with two verified byte fixes is the lower risk.

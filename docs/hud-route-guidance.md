@@ -48,6 +48,12 @@ restores `mm-ipod` from `.orig` and deletes the hook files. Off switch without r
 Patch 1 alone was **v1** (157574 bytes in the build used); patches 1–3 are **v2** (157577 bytes). The script reproduces the v2 class contents
 byte for byte (zip metadata differs).
 
+## v4 (2026-10-02, built, not yet tested)
+
+Goal restated by the owner: **no cluster-drawn directions on the small dials** (they conflict with the altscreen), acceptable on the big dials. v4 does this by sending the cluster a blank
+maneuver symbol only while `/tmp/mibr-alt111-lastlayout` is `0`, and also stops overriding the display manager and fixes two incompatibilities in the replaced `ClusterService`
+([hud-vc-callers.md](hud-vc-callers.md)). Open question for the test: whether the HUD, which probably reads the same maneuver descriptor, also blanks on the small dials.
+
 ## Findings
 
 - **HUD works** with v1: owner report "The HUD works perfectly". The log shows `RG presentation CONFIRMED: BAP snapshot published`, then a stream of

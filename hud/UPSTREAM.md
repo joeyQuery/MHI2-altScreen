@@ -9,3 +9,9 @@ The route-guidance work builds on **chefranov/mhi2-au37x-carplay**, commit `8968
 | `bin/rgd_blank.png` | (fetch upstream) |
 
 Patch: `python3 tools/patch_rgd_hook_jar.py rgd_hook.jar rgd_hook.hud.jar`. Three byte patches: `ctxEnabled` → false; `pushClusterManeuver` → return; `DEFERRED_SHUTDOWN_MS` 6000 → 3000. Class contents match the jar we tested on the unit (zip-level SHA-256 differs only by metadata; the tested jar was `84fe27f476e387d8a2c5c99fce67d9fd61f04e57013079d84c25a422891d871a`).
+
+## Current build (v4)
+
+`python3 tools/patch_rgd_hook_jar.py rgd_hook.jar stage1.jar`, then `java -cp asm.jar:. HudJarPatch stage1.jar rgd_hook.jar` (compile `tools/HudJarPatch.java` against ASM 9).
+Stage-1 output SHA-256 `33cb9ea8c087c1a8fb5eaeac68238d5a14dd9fecec0f055e015169e1d8e9316c`; v4 jar `8121e0b1b59c02b44aef1bc486d4a1679cffb6ea07d2f5c6ba9fa5a8db2a2885` (zip metadata may differ on your machine; compare class contents).
+`rgd_blank.png` is no longer used.

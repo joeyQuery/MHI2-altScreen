@@ -1,9 +1,8 @@
 #!/bin/sh
 # HUD-only CarPlay route guidance (MU0678).  Run ON THE UNIT:
 #   sh /tmp/hud/hud_install.sh
-# Installs the route-guidance native hook (into mm-ipod), the HMI jar (patched:
-# no cluster context switching, so the altscreen is not touched) and the blank
-# overlay bitmap.  No renderer.  Rollback: sh /tmp/hud/hud_rollback.sh
+# Installs the route-guidance native hook (into mm-ipod) and the HMI jar (patched:
+# no cluster context switching, no display-manager override, so the altscreen is not touched).  No renderer, no overlay bitmap.  Rollback: sh /tmp/hud/hud_rollback.sh
 # POSIX sh only; the unit has no sed/awk/printf/dirname.
 set -u
 SRC=${0%/*}
@@ -17,7 +16,7 @@ say() { echo "$@"; echo "$@" >> "$LOG" 2>/dev/null; }
 die() { say "!! $*"; say "!! ABORTED"; exit 1; }
 : > "$LOG" 2>/dev/null
 
-for f in rgd_hook.jar librgd_hook.so rgd_blank.png; do
+for f in rgd_hook.jar librgd_hook.so; do
     [ -f "$BIN/$f" ] || die "missing $BIN/$f"
 done
 [ -d /mnt/app/eso ] || die "/mnt/app/eso not found"
@@ -54,9 +53,9 @@ fi
 cp "$BIN/librgd_hook.so" "$LIB/librgd_hook.so.new" || die "copy librgd_hook.so failed"
 chmod 755 "$LIB/librgd_hook.so.new"
 mv "$LIB/librgd_hook.so.new" "$LIB/librgd_hook.so" || die "install librgd_hook.so failed"
-cp "$BIN/rgd_blank.png" "$LIB/rgd_blank.png" || die "copy rgd_blank.png failed"
-chmod 644 "$LIB/rgd_blank.png"
-say "ok: $LIB/librgd_hook.so  $LIB/rgd_blank.png"
+# v4 does not use the maneuver overlay bitmap; remove one left by an earlier install so the stock display manager sees nothing new
+rm -f "$LIB/rgd_blank.png"
+say "ok: $LIB/librgd_hook.so"
 
 # the shim (no renderer supervisor)
 cat > "$SBIN/mm-ipod.new" <<'SHIM'
