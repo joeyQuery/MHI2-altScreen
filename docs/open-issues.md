@@ -21,6 +21,13 @@ Findings [runtime unless marked]:
   the cluster showed **0 values** — and the car's **navigation went into a crash state**; the jar was removed. Lessons: the ECU does not hide the bar when data stops; a
   jxe2jar-converted class is not a safe drop-in for the ROM class.
 - Lead: the bar's size and position change with the dial layout, so the cluster knows the layout.
+- **Upstream's contexts 80/81 are not the lever [static, 2026-10-02].** The HUD jar declares 80 = {97, 98, 101, 102, 33} and 81 = {97, 98, 101, 102, 96}
+  (see [hud-vc-callers.md](hud-vc-callers.md)). They differ from 73–77 only by swapping displayable 20 for the jar's own 97/98 (maneuver tile + blank overlay);
+  none of the displayables in them is the bar, and context 76 = {58} alone already shows the bar. Upstream's tile targets the small "well" beside the dial on
+  a different cluster type, so it is no comparison for the large-map layout.
+- **Where the bar probably comes from [inferred].** It stays with only layer 58 on display 4, so the cluster ECU draws it over the LVDS picture, driven by BAP
+  (`INFO_STATES`, `MAP_PRESENTATION` — which the cluster sends *to* the head unit, `ALTITUDE`, position, scale, compass). Untested lever: other `INFO_STATES`
+  values (0/1/2/3 are placeholder pages) and whether any of those pages omits the bar; the compass window seen with value 6 has not been checked for the bar.
 
 Options [inferred — none tested]: keep NavActiveIgnore (current); patch `CombiBAPListener.setMapPresentation/setMapVisibility/setGALState` to announce "map visible, no
 supplementary view"; look for a BAP `MAP_PRESENTATION` value without the bar.
