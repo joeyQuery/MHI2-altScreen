@@ -1,0 +1,67 @@
+# View-area intents on turns change
+# Topic: GEN2 VIEW turns=N -> viewAreaIndex=M
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> grep -e "command=" -e "AltScreen stream" -e "TEARDOWN" -e "GEN2 VIEW" -e "intent" -e "showUI" -e "UI command" /tmp/altscreen111.log | grep -v -e updateFeedback -e "FLIGHT DUMP" | cut -c1-170 | head -60
+20.009 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8458 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+20.158 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8458 command=startSession commandRef=783a3188 rc=0 out=0
+20.226 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8458 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+20.304 [altscreen111] gen2 UI command dispatched type=1 request=1 awaiting completion
+20.310 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8458 command=modesChanged commandRef=300758 rc=0 out=0 private111=1
+20.320 [altscreen111] GEN2 VIEW turns=0 -> viewAreaIndex=0 intent rc=0
+20.337 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8458 command=disableBluetooth commandRef=300f68 rc=0 out=0
+20.343 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8458 command=disableBluetooth commandRef=300f68 rc=0 out=0 private111=1
+20.346 [altscreen111] gen2 UI command dispatched type=3 request=2 awaiting completion
+20.379 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8458 command=suggestUI commandRef=300c38 rc=-6714 out=0
+20.381 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8458 command=suggestUI commandRef=300c38 rc=0 out=0 private111=1
+20.394 [altscreen111] gen2 UI command dispatched type=4 request=3 awaiting completion
+20.479 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8458 command=modesChanged commandRef=300800 rc=0 out=0 private111=1
+20.482 [altscreen111] GEN2 VIEW turns=0 -> viewAreaIndex=0 intent rc=0
+20.498 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8458 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+20.591 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8458 command=modesChanged commandRef=300fc8 rc=0 out=0 private111=1
+20.646 [altscreen111] GEN2 VIEW turns=1 -> viewAreaIndex=1 intent rc=0
+20.853 [altscreen111] gen2 UI command dispatched type=3 request=4 awaiting completion
+20.912 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8458 command=suggestUI commandRef=3002f0 rc=-6714 out=0
+20.932 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8458 command=suggestUI commandRef=3002f0 rc=0 out=0 private111=1
+30.555 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8458 command=suggestUI commandRef=3000e0 rc=-6714 out=0
+30.612 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8458 command=suggestUI commandRef=3000e0 rc=0 out=0 private111=1
+173.997 [altscreen111] GEN2 TEARDOWN entry request=NULL reason=-6753 alt=0 main110=0 otherStreams=0 private111_decoupled=1
+174.031 [altscreen111] GEN2 TEARDOWN whole-session -> private111 cleanup
+179.238 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+179.335 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=startSession commandRef=783a3188 rc=0 out=0
+179.368 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+179.406 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=modesChanged commandRef=2f11b8 rc=0 out=0 private111=1
+179.410 [altscreen111] GEN2 VIEW turns=0 -> viewAreaIndex=0 intent rc=0
+179.414 [altscreen111] gen2 UI command dispatched type=1 request=1 awaiting completion
+179.426 [altscreen111] gen2 UI command dispatched type=3 request=2 awaiting completion
+179.436 [altscreen111] gen2 UI command dispatched type=4 request=3 awaiting completion
+179.572 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=disableBluetooth commandRef=2f1188 rc=0 out=0
+179.575 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=disableBluetooth commandRef=2f1188 rc=0 out=0 private111=1
+179.699 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=modesChanged commandRef=2f14d0 rc=0 out=0 private111=1
+179.763 [altscreen111] GEN2 VIEW turns=1 -> viewAreaIndex=1 intent rc=0
+179.808 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=modesChanged commandRef=2f1db8 rc=0 out=0 private111=1
+179.808 [altscreen111] gen2 UI command dispatched type=3 request=4 awaiting completion
+179.878 [altscreen111] GEN2 VIEW turns=1 -> viewAreaIndex=1 intent rc=0
+179.975 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+179.996 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=suggestUI commandRef=2f1c80 rc=-6714 out=0
+179.998 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=suggestUI commandRef=2f1c80 rc=0 out=0 private111=1
+180.420 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=suggestUI commandRef=2f60f8 rc=-6714 out=0
+180.421 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=suggestUI commandRef=2f60f8 rc=0 out=0 private111=1
+190.383 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=suggestUI commandRef=2f6200 rc=-6714 out=0
+190.385 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=suggestUI commandRef=2f6200 rc=0 out=0 private111=1
+207.301 [altscreen111] GEN2 TEARDOWN entry request=NULL reason=-6753 alt=0 main110=0 otherStreams=0 private111_decoupled=1
+207.305 [altscreen111] GEN2 TEARDOWN whole-session -> private111 cleanup
+217.636 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+217.738 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=startSession commandRef=783a3188 rc=0 out=0
+217.786 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+217.821 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=modesChanged commandRef=2f0488 rc=0 out=0 private111=1
+217.829 [altscreen111] GEN2 VIEW turns=0 -> viewAreaIndex=0 intent rc=0
+217.834 [altscreen111] gen2 UI command dispatched type=1 request=1 awaiting completion
+217.849 [altscreen111] gen2 UI command dispatched type=3 request=2 awaiting completion
+217.850 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=disableBluetooth commandRef=2f0ef0 rc=0 out=0
+217.856 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=disableBluetooth commandRef=2f0ef0 rc=0 out=0 private111=1
+217.867 [altscreen111] gen2 UI command dispatched type=4 request=3 awaiting completion
+217.982 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d510 command=suggestUI commandRef=2f0e90 rc=-6714 out=0
+217.985 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=suggestUI commandRef=2f0e90 rc=0 out=0 private111=1
+root@mmx:/mnt/app/root> 

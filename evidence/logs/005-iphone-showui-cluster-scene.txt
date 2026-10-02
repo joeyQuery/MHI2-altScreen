@@ -1,0 +1,118 @@
+# iPhone log: showUI + DBInstrumentCluster scene
+# Topic: Phone creates the instrument-cluster scene for our alt UUID
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+user@mac ~ % log show --archive ~/carplay-phone5.logarchive --info --debug --style compact --predicate '(eventMessage CONTAINS[c] "carEndpoint" OR eventMessage CONTAINS[c] "altScreen" OR eventMessage CONTAINS[c] "instrumentcluster" OR eventMessage CONTAINS[c] "Activation Failed" OR eventMessage CONTAINS[c] "ScreenStream" OR eventMessage CONTAINS[c] "showUI") AND process != "runningboardd" AND process != "powerexperienced" AND process != "mediaremoted" AND process != "backboardd" AND process != "contextstored" AND process != "distnoted"' | sed -n '30,140p'
+    "sessionManagement",
+    "logTransfer",
+    "iAPChannel"
+]
+2026-09-29 10:55:02.779 E  airplayd[10072:2b158a] [com.apple.airplay:APSLogUtils] carEndpoint_copyNonStateProperty:6793: got error -12784/0xFFFFCE10 kCMBaseObjectError_PropertyNotFound
+2026-09-29 10:55:03.112 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597] FeatureKey list negotiated:[
+    "altScreen",
+    "viewAreas"
+]
+2026-09-29 10:55:03.115 E  airplayd[10072:2b16d2] [com.apple.airplay:APSLogUtils] carEndpoint_copyNonStateProperty:6793: got error -12784/0xFFFFCE10 kCMBaseObjectError_PropertyNotFound
+2026-09-29 10:55:03.115 Df CarPlay[597:2b140a] [com.apple.CarPlayServices:CarPlayServices] serviceFetchInstrumentClusterURLs: updating geo
+2026-09-29 10:55:03.124 Df CarPlay[597:4553] [com.apple.CarPlayServices:CarPlayServices] serviceFetchInstrumentClusterURLs: URLs supported: (
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster/instructioncard",
+    "maps:/car/instrumentcluster"
+)
+2026-09-29 10:55:03.124 Df airplayd[10072:2b17e4] [com.apple.airplay:APCarPlayCarServicesInterface] Fetching Cluster Urls: [
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster/instructioncard",
+    "maps:/car/instrumentcluster"
+]
+2026-09-29 10:55:03.124 Df airplayd[10072:2b17e4] [com.apple.carkit:General] [CARInstrumentClusterURLController] invalidating connection.
+2026-09-29 10:55:03.257 Df airplayd[10072:2b16a4] [com.apple.airplay:APSPowerAssertion] [0x923B:com.apple.APEndpointCarPlay.AltScreen] Raise requested; raising.
+2026-09-29 10:55:03.298 Df airplayd[10072:2b16a0] [com.apple.airplay:APEndpointCarPlay] [0x0597] Unhandled command 'showUI' dict '{
+    "type" : "showUI",
+    "params" : 
+    {
+        "url" : "maps:/car/instrumentcluster",
+        "uuid" : "b7e6c5a0-2222-4000-8000-000000000002",
+    },
+}
+', forwarding to clients
+2026-09-29 10:55:03.298 Df airplayd[10072:2b16d2] [com.apple.airplay:APEndpointCarPlay] [0x0597] Posting notification 'UnknownRemoteEvent' with params {
+    "type" : "showUI",
+    "ActivationSeed" : 1,
+    "params" : 
+    {
+        "url" : "maps:/car/instrumentcluster",
+        "uuid" : "b7e6c5a0-2222-4000-8000-000000000002",
+    },
+}
+2026-09-29 10:55:03.389 Df CarPlay[597:2b1864] [com.apple.carkit:General] ShowUI requested with <private>
+2026-09-29 10:55:03.488 Df CarPlay[597:4553] [com.apple.UIKit:KBProxyForwarding] <StateMachine:0x76c5d12c0> Created with presentation environment: <0x76c897600:<_UISceneKeyboardProxyLayerForwardingPresentationScene: 0x76c897600> Tracking scene: <FBScene: 0x76d0bbc00; com.apple.DashBoard.scene-workspace.root:DBInstrumentCluster-CarInstruments[4-7]>>
+2026-09-29 10:55:03.489 Df CarPlay[597:4553] [com.apple.FrontBoard:Scene] [com.apple.DashBoard.scene-workspace.root:DBInstrumentCluster-CarInstruments[4-7]][1] Scene activated.
+2026-09-29 10:55:03.489 Df CarPlay[597:4553] [com.apple.FrontBoard:Scene] [com.apple.DashBoard.scene-workspace.root:DBInstrumentCluster-CarInstruments[4-7]] scene content state changed: preparing
+2026-09-29 10:55:03.489 Df CarPlay[597:4553] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 0, <UIWindowScene: 0x76cf13000> (DBInstrumentCluster-CarInstruments[4-7])
+2026-09-29 10:55:03.489 Df CarPlay[597:4553] [com.apple.BacklightServices:scenes] 0x76c429b30 setDelegate:<0x76c428ff0 _UIBacklightEnvironment> hasDelegate:YES for environment:DBInstrumentCluster-CarInstruments[4-7]
+2026-09-29 10:55:03.489 Df CarPlay[597:4553] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 0, <UIWindowScene: 0x76cf13000> (DBInstrumentCluster-CarInstruments[4-7])
+2026-09-29 10:55:03.489 Df CarPlay[597:4553] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 0, <UIWindowScene: 0x76cf13000> (DBInstrumentCluster-CarInstruments[4-7])
+2026-09-29 10:55:03.490 Df CarPlay[597:4553] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: DBInstrumentCluster-CarInstruments[4-7]  persistentID: DBInstrumentCluster-CarInstruments[4-7]
+2026-09-29 10:55:03.490 Df CarPlay[597:4553] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 0, <UIWindowScene: 0x76cf13000> (DBInstrumentCluster-CarInstruments[4-7])
+2026-09-29 10:55:03.490 Df CarPlay[597:4553] [com.apple.FrontBoard:Scene] [com.apple.DashBoard.scene-workspace.root:DBInstrumentCluster-CarInstruments[4-7]] scene content state changed: ready
+2026-09-29 10:55:03.492 Df CarPlay[597:4553] [com.apple.CarPlayApp:Default] [DBInstrumentCluster] Updating session settings for root scene com.apple.CarPlayApp.non-launching-service/com.apple.DashBoard.scene-workspace.root:DBInstrumentCluster-CarInstruments%5B4-7%5D: (availableInteractionModels: (null), primaryInteractionModel: (null), touchLevel: unknown, touchpad count 1)
+2026-09-29 10:55:03.492 Df CarPlay[597:4553] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: DBInstrumentCluster-CarInstruments[4-7]  persistentID: DBInstrumentCluster-CarInstruments[4-7]
+2026-09-29 10:55:03.493 Df CarPlay[597:4553] [com.apple.CarPlayApp:InstrumentCluster] DBInstrumentCluster updating rootScene user interface style to dark; rootScene: <private>
+2026-09-29 10:55:03.493 Df CarPlay[597:4553] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: DBInstrumentCluster-CarInstruments[4-7]  persistentID: DBInstrumentCluster-CarInstruments[4-7]
+2026-09-29 10:55:03.493 Df CarPlay[597:4553] [com.apple.UIKit:InterfaceStyle] Scene did update interface style to 2, <UIWindowScene: 0x76cf13000> (DBInstrumentCluster-CarInstruments[4-7])
+2026-09-29 10:55:03.494 Df CarPlay[597:4553] [com.apple.UIKit:InterfaceStyle] Push traits update to screen for new style 2, <UIWindowScene: 0x76cf13000> (DBInstrumentCluster-CarInstruments[4-7])
+2026-09-29 10:55:03.494 Df airplayd[10072:2b16a0] [com.apple.airplay:APEndpointCarPlay] [0x0597] carEndpoint_SetProperty called, Adding to DisplayCornerMasks Dictionary, count = 1, storage->state.displayCornerMasks = 0x0000000000000000
+2026-09-29 10:55:03.494 Df airplayd[10072:2b16a0] [com.apple.airplay:APEndpointCarPlay] [0x0597] carEndpoint_SetProperty called, Setting DisplayCornerMasks, DisplayUUID: b7e6c5a0-2222-4000-8000-000000000002
+2026-09-29 10:55:03.496 Df CarPlay[597:4553] [com.apple.CarPlayApp:InstrumentCluster] No previous showUI URL. Using initialURL: maps:/car/instrumentcluster
+2026-09-29 10:55:03.496 Df CarPlay[597:4553] [com.apple.CarPlayApp:InstrumentCluster] Received showUI for maps:/car/instrumentcluster
+2026-09-29 10:55:03.496 Df CarPlay[597:4553] [com.apple.CarPlayApp:Workspace] <DashBoard.DBInstrumentClusterSceneViewController: 0x76c4cc000; com.apple.Maps> Scene update for app: <private> - frame: {{0, 0}, {720, 228}}, safe area insets: {0, 0, 0, 0}
+2026-09-29 10:55:03.496 Df CarPlay[597:4553] [com.apple.CarPlayApp:Appearance] <DashBoard.DBInstrumentClusterSceneViewController: 0x76c4cc000; com.apple.Maps> Scene update for app: <private> to style 2
+2026-09-29 10:55:03.496 Df CarPlay[597:4553] [com.apple.CarPlayApp:Workspace] <DashBoard.DBInstrumentClusterSceneViewController: 0x76c4cc000; com.apple.Maps> Scene update setting frame rate limit: (null)
+2026-09-29 10:55:03.496 Df CarPlay[597:4553] [com.apple.CarPlayApp:InstrumentCluster] <DashBoard.DBInstrumentClusterSceneViewController: 0x76c4cc000; com.apple.Maps> foregrounding cluster scene for app <DBApplication: 0x76cc98bd0; com.apple.Maps> and url maps:/car/instrumentcluster in display location: Instrument Cluster
+2026-09-29 10:55:03.498 Df CarPlay[597:4553] [com.apple.CarPlayApp:Workspace] <DashBoard.DBInstrumentClusterSceneViewController: 0x76c4cc000; com.apple.Maps> Recreating presenter for scene com.apple.DashBoard.scene-workspace.default1:CarInstruments[4-7]:com.apple.Maps
+2026-09-29 10:55:03.498 Df CarPlay[597:4553] [com.apple.UIKit:KBProxyForwarding] <ForwardingPresentationScene:0x76c896100> Prioritized presenter: <_UIScenePresenter: 0x76e32ad10; identifier: <DashBoard.DBInstrumentClusterSceneViewController: 0x76c4cc000>-168; sortContext: 1>.
+2026-09-29 10:55:03.498 Df CarPlay[597:4553] [com.apple.FrontBoard:Scene] [com.apple.DashBoard.scene-workspace.default1:CarInstruments[4-7]:com.apple.Maps] Setting parent scene: com.apple.DashBoard.scene-workspace.root:DBInstrumentCluster-CarInstruments[4-7]
+2026-09-29 10:55:03.498 Df CarPlay[597:4553] [com.apple.FrontBoard:Scene] [com.apple.DashBoard.scene-workspace.default1:CarInstruments[4-7]:com.apple.Maps] propagating 6 settings from com.apple.DashBoard.scene-workspace.root:DBInstrumentCluster-CarInstruments[4-7]
+2026-09-29 10:55:03.498 Df CarPlay[597:4553] [com.apple.UIKit:KBProxyForwarding] <StateMachine:0x76c9f6480> Hosting window did change to <DashBoard.DBInstrumentClusterWindow: 0x76e19d000; baseClass = UIWindow; frame = (0 0; 720 228); autoresize = W+H; gestureRecognizers = <NSArray: 0x76c6fdb40>; backgroundColor = UIExtendedGrayColorSpace 0 1; layer = <UIWindowLayer: 0x76c6ff680>>.
+2026-09-29 10:55:03.498 Df CarPlay[597:4553] [com.apple.UIKit:KBProxyForwarding] <StateMachine:0x76c9f6480> Hosting environment did change to <0x76d33d7a0:FBSScene:DBInstrumentCluster-CarInstruments[4-7]>.
+2026-09-29 10:55:03.503 Df Maps[10914:2986f7] [com.apple.CarPlayUIServices:Appearance] Initial map style for: <CarInstrumentClusterWindow: 0xc5510dc00; baseClass = UIWindow; frame = (0 0; 720 228); hidden = YES; autoresize = W+H; gestureRecognizers = <NSArray: 0xc56b893e0>; layer = <UIWindowLayer: 0xc4b8722c0>> is: unknown
+2026-09-29 10:55:03.503 Df Maps[10914:2986f7] [com.apple.CarPlayUIServices:Appearance] Updating map style for <CarInstrumentClusterWindow: 0xc5510dc00; baseClass = UIWindow; frame = (0 0; 720 228); hidden = YES; autoresize = W+H; gestureRecognizers = <NSArray: 0xc56b893e0>; layer = <UIWindowLayer: 0xc4b8722c0>>, to style: unknown
+2026-09-29 10:55:03.503 Df Maps[10914:2986f7] [com.apple.CarPlayUIServices:Appearance] Trait collection for <CarInstrumentClusterWindow: 0xc5510dc00; baseClass = UIWindow; frame = (0 0; 720 228); hidden = YES; autoresize = W+H; gestureRecognizers = <NSArray: 0xc56b893e0>; layer = <UIWindowLayer: 0xc4b8722c0>>, is style: unknown
+2026-09-29 10:55:03.540 Df CarPlay[597:4553] [com.apple.CarPlayApp:Session] [DBSessionController] Saving showUI URL to defaults: <private> for identifier: <private>
+2026-09-29 10:55:03.651 Df Maps[10914:2986f7] [com.apple.Maps:CarPlay] [0xc56301000] CarHybridInstrumentClusterNavigationModeController<0xc4ff08d00> does not respond to audioSettingsCurrentState. Ignoring the call
+2026-09-29 10:55:03.651 Df Maps[10914:2986f7] [com.apple.Maps:CarPlay] [0xc56301000] CarHybridInstrumentClusterNavigationModeController<0xc4ff08d00>'s mapControls configuration doesn't have audio controls. Ignoring the call.
+2026-09-29 10:55:03.654 Df Maps[10914:2986f7] [com.apple.Maps:CarPlay] [0xc56301000] CarHybridInstrumentClusterNavigationModeController<0xc4ff08d00> does not respond to audioSettingsCurrentState. Ignoring the call
+2026-09-29 10:55:03.654 Df Maps[10914:2986f7] [com.apple.Maps:CarPlay] [0xc56301000] CarHybridInstrumentClusterNavigationModeController<0xc4ff08d00>'s mapControls configuration doesn't have audio controls. Ignoring the call.
+2026-09-29 10:55:03.677 Df CarPlay[597:4553] [com.apple.CarPlayApp:Workspace] <DashBoard.DBInstrumentClusterSceneViewController: 0x76c4cc000; com.apple.Maps> Update for scene: com.apple.DashBoard.scene-workspace.default1:CarInstruments[4-7]:com.apple.Maps completed with success: YES
+2026-09-29 10:55:03.690 Df Maps[10914:2986f7] [com.apple.Maps:CarPlay] [0xc56301000] CarHybridInstrumentClusterNavigationModeController<0xc4ff08d00> does not respond to audioSettingsCurrentState. Ignoring the call
+2026-09-29 10:55:03.690 Df Maps[10914:2986f7] [com.apple.Maps:CarPlay] [0xc56301000] CarHybridInstrumentClusterNavigationModeController<0xc4ff08d00>'s mapControls configuration doesn't have audio controls. Ignoring the call.
+2026-09-29 10:55:03.730 Df Maps[10914:2b17fa] [com.apple.carkit:General] suggestUI with urls = (
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster"
+)
+2026-09-29 10:55:03.735 Df CarPlay[597:2b1865] [com.apple.CarPlayServices:CarPlayServices] serviceFetchInstrumentClusterURLs: updating geo
+2026-09-29 10:55:03.735 Df CarPlay[597:4553] [com.apple.CarPlayServices:CarPlayServices] serviceFetchInstrumentClusterURLs: URLs supported: (
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster/instructioncard",
+    "maps:/car/instrumentcluster"
+)
+2026-09-29 10:55:03.735 Df Maps[10914:2b17fa] [com.apple.carkit:General] [CARInstrumentClusterURLController] invalidating connection.
+2026-09-29 10:55:03.810 Df Maps[10914:2986f7] [com.apple.carkit:General] In URLS: (
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster"
+), iOS URLS: (
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster/instructioncard",
+    "maps:/car/instrumentcluster"
+), info response URLs: (null)
+2026-09-29 10:55:03.810 Df Maps[10914:2986f7] [com.apple.carkit:General] Sanitized suggested URLs = (
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster"
+)
+2026-09-29 10:55:03.810 Df Maps[10914:2986f7] [com.apple.carkit:General] suggestUI URL list (
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster"
+), app supported list: (
+    "maps:/car/instrumentcluster/map",
+user@mac ~ % 

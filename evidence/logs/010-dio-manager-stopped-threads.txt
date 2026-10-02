@@ -1,0 +1,176 @@
+# pidin: dio_manager threads STOPPED
+# Topic: Two dio_manager pids, several threads stopped
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> pidin -p dio_manager                                                                   
+     pid tid name               prio STATE       Blocked                     
+ 4378757   1 n/apps/dio_manager  10r CONDVAR     (0xffbe0)                   
+ 4378757   2 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   3 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   4 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757   5 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757   6 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   7 n/apps/dio_manager  10r RECEIVE     1                           
+ 4378757   8 n/apps/dio_manager  10r REPLY       1171502                     
+ 4378757   9 n/apps/dio_manager  10r CONDVAR     (0x1bfa54)                  
+ 4378757  10 n/apps/dio_manager  10r CONDVAR     (0x1bfc58)                  
+ 4378757  11 n/apps/dio_manager  10r CONDVAR     (0x1bfe38)                  
+ 4378757  12 n/apps/dio_manager  10r CONDVAR     (0x1bf100)                  
+ 4378757  13 n/apps/dio_manager  10r REPLY       884772                      
+ 4378757  14 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757  15 n/apps/dio_manager  10r CONDVAR     (0x1bf380)                  
+ 4378757  16 n/apps/dio_manager  10r RECEIVE     4                           
+ 4378757  17 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  18 n/apps/dio_manager  10r CONDVAR     (0x202f18)                  
+ 4378757  19 n/apps/dio_manager  10r CONDVAR     (0x202648)                  
+ 4378757  20 n/apps/dio_manager  10r CONDVAR     (0x202520)                  
+ 4378757  21 n/apps/dio_manager  10r CONDVAR     (0x2023f8)                  
+ 4378757  22 n/apps/dio_manager  10r CONDVAR     (0x201d88)                  
+ 4378757  23 n/apps/dio_manager  10r RECEIVE     4                           
+ 4378757  24 n/apps/dio_manager  10r CONDVAR     (0x1fddcc)                  
+ 4378757  25 n/apps/dio_manager  10r CONDVAR     (0x1fd9fc)                  
+ 4378757  26 n/apps/dio_manager  10r REPLY       1785948                     
+ 4378757  27 n/apps/dio_manager  10r REPLY       1884199                     
+ 4378757  28 n/apps/dio_manager  10r REPLY       1380356                     
+ 4378757  29 n/apps/dio_manager  10r CONDVAR     (0x2efd98)                  
+ 4378757  30 n/apps/dio_manager  10r SIGWAITINFO                             
+ 4378757  31 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  32 n/apps/dio_manager  10r JOIN        36                          
+ 4378757  33 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  34 n/apps/dio_manager  19f SIGWAITINFO                             
+ 4378757  35 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  36 n/apps/dio_manager  17f CONDVAR     (0x2daf50)                  
+ 4378757  37 n/apps/dio_manager  19f CONDVAR     (0x2dae90)                  
+ 4378757  38 n/apps/dio_manager  21f CONDVAR     (0x2dafd0)                  
+ 4378757  39 n/apps/dio_manager  17f STOPPED                                 
+ 4378757  47 n/apps/dio_manager  18f SIGWAITINFO                             
+ 4378757  48 n/apps/dio_manager  18f STOPPED                                 
+root@mmx:/mnt/app/root> pidin -p dio_manager 
+     pid tid name               prio STATE       Blocked                     
+ 4378757   1 n/apps/dio_manager  10r CONDVAR     (0xffbe0)                   
+ 4378757   2 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   3 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   4 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757   5 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757   6 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   7 n/apps/dio_manager  10r RECEIVE     1                           
+ 4378757   8 n/apps/dio_manager  10r REPLY       1171502                     
+ 4378757   9 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  10 n/apps/dio_manager  10r CONDVAR     (0x1bfc58)                  
+ 4378757  11 n/apps/dio_manager  10r CONDVAR     (0x1bfe38)                  
+ 4378757  12 n/apps/dio_manager  10r CONDVAR     (0x1bf100)                  
+ 4378757  13 n/apps/dio_manager  10r REPLY       884772                      
+ 4378757  14 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757  15 n/apps/dio_manager  10r CONDVAR     (0x1bf380)                  
+ 4378757  16 n/apps/dio_manager  10r RECEIVE     4                           
+ 4378757  17 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  18 n/apps/dio_manager  10r CONDVAR     (0x202f18)                  
+ 4378757  19 n/apps/dio_manager  10r CONDVAR     (0x202648)                  
+ 4378757  20 n/apps/dio_manager  10r CONDVAR     (0x202520)                  
+ 4378757  21 n/apps/dio_manager  10r CONDVAR     (0x2023f8)                  
+ 4378757  22 n/apps/dio_manager  10r CONDVAR     (0x201d88)                  
+ 4378757  23 n/apps/dio_manager  10r RECEIVE     4                           
+ 4378757  24 n/apps/dio_manager  10r CONDVAR     (0x1fddcc)                  
+ 4378757  25 n/apps/dio_manager  10r CONDVAR     (0x1fd9fc)                  
+ 4378757  26 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  27 n/apps/dio_manager  10r REPLY       1884199                     
+ 4378757  28 n/apps/dio_manager  10r REPLY       1380356                     
+ 4378757  29 n/apps/dio_manager  10r CONDVAR     (0x2efd98)                  
+ 4378757  30 n/apps/dio_manager  10r SIGWAITINFO                             
+ 4378757  31 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  32 n/apps/dio_manager  10r JOIN        36                          
+ 4378757  33 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  34 n/apps/dio_manager  19f SIGWAITINFO                             
+ 4378757  35 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  36 n/apps/dio_manager  17f STOPPED                                 
+ 4378757  37 n/apps/dio_manager  19f CONDVAR     (0x2dae90)                  
+ 4378757  38 n/apps/dio_manager  21f CONDVAR     (0x2dafd0)                  
+ 4378757  39 n/apps/dio_manager  17f STOPPED                                 
+ 4378757  47 n/apps/dio_manager  18f SIGWAITINFO                             
+ 4378757  48 n/apps/dio_manager  18f STOPPED                                 
+root@mmx:/mnt/app/root> pidin -p dio_manager 
+     pid tid name               prio STATE       Blocked                     
+ 4378757   1 n/apps/dio_manager  10r CONDVAR     (0xffbe0)                   
+ 4378757   2 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   3 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   4 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757   5 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757   6 n/apps/dio_manager  10r STOPPED                                 
+ 4378757   7 n/apps/dio_manager  10r RECEIVE     1                           
+ 4378757   8 n/apps/dio_manager  10r REPLY       1171502                     
+ 4378757   9 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  10 n/apps/dio_manager  10r CONDVAR     (0x1bfc58)                  
+ 4378757  11 n/apps/dio_manager  10r CONDVAR     (0x1bfe38)                  
+ 4378757  12 n/apps/dio_manager  10r CONDVAR     (0x1bf100)                  
+ 4378757  13 n/apps/dio_manager  10r REPLY       884772                      
+ 4378757  14 n/apps/dio_manager  10r REPLY       438295                      
+ 4378757  15 n/apps/dio_manager  10r CONDVAR     (0x1bf380)                  
+ 4378757  16 n/apps/dio_manager  10r RECEIVE     4                           
+ 4378757  17 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  18 n/apps/dio_manager  10r CONDVAR     (0x202f18)                  
+ 4378757  19 n/apps/dio_manager  10r CONDVAR     (0x202648)                  
+ 4378757  20 n/apps/dio_manager  10r CONDVAR     (0x202520)                  
+ 4378757  21 n/apps/dio_manager  10r CONDVAR     (0x2023f8)                  
+ 4378757  22 n/apps/dio_manager  10r CONDVAR     (0x201d88)                  
+ 4378757  23 n/apps/dio_manager  10r RECEIVE     4                           
+ 4378757  24 n/apps/dio_manager  10r CONDVAR     (0x1fddcc)                  
+ 4378757  25 n/apps/dio_manager  10r CONDVAR     (0x1fd9fc)                  
+ 4378757  26 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  27 n/apps/dio_manager  10r REPLY       1884199                     
+ 4378757  28 n/apps/dio_manager  10r REPLY       1380356                     
+ 4378757  29 n/apps/dio_manager  10r CONDVAR     (0x2efd98)                  
+ 4378757  30 n/apps/dio_manager  10r SIGWAITINFO                             
+ 4378757  31 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  32 n/apps/dio_manager  10r JOIN        36                          
+ 4378757  33 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  34 n/apps/dio_manager  19f STOPPED                                 
+ 4378757  35 n/apps/dio_manager  10r STOPPED                                 
+ 4378757  36 n/apps/dio_manager  17f STOPPED                                 
+ 4378757  37 n/apps/dio_manager  19f CONDVAR     (0x2dae90)                  
+ 4378757  38 n/apps/dio_manager  21f CONDVAR     (0x2dafd0)                  
+ 4378757  39 n/apps/dio_manager  17f STOPPED                                 
+ 4378757  47 n/apps/dio_manager  18f SIGWAITINFO                             
+ 4378757  48 n/apps/dio_manager  18f STOPPED                                 
+root@mmx:/mnt/app/root> pidin -p dio_manager 
+     pid tid name               prio STATE       Blocked                     
+ 4989033   1 n/apps/dio_manager  10r CONDVAR     (0xffbe0)                   
+ 4989033   2 n/apps/dio_manager  10r NANOSLEEP                               
+ 4989033   3 n/apps/dio_manager  10r NANOSLEEP                               
+ 4989033   4 n/apps/dio_manager  10r CONDVAR     (0x1aae20)                  
+ 4989033   5 n/apps/dio_manager  10r RECEIVE     1                           
+ 4989033   6 n/apps/dio_manager  10r REPLY       1171502                     
+ 4989033   7 n/apps/dio_manager  10r CONDVAR     (0x1baa54)                  
+ 4989033   8 n/apps/dio_manager  10r CONDVAR     (0x1bac58)                  
+ 4989033   9 n/apps/dio_manager  10r CONDVAR     (0x1bae38)                  
+ 4989033  10 n/apps/dio_manager  10r CONDVAR     (0x1dab10)                  
+ 4989033  11 n/apps/dio_manager  10r REPLY       884772                      
+ 4989033  12 n/apps/dio_manager  10r REPLY       438295                      
+ 4989033  13 n/apps/dio_manager  10r CONDVAR     (0x1ba380)                  
+ 4989033  14 n/apps/dio_manager  10r RECEIVE     4                           
+ 4989033  15 n/apps/dio_manager  10r RECEIVE     7                           
+ 4989033  16 n/apps/dio_manager  10r CONDVAR     (0x1fdd48)                  
+ 4989033  17 n/apps/dio_manager  10r CONDVAR     (0x1fd8c0)                  
+ 4989033  18 n/apps/dio_manager  10r CONDVAR     (0x1fd700)                  
+ 4989033  19 n/apps/dio_manager  10r CONDVAR     (0x1fd538)                  
+ 4989033  20 n/apps/dio_manager  10r CONDVAR     (0x1fcc78)                  
+ 4989033  21 n/apps/dio_manager  10r RECEIVE     4                           
+ 4989033  22 n/apps/dio_manager  10r CONDVAR     (0x1fcaac)                  
+ 4989033  23 n/apps/dio_manager  10r CONDVAR     (0x1f8a2c)                  
+ 4989033  24 n/apps/dio_manager  10r REPLY       1785948                     
+ 4989033  25 n/apps/dio_manager  10r REPLY       1884199                     
+ 4989033  26 n/apps/dio_manager  10r REPLY       1380356                     
+ 4989033  27 n/apps/dio_manager  10r SIGWAITINFO                             
+ 4989033  28 n/apps/dio_manager  10r SIGWAITINFO                             
+ 4989033  29 n/apps/dio_manager  10r CONDVAR     (0x7835b128)                
+ 4989033  30 n/apps/dio_manager  10r CONDVAR     (0x1f8678)                  
+ 4989033  31 n/apps/dio_manager  10r NANOSLEEP                               
+ 4989033  32 n/apps/dio_manager  19f SIGWAITINFO                             
+ 4989033  33 n/apps/dio_manager  17f SIGWAITINFO                             
+ 4989033  34 n/apps/dio_manager  19f CONDVAR     (0x2d6e70)                  
+ 4989033  35 n/apps/dio_manager  21f CONDVAR     (0x2d6fb0)                  
+ 4989033  36 n/apps/dio_manager  17f SIGWAITINFO                             
+ 4989033  37 n/apps/dio_manager  17f SEM         fbdd43ac                    
+ 4989033  38 n/apps/dio_manager  17f REPLY       155662                      
+ 4989033  39 n/apps/dio_manager  18f SIGWAITINFO                             
+ 4989033  40 n/apps/dio_manager  18f 

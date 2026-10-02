@@ -1,0 +1,265 @@
+# First vc_render run (separate process)
+# Topic: vc_render decodes to layer 58 over 127.0.0.1:19830
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> grep -E "NATIVE-A|NvSSVideoClose|forward:" /tmp/altscreen111.log
+835.114 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+835.257 [altscreen111] NATIVE-A initialize ENTER self=1a8940
+835.262 [altscreen111] NATIVE-A initialize EXIT rc=0 self=1a8940
+835.264 [altscreen111] NATIVE-A start ENTER self=1a8940
+835.522 [altscreen111] NATIVE-A start EXIT rc=0 self=1a8940
+835.523 [altscreen111] NATIVE-A configure ENTER self=1a8940 1024 480 1024 480 0 0 30
+835.812 [altscreen111] NATIVE-A configure EXIT rc=0 self=1a8940
+837.595 [altscreen111] NATIVE-B forward: renderer connection closed (sent=35 dropped=0)
+837.598 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+837.781 [altscreen111] NATIVE-B forward: renderer connection closed (sent=49 dropped=1)
+838.630 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+931.193 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+931.207 [altscreen111] NATIVE-A initialize ENTER self=1a8940
+931.212 [altscreen111] NATIVE-A initialize EXIT rc=0 self=1a8940
+931.213 [altscreen111] NATIVE-A start ENTER self=1a8940
+931.398 [altscreen111] NATIVE-A start EXIT rc=0 self=1a8940
+931.399 [altscreen111] NATIVE-A configure ENTER self=1a8940 1024 480 1024 480 0 0 30
+931.603 [altscreen111] NATIVE-A configure EXIT rc=0 self=1a8940
+934.868 [altscreen111] NATIVE-B forward: renderer connection closed (sent=68 dropped=0)
+934.871 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+935.057 [altscreen111] NATIVE-B forward: renderer connection closed (sent=81 dropped=1)
+935.895 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+939.392 [altscreen111] NATIVE-B forward: renderer connection closed (sent=138 dropped=38)
+939.394 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+939.567 [altscreen111] NATIVE-B forward: renderer connection closed (sent=142 dropped=39)
+940.396 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+971.105 [altscreen111] NATIVE-A initialize ENTER self=1a87a0
+971.109 [altscreen111] NATIVE-A initialize EXIT rc=0 self=1a87a0
+971.110 [altscreen111] NATIVE-A start ENTER self=1a87a0
+971.123 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+971.286 [altscreen111] NATIVE-A start EXIT rc=0 self=1a87a0
+971.287 [altscreen111] NATIVE-A configure ENTER self=1a87a0 1024 480 1024 480 0 0 30
+971.496 [altscreen111] NATIVE-A configure EXIT rc=0 self=1a87a0
+1065.939 [altscreen111] NATIVE-A stop ENTER self=1a87a0
+1065.940 [altscreen111] NvSSVideoClose ENTER handle=2e8720
+1066.080 [altscreen111] NvSSVideoClose EXIT handle=2e8720 rc=0x0
+1066.081 [altscreen111] NATIVE-A stop EXIT rc=0 self=1a87a0
+1066.082 [altscreen111] NATIVE-A finalize ENTER self=1a87a0
+1066.082 [altscreen111] NATIVE-A finalize EXIT rc=0 self=1a87a0
+1080.472 [altscreen111] NATIVE-A initialize ENTER self=1a8a78
+1080.474 [altscreen111] NATIVE-A initialize EXIT rc=0 self=1a8a78
+1080.476 [altscreen111] NATIVE-A start ENTER self=1a8a78
+1080.624 [altscreen111] NATIVE-A start EXIT rc=0 self=1a8a78
+1080.625 [altscreen111] NATIVE-A configure ENTER self=1a8a78 1024 480 1024 480 0 0 30
+1080.821 [altscreen111] NATIVE-A configure EXIT rc=0 self=1a8a78
+1081.380 [altscreen111] NATIVE-A stop ENTER self=1a8a78
+1081.382 [altscreen111] NvSSVideoClose ENTER handle=2e8260
+1081.518 [altscreen111] NvSSVideoClose EXIT handle=2e8260 rc=0x0
+1081.519 [altscreen111] NATIVE-A stop EXIT rc=0 self=1a8a78
+1081.519 [altscreen111] NATIVE-A finalize ENTER self=1a8a78
+1081.520 [altscreen111] NATIVE-A finalize EXIT rc=0 self=1a8a78
+1250.878 [altscreen111] NATIVE-A initialize ENTER self=1a8b48
+1250.881 [altscreen111] NATIVE-A initialize EXIT rc=0 self=1a8b48
+1250.882 [altscreen111] NATIVE-A start ENTER self=1a8b48
+1251.043 [altscreen111] NATIVE-A start EXIT rc=0 self=1a8b48
+1251.044 [altscreen111] NATIVE-A configure ENTER self=1a8b48 1024 480 1024 480 0 0 30
+1251.247 [altscreen111] NATIVE-A configure EXIT rc=0 self=1a8b48
+1251.824 [altscreen111] NATIVE-A stop ENTER self=1a8b48
+1251.825 [altscreen111] NvSSVideoClose ENTER handle=3ced10
+1251.961 [altscreen111] NvSSVideoClose EXIT handle=3ced10 rc=0x0
+1251.962 [altscreen111] NATIVE-A stop EXIT rc=0 self=1a8b48
+1251.963 [altscreen111] NATIVE-A finalize ENTER self=1a8b48
+1251.964 [altscreen111] NATIVE-A finalize EXIT rc=0 self=1a8b48
+1252.424 [altscreen111] NATIVE-A initialize ENTER self=1a8bb0
+1252.426 [altscreen111] NATIVE-A initialize EXIT rc=0 self=1a8bb0
+1252.427 [altscreen111] NATIVE-A start ENTER self=1a8bb0
+1252.575 [altscreen111] NATIVE-A start EXIT rc=0 self=1a8bb0
+1252.576 [altscreen111] NATIVE-A configure ENTER self=1a8bb0 1024 480 1024 480 0 0 30
+1252.778 [altscreen111] NATIVE-A configure EXIT rc=0 self=1a8bb0
+1286.622 [altscreen111] NATIVE-B forward: renderer connection closed (sent=4806 dropped=0)
+1286.626 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+1286.995 [altscreen111] NATIVE-B forward: renderer connection closed (sent=4815 dropped=1)
+1287.661 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+1296.628 [altscreen111] NATIVE-B forward: renderer connection closed (sent=4922 dropped=19)
+1296.633 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+1296.809 [altscreen111] NATIVE-B forward: renderer connection closed (sent=4934 dropped=20)
+1297.661 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+1312.320 [altscreen111] NATIVE-B forward: renderer connection closed (sent=5056 dropped=37)
+1312.323 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+root@mmx:/mnt/app/root> cat /tmp/vc_render.log
+783.697 [vc_render] start out=1 layer=58 1440x456@30 port=19830
+783.772 [vc_render] kdInitializeNV -> 0
+783.773 [vc_render] listening on 127.0.0.1:19830
+835.120 [vc_render] hook connected
+835.383 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=10cdb0
+835.764 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+835.767 [vc_render] NvSSVideoGetAttribs -> 0x0
+835.770 [vc_render] decode#1 len=33 rc=0x0 flag=0
+835.785 [vc_render] decode#2 len=161 rc=0x0 flag=1
+835.799 [vc_render] decode#3 len=200 rc=0x0 flag=1
+837.596 [vc_render] hook disconnected frames=35 dec_err=0
+837.597 [vc_render] NvSSVideoClose ENTER handle=10cdb0 frames=35 dec_err=0
+837.768 [vc_render] NvSSVideoClose EXIT rc=0x0
+837.770 [vc_render] hook connected
+837.872 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+838.057 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+838.058 [vc_render] NvSSVideoGetAttribs -> 0x0
+838.058 [vc_render] decode#1 len=4821 rc=0x0 flag=1
+838.059 [vc_render] decode#2 len=4882 rc=0x0 flag=1
+838.060 [vc_render] decode#3 len=4887 rc=0x0 flag=1
+838.064 [vc_render] hook disconnected frames=14 dec_err=0
+838.064 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=14 dec_err=0
+838.131 [vc_render] NvSSVideoClose EXIT rc=0x0
+838.633 [vc_render] hook connected
+838.737 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+838.948 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+838.948 [vc_render] NvSSVideoGetAttribs -> 0x0
+838.950 [vc_render] decode#1 len=4805 rc=0x0 flag=1
+838.951 [vc_render] decode#2 len=4836 rc=0x0 flag=1
+838.952 [vc_render] decode#3 len=4848 rc=0x0 flag=1
+848.761 [vc_render] decode#300 len=4819 rc=0x0 flag=1
+858.849 [vc_render] decode#600 len=4832 rc=0x0 flag=1
+868.809 [vc_render] decode#900 len=4822 rc=0x0 flag=1
+878.734 [vc_render] decode#1200 len=4820 rc=0x0 flag=1
+888.731 [vc_render] decode#1500 len=4820 rc=0x0 flag=1
+898.700 [vc_render] decode#1800 len=4818 rc=0x0 flag=1
+908.706 [vc_render] decode#2100 len=4831 rc=0x0 flag=1
+918.763 [vc_render] decode#2400 len=4809 rc=0x0 flag=1
+923.034 [vc_render] hook disconnected frames=2526 dec_err=0
+923.040 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=2526 dec_err=0
+923.210 [vc_render] NvSSVideoClose EXIT rc=0x0
+931.198 [vc_render] hook connected
+931.642 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+931.892 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+931.892 [vc_render] NvSSVideoGetAttribs -> 0x0
+931.893 [vc_render] decode#1 len=33 rc=0x0 flag=0
+931.897 [vc_render] decode#2 len=37627 rc=0x0 flag=1
+931.907 [vc_render] decode#3 len=1027 rc=0x0 flag=1
+934.868 [vc_render] hook disconnected frames=68 dec_err=0
+934.869 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=68 dec_err=0
+934.933 [vc_render] NvSSVideoClose EXIT rc=0x0
+934.939 [vc_render] hook connected
+935.041 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+935.227 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+935.228 [vc_render] NvSSVideoGetAttribs -> 0x0
+935.230 [vc_render] decode#1 len=5815 rc=0x0 flag=1
+935.230 [vc_render] decode#2 len=5317 rc=0x0 flag=1
+935.231 [vc_render] decode#3 len=5225 rc=0x0 flag=1
+935.234 [vc_render] hook disconnected frames=13 dec_err=0
+935.234 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=13 dec_err=0
+935.294 [vc_render] NvSSVideoClose EXIT rc=0x0
+935.900 [vc_render] hook connected
+936.023 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+936.216 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+936.216 [vc_render] NvSSVideoGetAttribs -> 0x0
+936.217 [vc_render] decode#1 len=5090 rc=0x0 flag=1
+936.217 [vc_render] decode#2 len=5074 rc=0x0 flag=1
+936.218 [vc_render] decode#3 len=5134 rc=0x0 flag=1
+939.392 [vc_render] hook disconnected frames=57 dec_err=0
+939.393 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=57 dec_err=0
+939.513 [vc_render] NvSSVideoClose EXIT rc=0x0
+939.515 [vc_render] hook connected
+939.621 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+939.797 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+939.798 [vc_render] NvSSVideoGetAttribs -> 0x0
+939.798 [vc_render] decode#1 len=5284 rc=0x0 flag=1
+939.799 [vc_render] decode#2 len=5940 rc=0x0 flag=1
+939.800 [vc_render] decode#3 len=44211 rc=0x0 flag=1
+939.801 [vc_render] hook disconnected frames=4 dec_err=0
+939.801 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=4 dec_err=0
+939.879 [vc_render] NvSSVideoClose EXIT rc=0x0
+940.399 [vc_render] hook connected
+940.508 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+940.688 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+940.689 [vc_render] NvSSVideoGetAttribs -> 0x0
+940.689 [vc_render] decode#1 len=5203 rc=0x0 flag=1
+940.690 [vc_render] decode#2 len=5204 rc=0x0 flag=1
+940.691 [vc_render] decode#3 len=5180 rc=0x0 flag=1
+950.563 [vc_render] decode#300 len=5267 rc=0x0 flag=1
+960.558 [vc_render] decode#600 len=5259 rc=0x0 flag=1
+963.490 [vc_render] hook disconnected frames=687 dec_err=0
+963.492 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=687 dec_err=0
+963.658 [vc_render] NvSSVideoClose EXIT rc=0x0
+971.129 [vc_render] hook connected
+971.568 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+971.822 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+971.823 [vc_render] NvSSVideoGetAttribs -> 0x0
+971.823 [vc_render] decode#1 len=33 rc=0x0 flag=0
+971.826 [vc_render] decode#2 len=162 rc=0x0 flag=1
+971.827 [vc_render] decode#3 len=53 rc=0x0 flag=1
+989.196 [vc_render] decode#300 len=4981 rc=0x0 flag=1
+1007.455 [vc_render] decode#600 len=4951 rc=0x0 flag=1
+1026.130 [vc_render] decode#900 len=5010 rc=0x0 flag=1
+1045.382 [vc_render] decode#1200 len=4973 rc=0x0 flag=1
+1064.381 [vc_render] decode#1500 len=4990 rc=0x0 flag=1
+1082.957 [vc_render] decode#1800 len=4485 rc=0x0 flag=1
+1102.181 [vc_render] decode#2100 len=4991 rc=0x0 flag=1
+1121.505 [vc_render] decode#2400 len=4960 rc=0x0 flag=1
+1140.181 [vc_render] decode#2700 len=4875 rc=0x0 flag=1
+1159.019 [vc_render] decode#3000 len=4914 rc=0x0 flag=1
+1177.326 [vc_render] decode#3300 len=4791 rc=0x0 flag=1
+1195.982 [vc_render] decode#3600 len=4882 rc=0x0 flag=1
+1212.978 [vc_render] decode#3900 len=4873 rc=0x0 flag=1
+1231.373 [vc_render] decode#4200 len=4788 rc=0x0 flag=1
+1250.232 [vc_render] decode#4500 len=4842 rc=0x0 flag=1
+1285.877 [vc_render] decode#4800 len=2218 rc=0x0 flag=1
+1286.623 [vc_render] hook disconnected frames=4806 dec_err=0
+1286.626 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=4806 dec_err=0
+1286.733 [vc_render] NvSSVideoClose EXIT rc=0x0
+1286.738 [vc_render] hook connected
+1286.859 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1287.066 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1287.067 [vc_render] NvSSVideoGetAttribs -> 0x0
+1287.067 [vc_render] decode#1 len=5982 rc=0x0 flag=1
+1287.068 [vc_render] decode#2 len=53243 rc=0x0 flag=1
+1287.070 [vc_render] decode#3 len=11603 rc=0x0 flag=1
+1287.073 [vc_render] hook disconnected frames=9 dec_err=0
+1287.074 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=9 dec_err=0
+1287.220 [vc_render] NvSSVideoClose EXIT rc=0x0
+1287.665 [vc_render] hook connected
+1287.790 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1287.975 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1287.976 [vc_render] NvSSVideoGetAttribs -> 0x0
+1287.976 [vc_render] decode#1 len=4307 rc=0x0 flag=1
+1287.977 [vc_render] decode#2 len=4305 rc=0x0 flag=1
+1287.977 [vc_render] decode#3 len=4307 rc=0x0 flag=1
+1296.631 [vc_render] hook disconnected frames=107 dec_err=0
+1296.632 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=107 dec_err=0
+1296.739 [vc_render] NvSSVideoClose EXIT rc=0x0
+1296.743 [vc_render] hook connected
+1296.854 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1297.052 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1297.053 [vc_render] NvSSVideoGetAttribs -> 0x0
+1297.056 [vc_render] decode#1 len=11273 rc=0x0 flag=1
+1297.057 [vc_render] decode#2 len=8414 rc=0x0 flag=1
+1297.058 [vc_render] decode#3 len=5292 rc=0x0 flag=1
+1297.061 [vc_render] hook disconnected frames=12 dec_err=0
+1297.062 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=12 dec_err=0
+1297.218 [vc_render] NvSSVideoClose EXIT rc=0x0
+1297.665 [vc_render] hook connected
+1297.782 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1297.982 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1297.982 [vc_render] NvSSVideoGetAttribs -> 0x0
+1297.983 [vc_render] decode#1 len=4666 rc=0x0 flag=1
+1297.985 [vc_render] decode#2 len=4664 rc=0x0 flag=1
+1297.985 [vc_render] decode#3 len=4668 rc=0x0 flag=1
+1312.321 [vc_render] hook disconnected frames=122 dec_err=0
+1312.322 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=122 dec_err=0
+1312.383 [vc_render] NvSSVideoClose EXIT rc=0x0
+1312.387 [vc_render] hook connected
+1312.502 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1312.691 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1312.691 [vc_render] NvSSVideoGetAttribs -> 0x0
+1312.692 [vc_render] decode#1 len=10502 rc=0x0 flag=1
+1312.693 [vc_render] decode#2 len=6051 rc=0x0 flag=1
+1312.694 [vc_render] decode#3 len=5158 rc=0x0 flag=1
+1330.354 [vc_render] decode#300 len=3925 rc=0x0 flag=1
+1348.596 [vc_render] decode#600 len=3925 rc=0x0 flag=1
+1362.182 [vc_render] hook disconnected frames=790 dec_err=0
+1362.182 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=790 dec_err=0
+1362.257 [vc_render] NvSSVideoClose EXIT rc=0x0
+1362.261 [vc_render] hook connected
+1362.369 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1362.550 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1362.551 [vc_render] NvSSVideoGetAttribs -> 0x0
+1362.552 [vc_render] decode#1 len=93785 rc=0x0 flag=1
+1362.559 [vc_render] decode#2 len=60988 rc=0x0 flag=1
+1362.568 [vc_render] decode#3 len=54608 rc=0x0 flag=1
+root@mmx:/mnt/app/root> 

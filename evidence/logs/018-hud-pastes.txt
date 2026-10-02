@@ -1,0 +1,234 @@
+# Extracts of pasted unit output (session transcript). Redacted as in the other logs.
+# Timestamps: msgs 2026-10-02T10:12:04.850Z, 2026-10-02T10:12:38.220Z, 2026-10-02T10:13:17.209Z, 2026-10-02T10:18:27.369Z, 2026-10-02T10:23:00.112Z, 2026-10-02T10:56:29.884Z, 2026-10-02T10:58:26.936Z, 2026-10-02T10:59:09.181Z, 2026-10-02T11:01:40.325Z ; attachments 3ca6122c, f2470553, 1879da85
+# Shows: /ramdisk/pps listing (no route-guidance PPS), pidin mm-ipod, mm-ipod shim installing LD_PRELOAD librgd_hook.so, jar listings (rgd_hook.jar, NavActiveIgnore.jar), carplay_hook.log BAPBridge/ClusterSvc lines, rgd_hook.log HARMAN pool 0x5201 messages, rollback output.
+# NOTE: pasted text verbatim; "attachment" = long paste the CLI stored as an uploaded .txt (user @-referenced or system-attached to this transcript).
+
+##### [user msg 415 | 2026-10-02T10:12:04.850Z]
+root@mmx:/mnt/app/root> ls /ramdisk/pps/ | head -50
+device
+driver
+iap2
+mount
+mtp
+multimedia
+qdb
+services
+sync
+root@mmx:/mnt/app/root> ls /ramdisk/pps/iap2 2>/dev/null
+device         location       nowplaying     telephony
+root@mmx:/mnt/app/root> ls /ramdisk/pps/iap2 | grep -i -e guid -e route -e nav -e maneuv
+root@mmx:/mnt/app/root> grep -i -e guid -e route -e maneuv /etc/eso/production/dio_manager.json | head -20
+root@mmx:/mnt/app/root> 
+it doesnt show anything
+
+##### [user msg 427 | 2026-10-02T10:12:38.220Z]
+root@mmx:/mnt/app/root> grep -n -i -e 0x52 -e MessagesSent -e MessagesReceived /etc/eso/production/dio_manager.json | head
+root@mmx:/mnt/app/root> ls -l /etc/eso/production/dio_manager.json /mnt/app/eso/etc/ 2>/dev/null | head
+-rwxr-xr-x  1 root      root           9822 Jan 01 00:07 /etc/eso/production/dio_manager.json
+root@mmx:/mnt/app/root> ls /ramdisk/pps/iap2/location /ramdisk/pps/services 2>/dev/null | head -20
+/ramdisk/pps/iap2/location
+
+/ramdisk/pps/services:
+geolocation
+root@mmx:/mnt/app/root>
+
+##### [user msg 442 | 2026-10-02T10:13:17.209Z]
+we dont have a cinemo, thats a mhi2q diomanager
+
+root@mmx:/mnt/app/root> ls -l /tmp/CinemoDioManager.log
+ls: No such file or directory (/tmp/CinemoDioManager.log)
+root@mmx:/mnt/app/root> grep -i -c -e RouteGuid -e 0x5200 -e 0x5201 -e 0x5202 -e 5201 /tmp/CinemoDioManager.log
+grep: cannot open file '/tmp/CinemoDioManager.log' (No such file or directory)
+root@mmx:/mnt/app/root> grep -i -e RouteGuid -e "0x52" /tmp/CinemoDioManager.log | head -20 | cut -c1-200
+grep: cannot open file '/tmp/CinemoDioManager.log' (No such file or directory)
+root@mmx:/mnt/app/root> grep -i -e StartIdentification -e IdentificationInformation -e "Messages" /tmp/CinemoDioManager.log | head -10 | cut -c1-200
+grep: cannot open file '/tmp/CinemoDioManager.log' (No such file or directory)
+root@mmx:/mnt/app/root>
+
+##### [user msg 551 | 2026-10-02T10:18:27.369Z]
+bear in mind, i dont care about his implementation that displays on the cluster. we purely need the HUD to be of use here.
+
+root@mmx:/mnt/app/root> pidin ar | grep mm-ipod
+ 1966188 mm-ipod -d iap2,config=/etc/mm/iap2.cfg,probe,ppsdir=/ramdisk/pps/iap2 -a i2c,addr=0x11,path=/dev/i2c8,speed=50000 -t usbdevice,path=/dev/io-usb/otg_dev -l /dev/shmem/iap2.log -vvvvvv
+17305715 grep mm-ipod
+root@mmx:/mnt/app/root> ls -l /mnt/app/armle/usr/sbin/mm-ipod*
+-rwxrwxrwx  1 root      root          40297 Feb 11  2016 /mnt/app/armle/usr/sbin/mm-ipod
+root@mmx:/mnt/app/root> df -k /mnt/app | tail -1
+/dev/mnand0t177           995280    792801    202479      80%  /mnt/app/       
+root@mmx:/mnt/app/root> ls -l /mnt/app/eso/hmi/lsd/jars/ 2>&1 | head
+total 11969
+drwxrwxrwx  2 root      root           1024 Jan 01 00:01 .
+drwxrwxrwx  5 root      root           1024 Jan 01 00:20 ..
+-rwxrwxrwx  1 root      root         245793 Feb 11  2016 AppDevelopment.jar
+-rwxrwxrwx  1 root      root          23585 Feb 11  2016 DevelopmentStubEvo.jar
+-rwxrwxrwx  1 root      root           2645 Mar 12  2026 NavActiveIgnore.jar
+-rwxrwxrwx  1 root      root         164348 Feb 11  2016 RemoteHMI-Libs-Ext.jar
+-rwxrwxrwx  1 root      root         485347 Feb 11  2016 diag.jar
+-rwxrwxrwx  1 root      root        2900192 Feb 11  2016 lang_data.zip
+-rwxrwxrwx  1 root      root        2205704 Feb 11  2016 locale.zip
+root@mmx:/mnt/app/root> grep -n -i jar /mnt/app/eso/hmi/lsd/lsd.sh | head
+
+##### [user msg 669 | 2026-10-02T10:23:00.112Z]
+user@mac fork of working documented implementation % cd audi-mu0678/deployment && rm -rf hud && tar -xzf hudpkg.tgz && mv hudpkg hud && cd ../..
+scp -O -r "${SSHO[@]}" audi-mu0678/deployment/hud root@<unit-ip>:/tmp/
+Warning: Permanently added '<unit-ip>' (RSA) to the list of known hosts.
+      ___           _ _   __  __ ___ _____  
+     /   |_   _  __| (_) |  \/  |_ _|  _  \ 
+    / /| | | | |/ _  | | | |\/| || || |_)_/ 
+   / __  | |_| | (_| | | | |  | || || |_) \ 
+  /_/  |_|__,__|\__,_|_| |_|  |_|___|_____/ 
+ 
+scp: /tmp//hud: Function not implemented
+
+##### [user msg 950 | 2026-10-02T10:56:29.884Z]
+root@mmx:/mnt/app/root> ls -l /mnt/app/rgd_* /tmp/carplay_hook.log
+-rw-r--r--  1 root      root           2163 Jan 01 00:04 /mnt/app/rgd_hook.log
+-rw-r--r--  1 root      root            637 Jan 01 00:03 /mnt/app/rgd_hook.log.prev
+-rw-rw-rw-  2 root      root            678 Jan 01 00:00 /tmp/carplay_hook.log
+root@mmx:/mnt/app/root> tail -n 30 /tmp/carplay_hook.log | cut -c1-180
+21956 [INF] [StatusGate] native route-guidance gate installed on Navigation service edge
+22006 [INF] [CarplayBus] CarplayBus started
+22009 [INF] [CarplayBus] listening on 127.0.0.1:19810
+22043 [INF] [BAPBridge] Initialized successfully (AppConnectorNavi only): com.mhi2.carplay.rgd.GatedCombiService -> writing to de.audi.app.combi.bap.app.navi.AppConnectorNavi
+22045 [INF] [RouteGuidance] Initialized
+22046 [INF] [RgdService] route guidance initialized
+22050 [INF] [RouteGuidance] Started (subscribed to EVT_RGD_UPDATE)
+22059 [INF] [ClusterSvc] nextManeuver: null
+31673 [INF] [ClusterSvc] bapDescriptor(2): [3] 9:128:0 0:0:0 0:0:0
+31723 [INF] [ClusterSvc] rgiString: [2] 9 128
+root@mmx:/mnt/app/root> grep -i -e rgd -e "RouteGuid" -e identif /mnt/app/rgd_hook.log | tail -n 15 | cut -c1-200
+root@mmx:/mnt/app/root> pidin | grep -c rgd_real
+0
+root@mmx:/mnt/app/root>
+
+##### [user msg 964 | 2026-10-02T10:58:26.936Z]
+root@mmx:/mnt/app/root> sloginfo | grep -i -e mm-ipod -e "USB-0" | tail -n 12 | cut -c1-220
+Jan 01 00:00:03    5    12   100 USB-0.1:0: vid=0424, did=4504: Ignore hub
+Jan 01 00:00:03    5    12   100 USB-0.2:0: vid=0424, did=2530: found control endpoint
+Jan 01 00:00:04    5    12   100 USB-0.2:0: vid=0424, did=2530: Insertion
+Jan 01 00:00:04    5    12   100 USB-0.2:0: vid=0424, did=2530: config 1 of 1 configurations
+Jan 01 00:00:04    5    12   100 USB-0.2:0: vid=0424, did=2530: Launch usblauncher -w 10000 -H -r -e -v -c /etc/usblauncher_otg.lua -M /etc/mcd_otg.mnt -t -l -m /ramdisk/pps -p 2 -s /mnt/app/armle/lib/dll/pubs -n /dev/io
+Jan 01 00:00:05    5    12   100 USB-0.2:0: vid=0424, did=2530: Driver usblauncher has pid 1536046
+Jan 01 00:00:14    3    29     0 pps:(1445933) Created usb-0.1.1 with .all ocb 0 -> 1
+root@mmx:/mnt/app/root> ls -l /mnt/app/armle/usr/sbin/mm-ipod /mnt/app/armle/usr/sbin/mm-ipod.orig /mnt/app/armle/usr/sbin/rgd_real/ /mnt/app/eso/hmi/lib/librgd_hook.so
+-rwxr-xr-x  1 root      root            297 Jan 01 00:03 /mnt/app/armle/usr/sbin/mm-ipod
+-rwxrwxrwx  1 root      root          40297 Feb 11  2016 /mnt/app/armle/usr/sbin/mm-ipod.orig
+-rwxr-xr-x  1 root      root         188111 Jan 01 00:03 /mnt/app/eso/hmi/lib/librgd_hook.so
+
+/mnt/app/armle/usr/sbin/rgd_real/:
+total 83
+drwxr-xr-x  2 root      root           1024 Jan 01 00:14 .
+drwxrwxrwx  3 root      root           1024 Jan 01 00:03 ..
+-rwxrwxrwx  1 root      root          40297 Feb 11  2016 mm-ipod
+root@mmx:/mnt/app/root> cat /mnt/app/armle/usr/sbin/mm-ipod | head -c 400
+#!/bin/sh
+# HUD route-guidance shim. argv[0] stays "mm-ipod" (the hook gates on it).
+# Off switch: touch /mnt/app/rgd_disable, then replug the phone.
+[ -f /mnt/app/rgd_disable ] || LD_PRELOAD=/mnt/app/eso/hmi/lib/librgd_hook.so
+export LD_PRELOAD
+exec /mnt/app/armle/usr/sbin/rgd_real/mm-ipod "$@"
+root@mmx:/mnt/app/root> pidin | grep -e dio_manager -e mm-ipod | head -n 3
+root@mmx:/mnt/app/root>
+
+##### [user msg 971 | 2026-10-02T10:59:09.181Z]
+root@mmx:/mnt/app/root> pidin | grep -i -e dio_manager -e usblauncher -e carplay | head -n 5
+ 1445933   1 le/bin/usblauncher  10r RECEIVE     1                           
+ 1445933   2 le/bin/usblauncher  10r SIGWAITINFO                             
+ 1445933   3 le/bin/usblauncher  10r REPLY       966700                      
+ 1445933   4 le/bin/usblauncher  10r REPLY       1290296                     
+ 1536046   1 le/bin/usblauncher  10r RECEIVE     1                           
+root@mmx:/mnt/app/root> sloginfo | grep -i -e dio_manager -e "vid=05ac" -e SIGSEGV -e "died" | tail -n 12 | cut -c1-220
+root@mmx:/mnt/app/root> ls -l /mnt/app/eso/lib/libmibr_carplay111.so /mnt/app/eso/bin/apps/dio_manager
+-rwxr-xr-x  1 501       20           649413 Feb 11  2016 /mnt/app/eso/bin/apps/dio_manager
+-rwxr-xr-x  1 root      root         356547 Jan 01 00:27 /mnt/app/eso/lib/libmibr_carplay111.so
+root@mmx:/mnt/app/root> tail -n 15 /tmp/altscreen111.log | cut -c1-200
+tail:  unable to open '/tmp/altscreen111.log' (No such file or directory)
+root@mmx:/mnt/app/root>
+
+##### [user msg 988 | 2026-10-02T11:01:40.325Z]
+root@mmx:/mnt/app/root> sh /mnt/app/root/hud/hud_rollback.sh
+restored mm-ipod from .orig
+-rwxrwxrwx  1 root      root          40297 Feb 11  2016 /mnt/app/armle/usr/sbin/mm-ipod
+
+/mnt/app/eso/hmi/lsd/jars:
+total 11969
+drwxrwxrwx  2 root      root           1024 Jan 01 00:06 .
+drwxrwxrwx  5 root      root           1024 Jan 01 00:20 ..
+-rwxrwxrwx  1 root      root         245793 Feb 11  2016 AppDevelopment.jar
+-rwxrwxrwx  1 root      root          23585 Feb 11  2016 DevelopmentStubEvo.jar
+-rwxrwxrwx  1 root      root           2645 Mar 12  2026 NavActiveIgnore.jar
+-rwxrwxrwx  1 root      root         164348 Feb 11  2016 RemoteHMI-Libs-Ext.jar
+-rwxrwxrwx  1 root      root         485347 Feb 11  2016 diag.jar
+-rwxrwxrwx  1 root      root        2900192 Feb 11  2016 lang_data.zip
+-rwxrwxrwx  1 root      root        2205704 Feb 11  2016 locale.zip
+-rwxrwxrwx  1 root      root          30418 Feb 11  2016 xEventRecorder.jar
+-rwxrwxrwx  1 root      root           4005 Feb 11  2016 xEventRecorderEvo.jar
+-rwxrwxrwx  1 root      root          16749 Feb 11  2016 xTcpKeyPanel.jar
+-rwxrwxrwx  1 root      root          44082 Feb 11  2016 xTcpLog.jar
+=== rolled back. Restart the car. ===
+root@mmx:/mnt/app/root>
+
+##### [attachment 3ca6122c | 2026-10-02T11:34Z(file mtime; msg ts 2026-10-02T10:34:08.158Z)]
+root@mmx:/mnt/app/root> root@mmx:/mnt/app/root> ls /mnt/app/rgd_* 2>/dev/null
+/mnt/app/rgd_no_rgstatus
+root@mmx:/mnt/app/root> grep -i -e suppress -e Started -e "RG presentation" -e "cluster" -e BAP /tmp/carplay_hook.log | tail -50 | cut -c1-220
+27939 [INF] [BAPBridge] CR: stopped (renderer blanked; stays up; server socket persists)
+27944 [INF] [BAPBridge] cluster-state[shutdown] clusterService=null | sync type=0 state=1 pending=false cancelled= | sync threw java.lang.NoSuchMethodError: de/audi/app/bap/fw/functionsync/IFunctionSynchronizationHandler
+27958 [INF] [BAPBridge] Shutdown (full teardown)
+27963 [INF] [BAPBridge] REPLACE: takeover disengaged (stock RG gate reopened)
+27971 [INF] [BAPBridge] bap: distToManeuver m=0 value=-1 unit=0 barOn=false bar=0
+27982 [INF] [BAPBridge] bap: exitView variant=0 num=0
+28007 [INF] [BAPBridge] CR: stopped (renderer blanked; stays up; server socket persists)
+28032 [INF] [BAPBridge] cluster-state[shutdown] clusterService=null | sync type=0 state=1 pending=false cancelled= | sync threw java.lang.NoSuchMethodError: de/audi/app/bap/fw/functionsync/IFunctionSynchronizationHandler
+28057 [INF] [BAPBridge] Shutdown (full teardown)
+28064 [INF] [BAPBridge] REPLACE: takeover disengaged (stock RG gate reopened)
+40925 [INF] [ClusterSvc] bapDescriptor(2): [3] 9:128:0 0:0:0 0:0:0
+40936 [INF] [ClusterSvc] rgiString: [2] 9 128
+61465 [INF] [BAPBridge] KOMO service acquired
+61478 [INF] [BAPBridge] ClusterAccess init OK
+61507 [INF] [BAPBridge] cluster identity: 541=2 466=4 467=1 469=9 4168=1 kombiType=1
+61543 [INF] [BAPBridge] Pre-gate: skipped — native cancel disabled (touch /mnt/app/rgd_cancel_native to enable)
+61717 [INF] [BAPBridge] rgActive/rgiValid suppressed (/mnt/app/rgd_no_rgstatus)
+61762 [INF] [BAPBridge] bap: RGStatus=1 rgType=2
+61777 [INF] [BAPBridge] bap: RGStatus/ActiveRGType suppressed (/mnt/app/rgd_no_rgstatus)
+61800 [INF] [BAPBridge] bap: distToManeuver m=0 value=-1 unit=0 barOn=false bar=0
+61811 [INF] [BAPBridge] bap: exitView variant=1 num=0
+61824 [INF] [BAPBridge] Started (rgType=2, cr=false)
+61852 [INF] [BAPBridge] cluster-state[start] rgActive=true isFadeOut: false DSIKOMONavInfo: n/a DSIKOMOView: available DSIKOMOGfxStreamSink: n/a cityName:  currentStreet: offroad distanceToDest: -1 distanceToDestUnit: -1
+62130 [INF] [ClusterSvc] bapDescriptor(2): [3] 10:160:0 0:0:0 0:0:0
+62169 [INF] [RouteGuidance] RG presentation CONFIRMED: BAP snapshot published + popup frame ready
+62195 [INF] [ClusterSvc] rgiString: [2] 10 160
+62218 [INF] [ScreenModule] setNavActive(true) recorded; cluster context left alone (/mnt/app/rgd_cluster_ctx absent)
+
+##### [attachment f2470553 (head) | 2026-10-02T11:46Z(file mtime; msg ts 2026-10-02T10:46:49.869Z)]
+root@mmx:/mnt/app/root> ls -l /mnt/app/eso/hmi/lsd/jars/rgd_hook.jar
+-rwxr-xr-x  1 root      root         157577 Jan 01 00:03 /mnt/app/eso/hmi/lsd/jars/rgd_hook.jar
+root@mmx:/mnt/app/root> grep ClusterSvc /tmp/carplay_hook.log | tail -n 5 | cut -c1-160
+45109 [INF] [ClusterSvc] bapDescriptor(2): [3] 6:48:0 0:0:0 0:0:0
+45129 [INF] [ClusterSvc] rgiString: [2] 6 48
+46217 [INF] [ClusterSvc] nextManeuver: type=3 dist= distToMan=null turnTo=<street-A> streetIcon=/4399 exit=/-1 destIdx=0 maneuver[1] 13:64:0
+301869 [INF] [ClusterSvc] nextManeuver: type=0 dist=null distToMan=null turnTo=null streetIcon=null/0 exit=null/-1 destIdx=0 maneuver=null
+301933 [INF] [ClusterSvc] rgiString: null
+root@mmx:/mnt/app/root> tail -n 40 /mnt/app/rgd_hook.log | cut -c1-200
+206.684 W HARMAN: pool: recv 1/2 (min 1) send 1/2 pops=1 retained=0 reclaimed=0 msgs=0
+208.569 W HARMAN: reclaiming packets the driver drops: rc=22 first_msg=0x5201 len=27
+209.149 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=45 retained=1 reclaimed=2 msgs=21
+212.079 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=58 retained=1 reclaimed=9 msgs=28
+214.346 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=62 retained=1 reclaimed=9 msgs=28
+217.081 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=68 retained=1 reclaimed=9 msgs=28
+220.078 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=77 retained=1 reclaimed=12 msgs=33
+222.078 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=82 retained=1 reclaimed=12 msgs=33
+224.501 W HARMAN: pool: recv 5/6 (min 1) send 6/6 pops=89 retained=1 reclaimed=12 msgs=33
+226.976 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=105 retained=1 reclaimed=22 msgs=43
+228.976 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=110 retained=1 reclaimed=22 msgs=43
+231.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=115 retained=1 reclaimed=22 msgs=43
+233.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=119 retained=1 reclaimed=22 msgs=43
+235.976 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=125 retained=1 reclaimed=22 msgs=43
+237.976 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=130 retained=1 reclaimed=22 msgs=43
+240.017 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=136 retained=1 reclaimed=23 msgs=46
+242.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=142 retained=1 reclaimed=23 msgs=46
+245.084 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=148 retained=1 reclaimed=23 msgs=46
+247.974 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=154 retained=1 reclaimed=23 msgs=46
+249.974 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=159 retained=1 reclaimed=23 msgs=46
+252.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=164 retained=1 reclaimed=23 msgs=46
+

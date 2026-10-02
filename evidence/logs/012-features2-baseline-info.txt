@@ -1,0 +1,47 @@
+# Stock main-display /info record (features=2)
+# Topic: The fps-fix baseline
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> sed -n '/438\.2/,$p' /tmp/altscreen111.log | grep -iE "command|gen2 UI|view|completion|SHOW|cmd" | head -40
+438.200 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidDescriptor type=data len=90 payload=not-logged
+438.200 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].uuid type=string value=<uuid>
+438.200 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.oemIcon type=data len=19255 payload=not-logged
+438.201 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays type=array count=1 depth=1
+438.201 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0] type=dict count=7 depth=2
+438.201 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].widthPixels type=int value=1024
+438.202 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].features type=int value=2
+438.202 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].heightPhysical type=int value=88
+438.202 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].heightPixels type=int value=480
+438.203 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].maxFPS type=int value=30
+438.203 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].uuid type=string value=<uuid>
+438.203 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].widthPhysical type=int value=188
+438.204 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.rightHandDrive type=string value=1
+438.204 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies type=array count=3 depth=1
+438.204 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0] type=dict count=2 depth=2
+438.205 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0].inputLatencyMicros type=int value=95000
+438.205 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0].outputLatencyMicros type=int value=80000
+438.205 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1] type=dict count=4 depth=2
+438.206 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].audioType type=string value=telephony
+438.206 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].inputLatencyMicros type=int value=85000
+438.207 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].outputLatencyMicros type=int value=80000
+438.207 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].type type=int value=100
+438.207 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2] type=dict count=4 depth=2
+438.208 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].audioType type=string value=speechRecognition
+438.208 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].inputLatencyMicros type=int value=85000
+438.208 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].outputLatencyMicros type=int value=80000
+438.209 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].type type=int value=100
+438.209 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.nightMode type=bool value=1
+438.209 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.keepAliveSendStatsAsBody type=bool value=1
+438.210 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats type=array count=2 depth=1
+438.210 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0] type=dict count=3 depth=2
+438.211 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].audioInputFormats type=int value=16
+438.211 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].type type=int value=100
+438.211 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].audioOutputFormats type=int value=1081360
+438.212 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1] type=dict count=3 depth=2
+438.212 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].audioInputFormats type=int value=16
+438.212 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].type type=int value=101
+438.213 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].audioOutputFormats type=int value=16
+438.213 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.macAddress type=redacted value=REDACTED
+438.213 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.sourceVersion type=string value=210.81
+root@mmx:/mnt/app/root> 

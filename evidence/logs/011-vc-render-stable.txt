@@ -1,0 +1,119 @@
+# vc_render + dio_manager stable run
+# Topic: No NvSS inside dio_manager
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> pidin | grep vc_render
+ 8581228   1 tmp/vc_render       10r REPLY       405534                      
+ 8581228   2 tmp/vc_render       12r CONDVAR     (0x1051d0)                  
+ 8581228   3 tmp/vc_render       14r CONDVAR     (0x1052d0)                  
+ 8581228   4 tmp/vc_render       10r SIGWAITINFO                             
+ 8581228   5 tmp/vc_render       10r SEM         fc3e1d6c                    
+ 8581228   6 tmp/vc_render       10r REPLY       155662                      
+root@mmx:/mnt/app/root> tail -30 /tmp/vc_render.log
+1420.523 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1420.691 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1420.692 [vc_render] NvSSVideoGetAttribs -> 0x0
+1420.692 [vc_render] decode#1 len=4345 rc=0x0 flag=1
+1420.693 [vc_render] decode#2 len=4342 rc=0x0 flag=1
+1420.693 [vc_render] decode#3 len=4348 rc=0x0 flag=1
+1439.583 [vc_render] hook disconnected frames=298 dec_err=0
+1439.590 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=298 dec_err=0
+1439.734 [vc_render] NvSSVideoClose EXIT rc=0x0
+1446.480 [vc_render] hook connected
+1446.639 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1446.942 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1446.943 [vc_render] NvSSVideoGetAttribs -> 0x0
+1446.943 [vc_render] decode#1 len=33 rc=0x0 flag=0
+1446.949 [vc_render] decode#2 len=161 rc=0x0 flag=1
+1446.959 [vc_render] decode#3 len=200 rc=0x0 flag=1
+1463.649 [vc_render] decode#300 len=3697 rc=0x0 flag=1
+1482.959 [vc_render] hook disconnected frames=571 dec_err=0
+1482.959 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=571 dec_err=0
+1483.098 [vc_render] NvSSVideoClose EXIT rc=0x0
+1483.102 [vc_render] hook connected
+1483.197 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+1483.374 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+1483.374 [vc_render] NvSSVideoGetAttribs -> 0x0
+1483.375 [vc_render] decode#1 len=4030 rc=0x0 flag=1
+1483.375 [vc_render] decode#2 len=4034 rc=0x0 flag=1
+1483.376 [vc_render] decode#3 len=4028 rc=0x0 flag=1
+1501.364 [vc_render] decode#300 len=4033 rc=0x0 flag=1
+1519.837 [vc_render] decode#600 len=4030 rc=0x0 flag=1
+1538.731 [vc_render] decode#900 len=4026 rc=0x0 flag=1
+root@mmx:/mnt/app/root> tail -30 /tmp/altscreen111.log
+1502.661 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1502.795 [altscreen111] NATIVE-B decode#900 len=4033 real_rc=0
+1504.689 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1506.721 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1508.723 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1510.728 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1512.771 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1514.773 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1516.793 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1518.856 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1520.856 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1521.459 [altscreen111] NATIVE-B decode#1200 len=4029 real_rc=0
+1522.858 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1524.855 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1526.875 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1528.889 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1530.922 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1532.922 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1534.973 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1536.973 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1538.974 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1540.393 [altscreen111] NATIVE-B decode#1500 len=4026 real_rc=0
+1540.989 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1543.053 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1545.056 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1547.057 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1549.055 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1551.069 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1553.097 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1555.120 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+1557.119 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d510 command=updateFeedback commandRef=783a5110 rc=0 out=0 private111=1
+root@mmx:/mnt/app/root> pidin -p dio_manager
+     pid tid name               prio STATE       Blocked                     
+11829353   1 n/apps/dio_manager  10r CONDVAR     (0xffbe0)                   
+11829353   2 n/apps/dio_manager  10r NANOSLEEP                               
+11829353   3 n/apps/dio_manager  10r NANOSLEEP                               
+11829353   4 n/apps/dio_manager  10r REPLY       405534                      
+11829353   5 n/apps/dio_manager  10r REPLY       405534                      
+11829353   6 n/apps/dio_manager  10r CONDVAR     (0x1aae20)                  
+11829353   7 n/apps/dio_manager  10r RECEIVE     1                           
+11829353   8 n/apps/dio_manager  10r REPLY       1171503                     
+11829353   9 n/apps/dio_manager  10r CONDVAR     (0x1bfa54)                  
+11829353  10 n/apps/dio_manager  10r CONDVAR     (0x1bfc58)                  
+11829353  11 n/apps/dio_manager  10r CONDVAR     (0x1bfe38)                  
+11829353  12 n/apps/dio_manager  10r CONDVAR     (0x1bf100)                  
+11829353  13 n/apps/dio_manager  10r REPLY       884772                      
+11829353  14 n/apps/dio_manager  10r REPLY       405534                      
+11829353  15 n/apps/dio_manager  10r CONDVAR     (0x1dfe80)                  
+11829353  16 n/apps/dio_manager  10r RECEIVE     4                           
+11829353  17 n/apps/dio_manager  10r RECEIVE     8                           
+11829353  18 n/apps/dio_manager  10r CONDVAR     (0x202d58)                  
+11829353  19 n/apps/dio_manager  10r CONDVAR     (0x202bf8)                  
+11829353  20 n/apps/dio_manager  10r CONDVAR     (0x202770)                  
+11829353  21 n/apps/dio_manager  10r CONDVAR     (0x202648)                  
+11829353  22 n/apps/dio_manager  10r CONDVAR     (0x201e40)                  
+11829353  23 n/apps/dio_manager  10r RECEIVE     4                           
+11829353  24 n/apps/dio_manager  10r CONDVAR     (0x1fdd14)                  
+11829353  25 n/apps/dio_manager  10r CONDVAR     (0x1fd944)                  
+11829353  26 n/apps/dio_manager  10r REPLY       1712167                     
+11829353  27 n/apps/dio_manager  10r REPLY       1773619                     
+11829353  28 n/apps/dio_manager  10r REPLY       1380356                     
+11829353  29 n/apps/dio_manager  10r CONDVAR     (0x2efe28)                  
+11829353  30 n/apps/dio_manager  10r SIGWAITINFO                             
+11829353  31 n/apps/dio_manager  10r SIGWAITINFO                             
+11829353  32 n/apps/dio_manager  10r CONDVAR     (0x783bb128)                
+11829353  33 n/apps/dio_manager  10r NANOSLEEP                               
+11829353  34 n/apps/dio_manager  19f SIGWAITINFO                             
+11829353  35 n/apps/dio_manager  10r SIGWAITINFO                             
+11829353  36 n/apps/dio_manager  17f SIGWAITINFO                             
+11829353  37 n/apps/dio_manager  19f CONDVAR     (0x2daf50)                  
+11829353  38 n/apps/dio_manager  21f CONDVAR     (0x2dad10)                  
+11829353  39 n/apps/dio_manager  17f SIGWAITINFO                             
+11829353  40 n/apps/dio_manager  17f SEM         fc3e506c                    
+11829353  41 n/apps/dio_manager  17f REPLY       155662                      
+root@mmx:/mnt/app/root> 

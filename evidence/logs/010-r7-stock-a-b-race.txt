@@ -1,0 +1,76 @@
+# r7: stock stream A vs B start race
+# Topic: B opened NvSS before stock A configured
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+
+260.023 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6000 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000-8000-000000000002 viewAreas=1 autoShow=0 bit26Mode=0
+260.024 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-policy.enabled persistentMarker=/mnt/app/root/mibr-alt111-keyframe-policy.enabled
+261.849 [altscreen111] captured stock CarPlay master AES key at SetSecurityInfo caller
+261.850 [altscreen111] SETUP entry streams=<none>
+261.853 [altscreen111] GEN2 PC setUpStreams
+261.854 [altscreen111] SETUP stock result=0 response=yes
+261.855 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+261.856 [altscreen111] AUDI features policy=replace(upstream)
+261.856 [altscreen111] AUDI enabledFeatures[final]=array count=2
+261.856 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+261.857 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+261.883 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+261.884 [altscreen111] AUDI features policy=replace(upstream)
+261.884 [altscreen111] AUDI enabledFeatures[final]=array count=2
+261.885 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+261.885 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+261.928 [altscreen111] GEN2 stock display URL capability altScreenSuggestUIURLs=<absent>
+261.928 [altscreen111] GEN2 stock display URL capability altScreenURLs=<absent>
+261.928 [altscreen111] GEN2 stock display URL capability uiContextURLs=<absent>
+261.929 [altscreen111] GEN2 stock display capability baseline: features=2 primaryInputDevice=<absent>0; alt clone removes primaryInputDevice
+261.931 [altscreen111] AUDI display clone stage=6 (uuid always unique)
+261.931 [altscreen111] GEN2 advertised altScreenSuggestUIURLs[0]=maps:/car/instrumentcluster [1]=maps:/car/instrumentcluster/map [2]=maps:/car/instrumentcluster/instructioncard
+261.932 [altscreen111] GEN2 ViewArea full=1440x456 safe=640x300@390,90
+261.933 [altscreen111] AUDI hidDevices[0] name=Eso_Knob
+261.933 [altscreen111] AUDI hidDevices[1] name=Eso_Playback
+261.933 [altscreen111] AUDI hidDevices[2] name=Eso_Telephony
+261.934 [altscreen111] AUDI hidDevices[3] name=Eso_TrackPad
+261.934 [altscreen111] GEN2 /info ready: root=altScreen+viewAreas type=111 maxFPS=30 features=0 input=none geometry=1440x456 physical=200x63 uuid=b7e6c5a0-2222-4000-8000-000000000002 url=maps:/car/instrumentcluster
+261.950 [altscreen111] GEN2 PC startSession
+261.994 [altscreen111] SETUP entry streams=1 types=111
+261.995 [altscreen111] GEN2 PC setUpStreams
+261.996 [altscreen111] SETUP stock result=0 response=yes
+261.997 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+261.998 [altscreen111] AUDI features policy=replace(upstream)
+261.999 [altscreen111] AUDI enabledFeatures[final]=array count=2
+261.999 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+262.000 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+262.000 [altscreen111] GEN2 SETUP contains stream111 cid=14950745756118697566 otherStreams=0
+262.002 [altscreen111] NATIVE-B DISPLAY MODE ON: outputDevice=1 layerID=58 size=1440x456 offset=0,0
+262.009 [altscreen111] NATIVE-B Screen B ready: cid=14950745756118697566 dataPort=6000 family=24 (native ServerSocketOpen, stub video sink)
+262.013 [altscreen111] GEN2 stream111 SETUP accepted cid=14950745756118697566 dataPort=6000 response=cloned-request+streamID111; UI acquisition armed
+262.025 [altscreen111] gen2 UI command dispatched type=1 request=1 awaiting completion
+262.029 [altscreen111] gen2 UI completion type=1 request=1 status=0 core_rc=0
+262.032 [altscreen111] gen2 UI command dispatched type=4 request=2 awaiting completion
+262.047 [altscreen111] NATIVE-B iPhone connected on stream-111 port 6000 fd=38
+262.051 [altscreen111] NATIVE-B stub impl registered self=1a8598 (no NvSS init)
+262.052 [altscreen111] NATIVE-B NvSSVideoOpen rewrite: outputDevice 0 -> 1, layerID 59 -> 58
+262.052 [altscreen111] gen2 UI completion type=4 request=2 status=0 core_rc=0
+262.096 [altscreen111] GEN2 PC disableBluetooth
+262.236 [altscreen111] NATIVE-B real start -> 0 (NvSS open)
+262.251 [altscreen111] SETUP entry streams=1 types=110
+262.266 [altscreen111] GEN2 PC setUpStreams
+262.268 [altscreen111] SETUP stock result=0 response=yes
+262.269 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+262.271 [altscreen111] AUDI features policy=replace(upstream)
+262.271 [altscreen111] AUDI enabledFeatures[final]=array count=2
+262.282 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+262.283 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+262.297 [altscreen111] NATIVE-A initialize ENTER self=1a8940
+262.298 [altscreen111] NATIVE-A initialize EXIT rc=0 self=1a8940
+262.299 [altscreen111] NATIVE-A start ENTER self=1a8940
+262.510 [altscreen111] NATIVE-B real configure 1440 456 1440 456 0 0 30 (stock args 1024 480 1024 480 0 0 30) -> 0
+262.512 [altscreen111] NATIVE-B ScreenStream B started; entering ProcessFrames
+262.524 [altscreen111] NATIVE-A start EXIT rc=0 self=1a8940
+262.525 [altscreen111] NATIVE-A configure ENTER self=1a8940 1024 480 1024 480 0 0 30
+262.525 [altscreen111] NATIVE-B decode#1 len=33 real_rc=0
+262.527 [altscreen111] NATIVE-B decode#2 len=162 real_rc=0
+262.534 [altscreen111] NATIVE-B decode#3 len=53 real_rc=0
+262.667 [altscreen111] NATIVE-A configure EXIT rc=0 self=1a8940
+279.179 [altscreen111] NATIVE-B decode#300 len=3827 real_rc=0

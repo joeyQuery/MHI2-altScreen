@@ -1,0 +1,67 @@
+# iPhone log: two screen streams
+# Topic: Two screen streams created (0x58D2, 0xACDD)
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+user@mac ~ % log show --archive ~/carplay-phone5.logarchive --info --debug --style compact --start "2026-09-29 10:55:03+0100" --end "2026-09-29 10:55:15+0100" --predicate 'process == "airplayd" AND (eventMessage CONTAINS[c] "stream" OR eventMessage CONTAINS[c] "SETUP" OR eventMessage CONTAINS[c] "dataPort") AND NOT eventMessage CONTAINS[c] "xpc" AND NOT eventMessage CONTAINS[c] "audio" AND NOT eventMessage CONTAINS[c] "KeepAlive"' | head -60
+Timestamp               Ty Process[PID:TID]
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportStream] [0x14C9] APTransportStream with name CarPlay-evnt holds send connection [0xE14B].
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportStream] APTransportStream 0x14C9 created with provider 0x0000.
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportStream] APTransportStream 0x14C9 with name CarPlay-evnt created.
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportSession] [0x664A] APTransportSession with stream [0x14C9] holds connection [0xE14B]
+2026-09-29 10:55:03.112 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597], Video Stream configured for Codec Type: h264
+2026-09-29 10:55:03.255 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointStreamScreen] [0x0597] [0x58D2] screen stream 0x58D2 activated and suspended
+2026-09-29 10:55:03.255 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointStreamScreen] [0x0597] [0x58D2] created screen stream 0x58D2
+2026-09-29 10:55:03.256 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointStreamScreen] [0x0597] [0xACDD] screen stream 0xACDD activated and suspended
+2026-09-29 10:55:03.256 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointStreamScreen] [0x0597] [0xACDD] created screen stream 0xACDD
+2026-09-29 10:55:03.257 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointStreamScreen] [0x0597] [0xACDD] resuming screen stream 0xACDD
+2026-09-29 10:55:03.271 Df airplayd[10072:2b16a8] [com.apple.airplay:APEndpointCarPlay] [0x0597] Posting notification 'Endpoint_PerformanceReportPosted' with params {
+    "INFOTimeMs" : 77,
+    "EndpointActivate" : 812368502.745572,
+    "USBBrowsingStartTime" : 812368502.211891,
+    "CarPlayControlConnectCommandReceived" : 0.000000,
+    "ConnectedTime" : 812368502.786539,
+    "EndpointRECORDTimeMs" : 22,
+    "WiFiBrowsingStartTime" : 0.000000,
+    "EndpointDetectedOverUSBTime" : 812368502.735072,
+    "ResolveDNSTime" : 812368502.782188,
+    "ConnectTime" : 812368502.784800,
+    "EndpointConnectionStartTime" : 812368502.775247,
+    "EndpointGetInfoCompleteTime" : 812368503.210514,
+    "EndpointAUTHTimeMs" : 315,
+    "EndpointTotalSETUPTimeMs" : 14,
+    "Total AirPlay Contribution (Endpoint Detected To Endpoint Activate Complete)" : 530,
+    "QuerySRVTime" : 812368502.781489,
+    "ConnectTimeMs" : 1,
+    "ActivationSeed" : 1,
+}
+2026-09-29 10:55:03.276 Df airplayd[10072:2b16a0] [com.apple.airplay:APEndpointCarPlay] [0x0597] Received event stream message of type 'born'
+2026-09-29 10:55:03.306 Df airplayd[10072:2b181a] [com.apple.airplay:APTransportStreamUnbuffered] [0xE7CE] APTransportStreamUnbuffered with name CarPlay-00000001 created.
+2026-09-29 10:55:03.306 Df airplayd[10072:2b181a] [com.apple.airplay:APTransportSession] [0x664A] APTransportSession with stream [0xE7CE] holds connection [0x2A74]
+2026-09-29 10:55:03.306 Df airplayd[10072:2b181a] [com.apple.airplay:APEndpointStreamScreen] [0x0597] [0xACDD] Created transport data stream [0xE7CE]
+2026-09-29 10:55:03.452 Df airplayd[10072:2b1819] [com.apple.airplay:APEndpointStreamScreen] [0x0597] [0x58D2] resuming screen stream 0x58D2
+2026-09-29 10:55:03.569 Df airplayd[10072:2b1819] [com.apple.airplay:APSenderSessionAirPlay] [0x7F1C] Accessory has not provided `streamID` in SETUP response (inStreamType: MainScreen). Will use auto-generated streamID: 0
+2026-09-29 10:55:03.602 Df airplayd[10072:2b1819] [com.apple.airplay:APTransportStreamUnbuffered] [0x6F2B] APTransportStreamUnbuffered with name CarPlay-00000002 created.
+2026-09-29 10:55:03.602 Df airplayd[10072:2b1819] [com.apple.airplay:APTransportSession] [0x664A] APTransportSession with stream [0x6F2B] holds connection [0xEC20]
+2026-09-29 10:55:03.602 Df airplayd[10072:2b1819] [com.apple.airplay:APEndpointStreamScreen] [0x0597] [0x58D2] Created transport data stream [0x6F2B]
+2026-09-29 10:55:03.609 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597] Updating stream (StreamInfo_Screen, displayIndex: 0) first resume time to 812368503.616638
+2026-09-29 10:55:05.008 Df airplayd[10072:2b1947] [com.apple.airplay:APTransportStream] [0x4941] APTransportStream with name CarPlay-main holds send connection [0x3B8D].
+2026-09-29 10:55:05.008 Df airplayd[10072:2b1947] [com.apple.airplay:APTransportStream] APTransportStream 0x4941 created with provider 0x0000.
+2026-09-29 10:55:05.008 Df airplayd[10072:2b1947] [com.apple.airplay:APTransportStream] APTransportStream 0x4941 with name CarPlay-main created.
+2026-09-29 10:55:05.008 Df airplayd[10072:2b1947] [com.apple.airplay:APTransportSession] [0x664A] APTransportSession with stream [0x4941] holds connection [0x3B8D]
+2026-09-29 10:55:05.008 Df airplayd[10072:2b1947] [com.apple.airplay:APEndpointStreamCarPlayAudio] [0x1B95] Created transport data stream [0x4941]
+2026-09-29 10:55:05.214 Df airplayd[10072:2b199b] [com.apple.airplay:APTransportStream] [0x4941] APTransportStream with name CarPlay-main invalidated send connection [0x3B8D].
+2026-09-29 10:55:05.214 Df airplayd[10072:2b199b] [com.apple.airplay:APTransportStream] [0x4941] APTransportStream with name CarPlay-main finalizing, session: [0x664A]
+2026-09-29 10:55:05.258 Df airplayd[10072:2b199b] [com.apple.airplay:APTransportStream] [0x4941] APTransportStream with name CarPlay-main holds send connection [0x7B73].
+2026-09-29 10:55:05.258 Df airplayd[10072:2b199b] [com.apple.airplay:APTransportStream] APTransportStream 0x4941 created with provider 0x0000.
+2026-09-29 10:55:05.258 Df airplayd[10072:2b199b] [com.apple.airplay:APTransportStream] APTransportStream 0x4941 with name CarPlay-main created.
+2026-09-29 10:55:05.258 Df airplayd[10072:2b199b] [com.apple.airplay:APTransportSession] [0x664A] APTransportSession with stream [0x4941] holds connection [0x7B73]
+2026-09-29 10:55:05.258 Df airplayd[10072:2b199b] [com.apple.airplay:APEndpointStreamCarPlayAudio] [0x1B95] Created transport data stream [0x4941]
+2026-09-29 10:55:05.262 Df airplayd[10072:2b1819] [com.apple.airplay:APEndpointCarPlay] Feedback received, "streams":
+ [
+    {
+        "type" : 100,
+        "sr" : 48000.000000,
+    }
+]
+user@mac ~ % 

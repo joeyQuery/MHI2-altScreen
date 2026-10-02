@@ -1,0 +1,62 @@
+# iPhone log: session teardown
+# Topic: Both screen streams dissociated on teardown
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+[
+    {
+        "type" : 100,
+        "sr" : 48001.203125,
+    }
+]
+2026-10-01 03:49:36.303212+0100 0x15d4f1   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointStreamCarPlayAudio] [0xD002] AudioMain: Parsed feedback dictionary for stream type 100: sr = 48001.203125
+2026-10-01 03:49:38.325293+0100 0x15d505   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointCarPlay] Feedback received, "streams":
+ [
+    {
+        "type" : 100,
+        "sr" : 48001.500000,
+    }
+]
+2026-10-01 03:49:38.325437+0100 0x15d4ef   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointStreamCarPlayAudio] [0xD002] AudioMain: Parsed feedback dictionary for stream type 100: sr = 48001.500000
+2026-10-01 03:49:39.857952+0100 0x15d505   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APTransportKeepAliveControllerStandard] [0x0381] APTransportKeepAliveControllerStandard finalizing for stream [0xE6D6]
+2026-10-01 03:49:39.858090+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APSenderSessionAirPlay] [0x9B3E] Invalidated transport control stream [0xE6D6]
+2026-10-01 03:49:39.858215+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APSenderSessionAirPlay] [0x9B3E] Invalidated transport event stream [0x3C54]
+2026-10-01 03:49:39.859674+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointCarPlay] [0xE9D2] Updating stream resumed time for StreamInfo_MainAudio (added: 125, total: 125, resumeEndEvent: 0xffe0002)
+2026-10-01 03:49:39.859808+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointCarPlay] [0xE9D2] Updating stream resumed time for StreamInfo_Screen (added: 125, total: 125, resumeEndEvent: 0xffe0002)
+2026-10-01 03:49:39.861935+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointCarPlay] [0xE9D2] Starting teardown of the streams and the session, using HTTP timeout of 60 sec (connection already invalid)
+2026-10-01 03:49:39.862266+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointStreamCarPlayAudio] [0xD002] AudioMain Stats: DataCounter: total  125.377s; since last event, 125.377s:
+(AudioMain): Digital silence instances 2
+Total Duration(TD) Seconds(s) Samples(samp)
+ After 10.47s from the stream start. TD = 0.31s(14760 samp).
+ After 0.16s from the stream start. TD = 0.23s(11160 samp).
+Sample rate: 47963.62 (over 0.74s), 48003.15 (over 7.49s)
+Short-term rate trends: AudioMain (Hz)
+Bucket count: 10
+Total samples: 63
+Duration: 124.6 sec
+47520.0 - 47616.0        0.0    0.00% 
+47616.0 - 47712.0        0.0    0.00% 
+47712.0 - 47808.0        0.0    0.00% 
+47808.0 - 47904.0        0.0    0.00% 
+47904.0 - 48000.0       30.0   47.62% ************************
+48000.0 - 48096.0       33.0   52.38% **************************
+48096.0 - 48192.0        0.0    0.00% 
+48192.0 - 48288.0        0.0    0.00% 
+48288.0 - 48384.0        0.0    0.00% 
+48384.0 - 48480.0        0.0    0.00% 
+Long-term rate trends: AudioMain (Hz)
+Bucket count: 10
+Total samples: 63
+Duration: 124.6 sec
+47520.0 - 47616.0        0.0    0.00% 
+4<…>
+2026-10-01 03:49:39.867719+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointStreamScreen] [0xE9D2] [0xA504] dissociating screen stream 0xA504
+2026-10-01 03:49:39.879907+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointStreamScreen] [0xE9D2] [0xA504] screen stream 0xA504 deactivated
+2026-10-01 03:49:39.879920+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointStreamScreen] [0xE9D2] [0x5BF4] dissociating screen stream 0x5BF4
+2026-10-01 03:49:39.879964+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APEndpointStreamScreen] [0xE9D2] [0x5BF4] screen stream 0x5BF4 deactivated
+2026-10-01 03:49:39.880421+0100 0x15d3d7   Default     0x0                  6138   0    airplayd: (CoreUtils) [com.apple.airplay:APHALCarAudioStream] HALCarAudioOutputStream-AudioMain  Stats: DataCounter: total  125.397s; since last event, 125.397s:
+(HALCarAudioOutputStream-AudioMain): Digital silence instances 2
+Total Duration(TD) Seconds(s) Samples(samp)
+ After 11.19s from the stream start. TD = 0.28s(13312 samp).
+ After 0.87s from the stream start. TD = 0.23s(11264 samp).
+Sample rate: 47999.85 (over 2.11s), 48000.67 (over 21.31s)

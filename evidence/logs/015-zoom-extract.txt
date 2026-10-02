@@ -1,0 +1,23 @@
+# Extracts of pasted unit output (session transcript). Redacted as in the other logs.
+# Timestamps: 2026-10-02T10:19Z(file mtime)
+# Shows: only tangential - sloginfo startup lines for DSIMapViewerZoomEngine/MapKombi. NO changeMapZoomLevel/zoomDirection/r52/echo 0/1/-1/2 pastes exist in available session data.
+# NOTE: pasted text verbatim; "attachment" = long paste the CLI stored as an uploaded .txt (user @-referenced or system-attached to this transcript).
+
+##### [attachment e6af59c9 | 2026-10-02T10:19Z(file mtime)]
+root@mmx:/mnt/app/root> sloginfo | grep -i -e zoom -e kombi -e dial -e "map.*view" -e viewmode | tail -15 | cut -c1-200
+Jan 01 00:01:04    5 10000     0 00:00:26.478 hmi BENCH_Startup 2 31620 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,3)
+Jan 01 00:01:04    5 10000     0 00:00:26.486 hmi BENCH_Startup 2 31632 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerZoomEngine,1)
+Jan 01 00:01:04    5 10000     0 00:00:38.321 hmi BENCH_Startup 2 33901 DSIAdapter.startService(org.dsi.ifc.tmc.DSITmcOnRoute,0) ~Dispatcher-dsi.MapViewerControl.0~
+Jan 01 00:01:04    5 10000     0 00:00:38.327 hmi BENCH_Startup 2 33904 DSIAdapter.startService(org.dsi.ifc.predictivenavigation.DSIPredictiveNavigation,0) ~Dispatcher-dsi.MapViewerControl.0~
+Jan 01 00:01:11    5 10000     0 00:01:11.516 hmi BENCH_Startup 2 40962 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerControl,1) ~Dispatcher-Startup~
+Jan 01 00:01:11    5 10000     0 00:01:11.519 hmi BENCH_Startup 2 41034 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,0) ~Dispatcher-Startup~
+Jan 01 00:01:11    5 10000     0 00:01:11.532 hmi BENCH_Startup 2 41036 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerControl,4) ~Dispatcher-Startup~
+Jan 01 00:01:11    5 10000     0 00:01:11.534 hmi BENCH_Startup 2 41037 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,1) ~Dispatcher-Startup~
+Jan 01 00:01:14    5 10000     0 00:01:14.429 medialauncher BENCH_Startup 2 42947 [SM] PS_ACC_MODE 2 requested for medialauncher
+Jan 01 00:01:15    5 10000     0 00:01:14.888 hmi BENCH_Startup 2 43152 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerStreetViewCtrl,0)
+Jan 01 00:01:16    5 10107   1001 00:01:16.301 MMX BENCH_Startup: MapKombi#initDSI() - Google Earth map enabled in setup: false
+Jan 01 00:01:16    5 10000     0 00:01:16.287 hmi BENCH_Startup 2 43880 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,4)
+Jan 01 00:01:16    5 10000     0 00:01:16.298 hmi BENCH_Startup 2 43892 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,1)
+Jan 01 00:01:16    5 10000     0 00:01:16.522 hmi BENCH_Startup 2 44124 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,1)
+Jan 01 00:01:16    5 10000     0 00:01:16.528 hmi BENCH_Startup 2 44137 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,0)
+

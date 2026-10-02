@@ -1,0 +1,95 @@
+# vc_render relaunch with priority 25
+# Topic: pidin of displaymanager / vc_render / dio_manager
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> pidin | grep -E "vc_render|dio_manager|displaymanager"
+  884773   1 pps/displaymanager  15r RECEIVE     5                           
+  884773   2 pps/displaymanager  10r CONDVAR     (0x199e20)                  
+  884773   3 pps/displaymanager  15r RECEIVE     1                           
+  884773   4 pps/displaymanager  10r REPLY       1171501                     
+  884773   5 pps/displaymanager  15r NANOSLEEP                               
+  884773   6 pps/displaymanager  15r SIGWAITINFO                             
+  884773   7 pps/displaymanager  15r CONDVAR     (0xff340)                   
+  884773   8 pps/displaymanager  15r RECEIVE     15                          
+  884773   9 pps/displaymanager  15r SEM         fbc00014                    
+  884773  10 pps/displaymanager  15r SEM         ffc110e8                    
+  884773  11 pps/displaymanager  15r CONDVAR     (0x22620c)                  
+  884773  12 pps/displaymanager  15r CONDVAR     (0x226410)                  
+  884773  13 pps/displaymanager  15r CONDVAR     (0x2265f0)                  
+  884773  14 pps/displaymanager  15r CONDVAR     (0x223f18)                  
+  884773  15 pps/displaymanager  15r REPLY       884770                      
+  884773  16 pps/displaymanager  15r REPLY       438294                      
+  884773  17 pps/displaymanager  15r CONDVAR     (0x223918)                  
+  884773  18 pps/displaymanager  15r RECEIVE     10                          
+  884773  19 pps/displaymanager  15r CONDVAR     (0x222db8)                  
+  884773  20 pps/displaymanager  15r CONDVAR     (0x2228e8)                  
+  884773  21 pps/displaymanager  15r CONDVAR     (0x235f60)                  
+  884773  22 pps/displaymanager  15r CONDVAR     (0x235cb8)                  
+  884773  23 pps/displaymanager  15r CONDVAR     (0x222c28)                  
+  884773  24 pps/displaymanager  10r RECEIVE     10                          
+  884773  25 pps/displaymanager  15r CONDVAR     (0x2d13d4)                  
+  884773  26 pps/displaymanager  15r REPLY       1499209                     
+  884773  27 pps/displaymanager  15r CONDVAR     (0x2cfc00)                  
+  884773  28 pps/displaymanager  15r CONDVAR     (0x2cf8c0)                  
+  884773  29 pps/displaymanager  15r REPLY       438294                      
+  884773  30 pps/displaymanager  15r CONDVAR     (0x235978)                  
+  884773  31 pps/displaymanager  15r CONDVAR     (0x2cfa70)                  
+  884773  32 pps/displaymanager  15r CONDVAR     (0x223af8)                  
+  884773  33 pps/displaymanager  15r RECEIVE     10                          
+  884773  34 pps/displaymanager  15r REPLY       2945143                     
+  884773  35 pps/displaymanager  15r CONDVAR     (0x2461e0)                  
+ 4276355   1 tmp/vc_render       10r REPLY       438294                      
+ 4276355   2 tmp/vc_render       12r CONDVAR     (0x1061d0)                  
+ 4276355   3 tmp/vc_render       14r CONDVAR     (0x1062d0)                  
+ 4276355   4 tmp/vc_render       10r SIGWAITINFO                             
+ 4276355   5 tmp/vc_render       10r SEM         fbc02a2c                    
+ 4276355   6 tmp/vc_render       10r REPLY       155668                      
+15753325   1 n/apps/dio_manager  10r CONDVAR     (0xffbe0)                   
+15753325   2 n/apps/dio_manager  10r READY                                   
+15753325   3 n/apps/dio_manager  10r NANOSLEEP                               
+15753325   4 n/apps/dio_manager  10r REPLY       438294                      
+15753325   5 n/apps/dio_manager  10r REPLY       438294                      
+15753325   6 n/apps/dio_manager  10r CONDVAR     (0x1aae20)                  
+15753325   7 n/apps/dio_manager  10r RECEIVE     1                           
+15753325   8 n/apps/dio_manager  10r REPLY       1171501                     
+15753325   9 n/apps/dio_manager  10r CONDVAR     (0x1bfa54)                  
+15753325  10 n/apps/dio_manager  10r CONDVAR     (0x1bfc58)                  
+15753325  11 n/apps/dio_manager  10r CONDVAR     (0x1bfe38)                  
+15753325  12 n/apps/dio_manager  10r CONDVAR     (0x1bf100)                  
+15753325  13 n/apps/dio_manager  10r REPLY       884770                      
+15753325  14 n/apps/dio_manager  10r REPLY       438294                      
+15753325  15 n/apps/dio_manager  10r CONDVAR     (0x1dfe80)                  
+15753325  16 n/apps/dio_manager  10r RECEIVE     4                           
+15753325  17 n/apps/dio_manager  10r RECEIVE     8                           
+15753325  18 n/apps/dio_manager  10r CONDVAR     (0x202d58)                  
+15753325  19 n/apps/dio_manager  10r CONDVAR     (0x2028d0)                  
+15753325  20 n/apps/dio_manager  10r CONDVAR     (0x2027a8)                  
+15753325  21 n/apps/dio_manager  10r CONDVAR     (0x202680)                  
+15753325  22 n/apps/dio_manager  10r CONDVAR     (0x201e78)                  
+15753325  23 n/apps/dio_manager  10r RECEIVE     4                           
+15753325  24 n/apps/dio_manager  10r CONDVAR     (0x1fdfcc)                  
+15753325  25 n/apps/dio_manager  10r CONDVAR     (0x1fdbfc)                  
+15753325  26 n/apps/dio_manager  10r REPLY       1896538                     
+15753325  27 n/apps/dio_manager  10r REPLY       1749081                     
+15753325  28 n/apps/dio_manager  10r REPLY       1380356                     
+15753325  29 n/apps/dio_manager  10r CONDVAR     (0x1fdad0)                  
+15753325  30 n/apps/dio_manager  10r SIGWAITINFO                             
+15753325  31 n/apps/dio_manager  10r CONDVAR     (0x783bb128)                
+15753325  32 n/apps/dio_manager  10r NANOSLEEP                               
+15753325  33 n/apps/dio_manager  10r SIGWAITINFO                             
+15753325  34 n/apps/dio_manager  19f SIGWAITINFO                             
+15753325  35 n/apps/dio_manager  10r REPLY       438294                      
+15753325  36 n/apps/dio_manager  17f SIGWAITINFO                             
+15753325  37 n/apps/dio_manager  19f CONDVAR     (0x2dae30)                  
+15753325  38 n/apps/dio_manager  21f CONDVAR     (0x2dafb0)                  
+15753325  39 n/apps/dio_manager  17f SIGWAITINFO                             
+15753325  40 n/apps/dio_manager  17f SEM         fbc0506c                    
+15753325  41 n/apps/dio_manager  17f REPLY       155668                      
+[3] + Done (1)             LD_LIBRARY_PATH=/mnt/app/armle/lib:/mnt/app/arm
+root@mmx:/mnt/app/root> killall vc_render; sleep 1; LD_LIBRARY_PATH=/mnt/app/armle/lib:/mnt/app/armle/usr/lib:/mnt/app/root/lib-target:/eso/lib:/armle/lib:/armle/lib/dll:/armle/usr/lib:/lib:/usr/lib on -p 25 /tmp/vc_render --h 542 --ts wall > /tmp/vc_render.log 2>&1 &
+sh: killall: cannot execute - No such file or directory
+[2] 18116722
+root@mmx:/mnt/app/root> 
+[2] + Done (1)             LD_LIBRARY_PATH=/mnt/app/armle/lib:/mnt/app/arm
+root@mmx:/mnt/app/root> 

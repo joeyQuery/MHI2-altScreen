@@ -1,0 +1,31 @@
+# MODES_CHANGED turns 0<->1 over time
+# Topic: Route guidance on/off as seen by the hook
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> grep -e "MODES_CHANGED parsed rc=0 seq=1[1-6]" /tmp/altscreen111.log
+257.311 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=11 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+277.567 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=12 delta=0x20 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+291.108 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=13 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+291.117 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=14 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+315.252 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=15 delta=0x01 screen=2 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+330.443 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=16 delta=0x01 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+728.160 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=11 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+966.963 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=11 delta=0x20 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+974.738 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=12 delta=0x20 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1003.277 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=13 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1003.327 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=14 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1028.247 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=15 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1028.258 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=16 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1270.134 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=11 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1275.945 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=12 delta=0x20 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1279.237 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=13 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1279.248 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=14 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1279.732 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=15 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+1279.746 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=16 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=1 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+root@mmx:/mnt/app/root> 
+
+
+
+
+

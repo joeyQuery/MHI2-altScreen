@@ -1,0 +1,169 @@
+# r3 stage 6 + 1010x376 size override
+# Topic: Display clone stage 6 and size override markers
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/tmp> echo 6 > /tmp/mibr-alt111-audi.stage
+root@mmx:/tmp> : > /tmp/altscreen111.log
+root@mmx:/tmp> echo 6 > /tmp/mibr-alt111-audi.stage
+root@mmx:/tmp> echo 1010 376 > /tmp/mibr-alt111-audi.size
+root@mmx:/tmp> ls /tmp/mibr-alt111-audi.*
+/tmp/mibr-alt111-audi.features-stock        /tmp/mibr-alt111-audi.size                  /tmp/mibr-alt111-audi.stage
+root@mmx:/tmp> cat /tmp/altscreen111.log
+1063.494 [altscreen111] build audi-mu0678-r3 enabled=1
+1063.495 [altscreen111] renderer tee listening on 127.0.0.1:19820
+1063.496 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+1063.497 [altscreen111] hook destinations setup=780064fc start=78005b44 teardown=78007138 platform=78004484 control=78005570 modeParser=782cf5b4
+1063.498 [altscreen111] SessionSetup target mprotect RW denied page=782d2000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+1063.498 [altscreen111] SessionSetup target page cloned private RW at 782d2000 size=4096
+1063.499 [altscreen111] installed ARM hook SessionSetup target=782d2fd8 replacement=780064fc trampoline=1b6000 page=782d2000 pagesize=4096
+1063.499 [altscreen111] SessionStart target mprotect RW denied page=782d1000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+1063.499 [altscreen111] SessionStart target page cloned private RW at 782d1000 size=4096
+1063.500 [altscreen111] installed ARM hook SessionStart target=782d1360 replacement=78005b44 trampoline=1b7000 page=782d1000 pagesize=4096
+1063.501 [altscreen111] installed ARM hook SessionTearDown target=782d2b1c replacement=78007138 trampoline=1b8000 page=782d2000 pagesize=4096
+1063.502 [altscreen111] PlatformControl target mprotect RW denied page=782cb000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+1063.502 [altscreen111] PlatformControl target page cloned private RW at 782cb000 size=4096
+1063.503 [altscreen111] installed ARM hook PlatformControl target=782cb710 replacement=78004484 trampoline=1b9000 page=782cb000 pagesize=4096
+1063.503 [altscreen111] SessionControl target mprotect RW denied page=782d4000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+1063.504 [altscreen111] SessionControl target page cloned private RW at 782d4000 size=4096
+1063.504 [altscreen111] installed ARM hook SessionControl target=782d4d88 replacement=78005570 trampoline=1ba000 page=782d4000 pagesize=4096
+1063.507 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6031 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000-8000-000000000002 viewAreas=1 autoShow=0 bit26Mode=0
+1063.508 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-policy.enabled persistentMarker=/mnt/app/root/mibr-alt111-keyframe-policy.enabled
+1065.422 [altscreen111] captured stock CarPlay master AES key at SetSecurityInfo caller
+1065.423 [altscreen111] SETUP entry streams=<none>
+1065.425 [altscreen111] GEN2 PC setUpStreams
+1065.426 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8520 command=setUpStreams commandRef=783432f4 rc=0 out=0
+1065.426 [altscreen111] SETUP stock result=0 response=yes
+1065.427 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+1065.428 [altscreen111] AUDI features policy=stock (enabledFeatures untouched)
+1065.449 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+1065.450 [altscreen111] AUDI features policy=stock (enabledFeatures untouched)
+1065.451 [altscreen111] GEN2 FLIGHT DUMP command=info path=root type=dict count=20 depth=0
+1065.451 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.oemIconVisible type=string value=1
+1065.451 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes type=dict count=2 depth=1
+1065.452 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates type=array count=3 depth=2
+1065.453 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[0] type=dict count=2 depth=3
+1065.453 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[0].state type=bool value=0
+1065.453 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[0].appStateID type=int value=2
+1065.454 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[1] type=dict count=2 depth=3
+1065.454 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[1].appStateID type=int value=1
+1065.455 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[1].speechMode type=int value=-1
+1065.455 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[2] type=dict count=2 depth=3
+1065.455 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[2].state type=bool value=0
+1065.456 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[2].appStateID type=int value=3
+1065.456 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources type=array count=2 depth=2
+1065.456 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0] type=dict count=5 depth=3
+1065.457 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].transferPriority type=int value=500
+1065.457 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].takeConstraint type=int value=500
+1065.457 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].resourceID type=int value=1
+1065.458 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].transferType type=int value=1
+1065.458 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].borrowConstraint type=int value=100
+1065.458 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1] type=dict count=5 depth=3
+1065.459 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].transferPriority type=int value=500
+1065.459 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].takeConstraint type=int value=500
+1065.459 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].resourceID type=int value=2
+1065.460 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].transferType type=int value=1
+1065.460 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].borrowConstraint type=int value=100
+1065.461 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.manufacturer type=string value=HARMAN
+1065.461 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.features type=int value=5440801664
+1065.461 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.model type=string value=AUDI 4910
+1065.461 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.oemIconLabel type=string value=Audi MMI
+1065.462 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.statusFlags type=int value=4
+1065.462 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.deviceID type=redacted value=REDACTED
+1065.462 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.bluetoothIDs type=array count=1 depth=1
+1065.463 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.bluetoothIDs[0] type=string value=XX:XX:XX:XX:XX:XX
+1065.463 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.name type=redacted value=REDACTED
+1065.464 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices type=array count=4 depth=1
+1065.464 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0] type=dict count=7 depth=2
+1065.464 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].hidCountryCode type=int value=9
+1065.465 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].displayUUID type=string value=<uuid>
+1065.465 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].name type=redacted value=REDACTED
+1065.465 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].hidProductID type=int value=8216
+1065.466 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].hidVendorID type=int value=6806
+1065.466 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].hidDescriptor type=data len=75 payload=not-logged
+1065.466 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].uuid type=string value=<uuid>
+1065.467 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1] type=dict count=7 depth=2
+1065.467 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].hidCountryCode type=int value=9
+1065.468 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].displayUUID type=string value=<uuid>
+1065.468 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].name type=redacted value=REDACTED
+1065.468 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].hidProductID type=int value=8216
+1065.469 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].hidVendorID type=int value=6806
+1065.469 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].hidDescriptor type=data len=31 payload=not-logged
+1065.469 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].uuid type=string value=<uuid>
+1065.469 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2] type=dict count=7 depth=2
+1065.470 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].hidCountryCode type=int value=9
+1065.470 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].displayUUID type=string value=<uuid>
+1065.470 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].name type=redacted value=REDACTED
+1065.471 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].hidProductID type=int value=8216
+1065.471 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].hidVendorID type=int value=6806
+1065.471 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].hidDescriptor type=data len=27 payload=not-logged
+1065.472 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].uuid type=string value=<uuid>
+1065.472 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3] type=dict count=7 depth=2
+1065.472 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidCountryCode type=int value=9
+1065.473 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].displayUUID type=string value=<uuid>
+1065.473 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].name type=redacted value=REDACTED
+1065.474 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidProductID type=int value=8216
+1065.474 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidVendorID type=int value=6806
+1065.474 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidDescriptor type=data len=90 payload=not-logged
+1065.475 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].uuid type=string value=<uuid>
+1065.475 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.oemIcon type=data len=19255 payload=not-logged
+1065.475 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays type=array count=1 depth=1
+1065.476 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0] type=dict count=7 depth=2
+1065.476 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].widthPixels type=int value=1024
+1065.476 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].features type=int value=2
+1065.477 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].heightPhysical type=int value=88
+1065.477 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].heightPixels type=int value=480
+1065.477 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].maxFPS type=int value=30
+1065.478 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].uuid type=string value=<uuid>
+1065.478 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].widthPhysical type=int value=188
+1065.478 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.rightHandDrive type=string value=1
+1065.479 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies type=array count=3 depth=1
+1065.479 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0] type=dict count=2 depth=2
+1065.479 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0].inputLatencyMicros type=int value=95000
+1065.480 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0].outputLatencyMicros type=int value=80000
+1065.480 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1] type=dict count=4 depth=2
+1065.480 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].audioType type=string value=telephony
+1065.481 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].inputLatencyMicros type=int value=85000
+1065.481 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].outputLatencyMicros type=int value=80000
+1065.481 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].type type=int value=100
+1065.482 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2] type=dict count=4 depth=2
+1065.482 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].audioType type=string value=speechRecognition
+1065.482 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].inputLatencyMicros type=int value=85000
+1065.483 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].outputLatencyMicros type=int value=80000
+1065.483 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].type type=int value=100
+1065.483 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.nightMode type=bool value=0
+1065.484 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.keepAliveSendStatsAsBody type=bool value=1
+1065.484 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats type=array count=2 depth=1
+1065.485 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0] type=dict count=3 depth=2
+1065.485 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].audioInputFormats type=int value=16
+1065.485 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].type type=int value=100
+1065.486 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].audioOutputFormats type=int value=1081360
+1065.486 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1] type=dict count=3 depth=2
+1065.486 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].audioInputFormats type=int value=16
+1065.487 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].type type=int value=101
+1065.487 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].audioOutputFormats type=int value=16
+1065.487 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.macAddress type=redacted value=REDACTED
+1065.488 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.sourceVersion type=string value=210.81
+1065.488 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0 type=dict count=7 depth=0
+1065.488 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.widthPixels type=int value=1024
+1065.489 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.features type=int value=2
+1065.489 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.heightPhysical type=int value=88
+1065.489 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.heightPixels type=int value=480
+1065.490 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.maxFPS type=int value=30
+1065.490 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.uuid type=string value=<uuid>
+1065.490 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.widthPhysical type=int value=188
+1065.491 [altscreen111] GEN2 stock display URL capability altScreenSuggestUIURLs=<absent>
+1065.491 [altscreen111] GEN2 stock display URL capability altScreenURLs=<absent>
+1065.491 [altscreen111] GEN2 stock display URL capability uiContextURLs=<absent>
+1065.491 [altscreen111] GEN2 stock display capability baseline: features=2 primaryInputDevice=<absent>0; alt clone removes primaryInputDevice
+1065.494 [altscreen111] AUDI size override 1010x376 physical=200x74
+1065.494 [altscreen111] AUDI display clone stage=6 (uuid always unique)
+1065.495 [altscreen111] GEN2 advertised altScreenSuggestUIURLs[0]=maps:/car/instrumentcluster [1]=maps:/car/instrumentcluster/map [2]=maps:/car/instrumentcluster/instructioncard
+1065.497 [altscreen111] GEN2 ViewArea full=1010x376 safe=1010x376@0,0
+1065.498 [altscreen111] GEN2 /info ready: root=altScreen+viewAreas type=111 maxFPS=30 features=0 input=none geometry=1010x376 physical=200x74 uuid=b7e6c5a0-2222-4000-8000-000000000002 url=maps:/car/instrumentcluster
+1065.508 [altscreen111] GEN2 PC startSession
+1065.509 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8520 command=startSession commandRef=78343188 rc=0 out=0
+1065.521 [altscreen111] GEN2 TEARDOWN entry request=dict reason=0 alt=0 main110=0 otherStreams=0 private111_decoupled=1
+1065.525 [altscreen111] GEN2 PC tearDownStreams
+1065.526 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8520 command=tearDownStreams commandRef=783431b4 rc=0 out=0
+root@mmx:/tmp> 

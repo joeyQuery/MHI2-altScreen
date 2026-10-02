@@ -1,0 +1,87 @@
+# Extracts of pasted unit output (session transcript). Redacted as in the other logs.
+# Timestamps: attachments f1b57efe 2026-10-01T22:55Z(file mtime) ; ffff0a22 2026-10-02T09:49Z(file mtime)
+# Shows: sloginfo startup sequence with "BENCH_STARTUP: Change NavStateOfOperation to 5" at ~00:01:23 uptime, then NavInitializationChecker timer; second boot has it at 00:01:22. No "navready" lines present.
+# NOTE: pasted text verbatim; "attachment" = long paste the CLI stored as an uploaded .txt (user @-referenced or system-attached to this transcript).
+
+##### [attachment f1b57efe | 2026-10-01T22:55Z(file mtime)]
+root@mmx:/mnt/app/root> sloginfo | grep -i -e kombi -e cluster -e "map" -e "startup" | cut -c1-190 | tail -50
+Jan 01 00:01:03    5 10000     0 00:00:54.591 hmi BENCH_Startup 2 39567 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,0) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:54.601 hmi BENCH_Startup 2 39569 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerControl,4) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:54.602 hmi BENCH_Startup 2 39570 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,1) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:56.193 hmi BENCH_Startup 2 39640 DSIAdapter.startService(org.dsi.ifc.cartimeunitslanguage.DSICarTimeUnitsLanguage,0)
+Jan 01 00:01:03    5 10000     0 00:00:57.055 hmi BENCH_Startup 2 39680 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerStreetViewCtrl,0)
+Jan 01 00:01:03    5 10000     0 00:00:57.919 hmi BENCH_Startup 2 39724 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,4)
+Jan 01 00:01:03    5 10000     0 00:00:57.923 hmi BENCH_Startup 2 39735 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,1)
+Jan 01 00:01:03    5 10000     0 00:00:58.153 hmi BENCH_Startup 2 39771 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,1)
+Jan 01 00:01:03    5 10000     0 00:00:58.156 hmi BENCH_Startup 2 39783 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,0)
+Jan 01 00:01:03    5 10000     0 00:01:02.726 hmi BENCH_Startup 2 40497 DSIAdapter.startService(org.dsi.ifc.online.DSIOnlineTraffic,0)
+Jan 01 00:01:03    5 10000     0 00:01:02.750 hmi BENCH_Startup 2 40508 DSIAdapter.registerServiceProvider(org.dsi.ifc.online.DSIOnlineTraffic,0)
+Jan 01 00:01:08    5 10000     0 00:01:08.054 DisplayManager BENCH_Startup 2 -1 new stream available
+Jan 01 00:01:12    5 10000     0 00:00:06.077 MMXDiagService BENCH_Startup 2 43312 [SM] AS_INITIALIZED requested for diagnosis
+Jan 01 00:01:12    5 10000     0 00:00:06.129 MMXDiagService BENCH_Startup 2 43328 [SM] AS_RUNNING requested for diagnosis
+Jan 01 00:01:12    5 10000     0 00:00:27.131 rdv_controller BENCH_Startup 2 43964 [SM] AS_INITIALIZED requested for rdv_controller
+Jan 01 00:01:12    5 10000     0 00:00:27.213 rdv_controller BENCH_Startup 2 43979 [SM] AS_RUNNING requested for rdv_controller
+Jan 01 00:01:13    5 10000     0 00:00:09.614 cinflash BENCH_Startup 2 44252 [SM] AS_INITIALIZED requested for cinflash
+Jan 01 00:01:13    5 10000     0 00:00:09.660 cinflash BENCH_Startup 2 44259 [SM] AS_RUNNING requested for cinflash
+Jan 01 00:01:14    5 10000     0 00:00:29.895 trdevapp BENCH_Startup 2 44375 [SM] AS_INITIALIZED requested for trdevapp
+Jan 01 00:01:14    5 10000     0 00:00:29.910 trdevapp BENCH_Startup 2 44382 [SM] AS_RUNNING requested for trdevapp
+Jan 01 00:01:14    5 10000     0 00:00:09.459 swdlclient BENCH_Startup 2 44422 [SM] AS_INITIALIZED requested for swdlclient
+Jan 01 00:01:14    5 10000     0 00:00:09.538 swdlclient BENCH_Startup 2 44429 [SM] AS_RUNNING requested for swdlclient
+Jan 01 00:01:16    5 10000     0 00:00:01.739 broker BENCH_Startup 2 44862 broker: entered main(): 00:00:01.637
+Jan 01 00:01:16    5 10000     0 00:00:01.825 broker BENCH_Startup 2 44866 eso broker: ready on resman transport : 00:00:01.825
+Jan 01 00:01:16    5 10000     0 00:00:01.826 broker BENCH_Startup 2 44867 eso broker: ready on tcp transport : 00:00:01.826
+Jan 01 00:01:16    5 10000     0 00:00:01.831 broker BENCH_Startup 2 44870 broker: first connect via resman-factory at 00:00:01.830 from agent 101
+Jan 01 00:01:16    5 10000     0 00:00:02.404 broker BENCH_Startup 2 44883 broker: first connect via tcp-factory at 00:00:02.404 from agent 510
+Jan 01 00:01:16    5 10000     0 00:00:02.404 broker BENCH_Startup 2 44884 broker: first connect from remote node at 00:00:02.404 from agent/node 510/rcc
+Jan 01 00:01:16    5 10000     0 00:00:04.942 broker BENCH_Startup 2 44937 broker: first connect from remote node at 00:00:04.942 from agent/node 400/rcc
+Jan 01 00:01:16    5 10000     0 00:00:06.595 broker BENCH_Startup 2 44968 eso broker: ready on unknown transport : 00:00:06.595
+Jan 01 00:01:23    5 10001     0 00:01:23.756 MMX BENCH_STARTUP: Change NavStateOfOperation to 5
+Jan 01 00:01:27    5 10000     0 00:00:42.858 explorerProc BENCH_Startup 2 47608 [SM] AS_INITIALIZED requested for explorer
+Jan 01 00:01:27    5 10000     0 00:00:42.886 explorerProc BENCH_Startup 2 47617 [SM] AS_RUNNING requested for explorer
+Jan 01 00:01:28    5 10000     0 00:00:43.374 radiodata BENCH_Startup 2 47821 [SM] AS_INITIALIZED requested for radiodata
+Jan 01 00:01:28    5 10000     0 00:00:44.165 radiodata BENCH_Startup 2 47861 [SM] AS_RUNNING requested for radiodata
+Jan 01 00:01:31    5 10000     0 00:00:46.438 videoovermost BENCH_Startup 2 51614 [SM] AS_INITIALIZED requested for videoovermostApp
+Jan 01 00:01:31    5 10000     0 00:00:46.492 videoovermost BENCH_Startup 2 51622 [SM] AS_RUNNING requested for videoovermostApp
+Jan 01 00:01:36    5 10000     0 00:00:51.459 browserProc BENCH_Startup 2 52595 [SM] AS_INITIALIZED requested for browser
+Jan 01 00:01:36    5 10000     0 00:00:51.480 browserProc BENCH_Startup 2 52604 [SM] AS_RUNNING requested for browser
+Jan 01 00:01:38    5 10000     0 00:00:53.632 mediaonline BENCH_Startup 2 53186 [SM] AS_INITIALIZED requested for mediaonline
+Jan 01 00:01:38    5 10000     0 00:00:53.649 mediaonline BENCH_Startup 2 53197 [SM] AS_RUNNING requested for mediaonline
+Jan 01 00:01:39    5 10000     0 00:00:54.550 gemmiProc BENCH_Startup 2 53290 [SM] AS_INITIALIZED requested for gemib
+Jan 01 00:01:39    5 10000     0 00:00:54.567 gemmiProc BENCH_Startup 2 53305 [SM] AS_RUNNING requested for gemib
+Jan 01 00:01:40    5 10000     0 00:00:55.784 streetviewProc BENCH_Startup 2 53499 [SM] AS_INITIALIZED requested for streetview
+Jan 01 00:01:40    5 10000     0 00:00:55.834 streetviewProc BENCH_Startup 2 53510 [SM] AS_RUNNING requested for streetview
+Jan 01 00:01:41    5 10000     0 00:00:56.739 voice_encoder_app BENCH_Startup 2 53670 [SM] AS_INITIALIZED requested for voice_encoder_app
+Jan 01 00:01:41    5 10000     0 00:00:56.755 voice_encoder_app BENCH_Startup 2 53677 [SM] AS_RUNNING requested for voice_encoder_app
+Jan 01 00:01:42    5 10000     0 00:00:57.887 gemibMain2 BENCH_Startup 2 53879 [gemib.cc] wait till we get GoogleActive (setConnectionInformation != 255) from HMI
+Jan 01 00:01:42    5 10000     0 00:00:58.138 gemibMain BENCH_Startup 2 53974 [gemib.cc] wait till we get GoogleActive (setConnectionInformation != 255) from HMI
+Jan 01 00:01:46    5 10107   1001 00:01:46.503 MMX BENCH_Startup: OperationManager#fireTimer( NavInitializationChecker )
+root@mmx:/mnt/app/root> 
+
+##### [attachment ffff0a22 (sloginfo tail) | 2026-10-02T09:49Z(file mtime)]
+root@mmx:/mnt/app/root> sloginfo | tail -25
+Jan 01 00:01:20    5 10000     0 00:00:36.469 radiodata BENCH_Startup 2 45405 [SM] AS_RUNNING requested for radiodata
+Jan 01 00:01:22    5 10001     0 00:01:22.298 MMX BENCH_STARTUP: Change NavStateOfOperation to 5
+Jan 01 00:01:23    5 10000     0 00:00:38.174 videoovermost BENCH_Startup 2 51837 [SM] AS_INITIALIZED requested for videoovermostApp
+Jan 01 00:01:23    5 10000     0 00:00:38.189 videoovermost BENCH_Startup 2 51845 [SM] AS_RUNNING requested for videoovermostApp
+Jan 01 00:01:26    5 10000     0 00:00:41.227 browserProc BENCH_Startup 2 52170 [SM] AS_INITIALIZED requested for browser
+Jan 01 00:01:26    5 10000     0 00:00:41.233 browserProc BENCH_Startup 2 52179 [SM] AS_RUNNING requested for browser
+Jan 01 00:01:27    5 10000     0 00:00:42.707 mediaonline BENCH_Startup 2 52900 [SM] AS_INITIALIZED requested for mediaonline
+Jan 01 00:01:27    5 10000     0 00:00:42.722 mediaonline BENCH_Startup 2 52911 [SM] AS_RUNNING requested for mediaonline
+Jan 01 00:01:28    5 10000     0 00:00:43.442 gemmiProc BENCH_Startup 2 53122 [SM] AS_INITIALIZED requested for gemib
+Jan 01 00:01:28    5 10000     0 00:00:43.472 gemmiProc BENCH_Startup 2 53137 [SM] AS_RUNNING requested for gemib
+Jan 01 00:01:28    5 10000     0 00:00:44.069 streetviewProc BENCH_Startup 2 53410 [SM] AS_INITIALIZED requested for streetview
+Jan 01 00:01:28    5 10000     0 00:00:44.080 streetviewProc BENCH_Startup 2 53421 [SM] AS_RUNNING requested for streetview
+Jan 01 00:01:29    5 10000     0 00:00:44.718 voice_encoder_app BENCH_Startup 2 53644 [SM] AS_INITIALIZED requested for voice_encoder_app
+Jan 01 00:01:29    5 10000     0 00:00:44.754 voice_encoder_app BENCH_Startup 2 53651 [SM] AS_RUNNING requested for voice_encoder_app
+Jan 01 00:01:31    5 10000     0 00:00:46.276 gemibMain2 BENCH_Startup 2 53852 [gemib.cc] wait till we get GoogleActive (setConnectionInformation != 255) from HMI
+
+Jan 01 00:01:31    5 10000     0 00:00:46.408 gemibMain BENCH_Startup 2 53895 [gemib.cc] wait till we get GoogleActive (setConnectionInformation != 255) from HMI
+
+Jan 01 00:01:44    5 10107   1001 00:01:44.459 MMX BENCH_Startup: OperationManager#fireTimer( NavInitializationChecker )
+Jan 01 00:01:47    5 10113     1 HB: T=057C, CPU=15%, Free mem=887MB
+Jan 01 00:02:05    5    19   1800 mmc_vendor_cmd: processing vendor command 129
+Jan 01 00:02:05    5    19   1800 mmc_vendor_cmd: processing vendor command 128
+Jan 01 00:02:05    5    19   1800 mmc_vendor_cmd: processing vendor command 128
+Jan 01 00:02:05    5    19   1800 mmc_vendor_cmd: processing vendor command 128
+Jan 01 00:02:05    5    19   1800 Refresh Interval set to 0 milliseconds
+

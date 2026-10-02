@@ -1,0 +1,288 @@
+	{
+	#this block is always evaluated by the displaymanager.
+	"default" : {
+	
+		#defines whether the DM should run in 'all' mode or not.
+		#within 'all' mode the DM will render every client
+		#independent from any DSI context actions etc.
+		#possible values: true, false
+		
+		"use_all_mode" : false,
+		
+		#<-
+		
+		#defines what kind of filtering the DM will use for the
+		#client's textures.
+		#possible values: "nearest", "linear"
+		
+		"client_filtering" : "nearest",
+		
+		#<-		
+		
+		#defines if the annotations (if there are some) should be using ECC or not		
+		
+		"annotations_with_ecc" : true,
+		
+		#<-		
+		
+		#this block contains all the terminals (= LVDS outputs)
+		#the displaymanager will use for rendering
+		
+		"terminals" : [
+		
+			#a single terminal is defined like this:
+			#	"name": the internal name
+			#	"terminal": the driver's name for the terminal					
+			#<-
+			
+			{
+				"name" : "main",
+				"terminal" : "Tegra:TFTLCD0"		
+			}	
+
+		],
+		#<-
+		
+		# this block contains all displays the manager will use for rendering
+		# in most cases (including the productive system) there will be a 1-to-1 mapping
+		# between terminals and displays
+		# for engineering purposes, it might be useful to have several displays on one terminal
+		
+		"displays" : [
+		
+			#a single display is defined like this:
+			#	"name": internal name
+			#	"terminal": the terminal's internal name this display represents
+			#	"type": "fullscreen", "partial"
+			#	"scalemode": "normal", "aspect"					
+			#	"id": the display's ID				
+			#<-
+			
+			{
+				"name" : "display0",
+				"terminal" : "main",
+				"type" : "fullscreen",
+				"scalemode" : "normal",
+				"id" : 0
+			}	
+		
+		],
+		#<-
+			
+		#this block contains the startup-animation specific configuration
+		#	"path": the path pointing to the animation to be used
+		#	"use": use the animation or not (true/false)
+		#	"ooc_controlled": determines whether the animation is ooc controlled
+		
+		"startupanimation" : {
+			"path" : "/var/splash.canim",
+			"use" : true,
+			"ooc_controlled": false
+		},
+		#<-
+		
+		#this block configures the rightware 3D HMI plugin (G11)
+		#	"path": the path pointing to the plugin
+		#	"active": the plugin is active or not
+		#	"use_csaa": use CSAA for the plugin or not
+		#	"max_width": max oversamplesize
+		#	"max_height": max oversamplesize
+		
+		"rw_plugin" : {
+			"path" : "/eso/libMIB_High.so",
+			"active" : false,
+			"use_csaa" : true,
+			"max_width" : 1600,
+			"max_height" : 960
+		},
+		#<-
+		
+		#this block configures the RVC
+		#	"norm": the norm to use, "AUTO", "NTSC_443", "NTSC_M", "PAL"
+		#	"deinterlace": the deinterlace mode "WEAVE", "BOB", "TEMP_FRAME", "TEMP_FIELD"
+		#	"source": x,y,w,h
+		#	"target": x,y,w,h 
+		#	"brightness": integer representing the brightness value
+		#	"color": integer representing the color value
+		#	"saturation": integer representing the saturation value
+		#	"hue": integer representing the hue value
+		"rvc" : {
+			"norm" : "AUTO",
+			"deinterlace" : "WEAVE",
+			"source":{
+				"x": 0,
+				"y": 48,
+				"w": 702,
+				"h": 384
+			},
+			"target":{
+				"x": 0,
+				"y": 56,
+				"w": 720,
+				"h": 384
+			},
+			"brightness": 0,
+			"color": 0,
+			"saturation": 0,
+			"hue": 0
+		},
+		#<-
+				
+		#this block configures the TopView
+		#	"deinterlace": the deinterlace mode "WEAVE", "BOB", "TEMP_FRAME", "TEMP_FIELD"
+		#	"source": x,y,w,h
+		#	"target": x,y,w,h 
+		"top_view" : {
+			"deinterlace" : "TEMP_FRAME",
+			"source":{
+				"x": 0,
+				"y": 0,
+				"w": 1024,
+				"h": 480
+			},
+			"target":{
+				"x": 0,
+				"y": 0,
+				"w": 1024,
+				"h": 480
+			}
+		},
+		#<-
+		
+		# this block configures most encoder
+		#--->
+		"most_encoder" : {
+			"device" : "/dev/mlb/isoTX2",
+      # 8:   94 kBytes => Audi ca 100kB | max BPF 20.000B 
+      # 18: 210 kBytes => VW  ca 200kB | max BPF 40KB
+      "queue_size" : 8,
+			# Set FramesPerGOP to 1 to encode each frame as I-frame, else I+P BP encode.
+			"nv_frames_per_gop" : 5,
+			# BytesPerGOP = BytesPerFrame * FramesPerGOP. This acts as a guidance value, the actual number of encoded bits will be different
+			"nv_bytes_per_frame" : 20000,
+			# Input channel data rate - (socket bandwith * MOST rate * byte) 32*48000*8 = 12288000 bps 
+			"nv_channel_data_rate" : 12288000,
+			# Input encoder data rate, it should be less then channel * data rate - (min. <10-20%) 9.6 Mbps 
+			"nv_encoder_data_rate" : 9600000,
+			# To enable NULL packet stuffing, set to 1
+			"nv_maintain_mux_rate" : 0
+      # video pid (x<0: use converted displayabale_id; x==0 use fixed default 0x11; x>0 use free fixed value!)
+			#,"nv_video_pid" : 0
+		},	
+		#<---
+
+		# video over most 
+		#--->
+		"video_over_most" : {
+			# default: if not defined use "context_switch"
+			# empty/invalid use first hmi call to decide
+			#"force_routing" : ""		
+			#"force_routing" : "context_switch"		
+			"force_routing" : "component_control"		
+		},
+		#<---
+
+        # list of displayables with special properties
+        # - annotations and filtering
+        # per default annotations are off (only Audi KDK uses them)
+        #             filtering is nearest (Porsche Map displayables have linear)
+		#--->
+		"displayables" : [
+			#a single displayable is defined like this:
+			#	"id": displayable_id
+			#	"annotation": is this displayable annotated
+            #   "filtering": nearest (default) / linear (Porsche maps)
+			#<-
+            # KDK uses annotations
+			{
+				"id" : 20,
+				"annotation" : true,
+                "filtering" : "nearest"
+			}
+		]
+		#<---
+    },
+		
+	"extended" : {
+	
+		#used for HBAS test mode
+		"hbtest": {
+			#"use_all_mode" : true,
+			"force_kombi_type" : "lvds"
+		}		
+		#<-
+				
+		#used for HBAS production mode
+		,"hbprod": {
+			"force_kombi_type" : "lvds"
+		}		
+		#<-
+				
+		#this block defines the displays for the "force_resolution" mode (/var/dm_force_res present).
+		,"force_res" : {
+			"displays" : [
+	
+					#display 1: main terminal, fullscreen
+					{
+						"name" : "display0",
+						"terminal" : "main",
+						"type" : "partial",
+						"scalemode" : "fullscreen",
+						"id" : 0,
+						"x" : 0,
+						"y" : 0,
+						"width" : 800,
+						"height" : 480
+					}
+					
+			]
+			
+		}
+		#<-
+		
+		#this block is evaluated if /var/dm_force_res_aspect
+		,"force_res_aspect" : {
+			"overwrite_scalemode" : "aspect"
+		}	
+		#<-
+		
+		#this block overwrites the display configuration with a multi-display configuration
+		,"2_lvds" : {
+			"terminals" : [
+			
+				{
+					"name" : "main",
+					"terminal" : "Tegra:TFTLCD0"		
+				}	
+				,{
+					"name" : "2nd_lvds",
+					"terminal" : "Tegra:HDMI0"		
+				}	
+
+			],
+		
+			"displays" : [
+				
+				{
+					"name" : "display0",
+					"terminal" : "main",
+					"type" : "fullscreen",
+					"scalemode" : "normal",
+					"id" : 0
+				}	
+				,{
+					"name" : "display1",
+					"terminal" : "2nd_lvds",
+					"type" : "fullscreen",
+					"scalemode" : "normal",
+					"id" : 4,
+					"annotation" : true
+				}	
+			
+			]
+		}
+		#<-
+	}
+}
+
+

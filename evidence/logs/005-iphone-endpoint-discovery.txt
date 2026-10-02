@@ -1,0 +1,157 @@
+# iPhone log: CarPlay endpoint over USB
+# Topic: USB endpoint discovery (phone side)
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+user@mac ~ % log show --archive ~/carplay-phone.logarchive --start "2026-09-29 10:10:00" --end "2026-09-29 10:25:00" --style compact 2>/dev/null | grep -iE "carplay|airplay|altscreen|carkit" | head -150
+2026-09-29 10:10:48.000 Df kernel[0:2a34ac] () wlan0:com.apple.p2p: monitorAWDLState[10097] : Active Sockets false ValidSvc 2 NumAirplay 0 AFHandlePending 0 TimeOfLastAFHandleRequest 598 ms
+2026-09-29 10:10:48.000 Df locationd[9739:25f967] [com.apple.carkit:General] Fetched Vehicle Info data from cache for <private>
+2026-09-29 10:10:48.000 Df locationd[9739:25f967] [com.apple.carkit:General] Vehicle did not have display name, falling back to "<private>"
+2026-09-29 10:10:48.001 Df locationd[9739:25f967] [com.apple.carkit:General] vehicle supports theme assets: NO
+2026-09-29 10:10:48.001 Df locationd[9739:25f967] [com.apple.carkit:General] Fetched Vehicle Info data from cache for <private>
+2026-09-29 10:10:48.001 Df locationd[9739:25f967] [com.apple.carkit:General] Vehicle did not have display name, falling back to "<private>"
+2026-09-29 10:10:48.001 Df locationd[9739:25f967] [com.apple.carkit:General] vehicle supports theme assets: NO
+2026-09-29 10:10:48.001 Df locationd[9739:25f967] [com.apple.carkit:General] Fetched Vehicle Info data from cache for <private>
+2026-09-29 10:10:48.001 Df locationd[9739:25f967] [com.apple.carkit:General] Vehicle did not have display name, falling back to "<private>"
+2026-09-29 10:10:48.001 Df locationd[9739:25f967] [com.apple.carkit:General] vehicle supports theme assets: NO
+2026-09-29 10:10:48.001 Df locationd[9739:2a4476] [com.apple.locationd.Position:GpsAccessory] <private>,manufacturer,<private>,name,<private>,model,<private>,serial,<private>,fw,<private>,hw,<private>,ppid,<private>,onDenyList,0,supportsCarPlay,1,supportsLocation,1
+2026-09-29 10:10:48.001 Df locationd[9739:2a36c3] [com.apple.locationd.Motion:Activity] #fmc CarKit connection status, 1
+2026-09-29 10:10:48.001 Df locationd[9739:2a4476] [com.apple.locationd.Position:GpsAccessory] <private>,manufacturer,<private>,name,<private>,model,<private>,serial,<private>,fw,<private>,hw,<private>,ppid,<private>,onDenyList,0,supportsCarPlay,1,supportsLocation,1
+2026-09-29 10:10:48.002 Df wifid[53:779] [com.apple.carkit:General] Fetched Vehicle Info data from cache for <private>
+2026-09-29 10:10:48.002 Df wifid[53:779] [com.apple.carkit:General] Vehicle did not have display name, falling back to "<private>"
+2026-09-29 10:10:48.002 Df wifid[53:779] [com.apple.carkit:General] vehicle supports theme assets: NO
+2026-09-29 10:10:48.002 Df carkitd[5532:2a44d5] [com.apple.xpc:connection] [0x7c2d09f80] invalidated because the client process (pid 10901) either cancelled the connection or exited
+2026-09-29 10:10:48.004 Df CarPlay[597:4553] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Server availability changed! State: 1
+2026-09-29 10:10:48.004 Df CarPlay[597:4553] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Trying to connect to server...
+2026-09-29 10:10:48.004 Df CarPlay[597:4553] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Client not sandboxed to EA service
+2026-09-29 10:10:48.005 Df airplayd[10072:2742b0] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Server availability changed! State: 1
+2026-09-29 10:10:48.005 Df airplayd[10072:2742b0] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Trying to connect to server...
+2026-09-29 10:10:48.005 Df airplayd[10072:2742b0] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Client not sandboxed to EA service
+2026-09-29 10:10:48.011 Df ACCCarPlayService[10901:2a3397] [com.apple.xpc:connection] [0xb2ec40140] activating connection: mach=true listener=false peer=false name=com.apple.carkit.reconnectiontime.service
+2026-09-29 10:10:48.011 Df caraccessoryd[1210:2ec3f] [com.apple.carkit:General] Fetched Vehicle Info data from cache for <private>
+2026-09-29 10:10:48.011 Df caraccessoryd[1210:2ec3f] [com.apple.carkit:General] Vehicle did not have display name, falling back to "<private>"
+2026-09-29 10:10:48.011 Df caraccessoryd[1210:2ec3f] [com.apple.carkit:General] vehicle supports theme assets: NO
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Server availability changed! State: 1
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Trying to connect to server...
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Client not sandboxed to EA service
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] Handling <private> notification
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] handling connected vehicles: <private>
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] starting CarPlay Control advertising over USB
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] connected vehicle: <private> has pairing <private>
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.MobileGestalt:fast-path] elided platform fast path for key: re6Zb+zwFKJNlkQTUeT+/w
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] sending device transport identifiers BT: <private> USB: <private>
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] (ExternalAccessory) [#ExternalAccessory] Call sendDeviceIdentifierNotification:usbIdentifier:forUUID: for accessoryUUID <private>
+2026-09-29 10:10:48.012 Df navd[10742:293219] [com.apple.carkit:General] Fetched Vehicle Info data from cache for <private>
+2026-09-29 10:10:48.012 Df navd[10742:293219] [com.apple.carkit:General] Vehicle did not have display name, falling back to "<private>"
+2026-09-29 10:10:48.012 Df navd[10742:293219] [com.apple.carkit:General] vehicle supports theme assets: NO
+2026-09-29 10:10:48.012 Df ACCCarPlayService[10901:2a3397] [com.apple.carkit:ConnectionTime] CARConnectionTimeStore: Connecting to CarKit Connection Time service
+2026-09-29 10:10:48.012 Df ACCCarPlayService[10901:2a3397] [com.apple.carkit:ConnectionTime] CARConnectionTimeStore sendConnectionEvent: iAP2 Endpoint Created
+2026-09-29 10:10:48.012 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Recording CarConnectionEvent: CARCarKitVehicleInformationEvent with date Tue Sep 29 10:10:48 2026 and identifier <private>
+2026-09-29 10:10:48.013 Df carkitd[5532:2a44d5] [com.apple.carkit:General] -[CRCarPlayCapabilitiesManager _worker_queue_reloadSessionIfNeeded]: updated partial session (null) (hasAccessory = NO)
+2026-09-29 10:10:48.013 Df carkitd[5532:2a44d5] [com.apple.carkit:ConnectionTime] Receiving connection <private> to service com.apple.carkit.reconnectiontime.service from 10901
+2026-09-29 10:10:48.013 Df carkitd[5532:2a44d5] [com.apple.xpc:connection] [0x7c2d0b480] activating connection: mach=false listener=false peer=true name=com.apple.carkit.reconnectiontime.service.peer[10901].0x7c2d0b480
+2026-09-29 10:10:48.013 Df airplayd[10072:2a44e0] [com.apple.airplay:APBrowserCarSessionHelper] StartBonjourForUSB
+2026-09-29 10:10:48.013 Df airplayd[10072:2a44e0] [com.apple.airplay:APBrowserCarSessionHelper] Creating osTransaction: APCarPlayHelperSession_USB.0xD3C9
+2026-09-29 10:10:48.013 Df airplayd[10072:2a44e0] [com.apple.airplay:APBrowserCarSessionHelper] [0xD3C9] [Bonjour/USB] StartBonjourForUSB
+2026-09-29 10:10:48.013 Df airplayd[10072:2a44e0] [com.apple.airplay:APBrowserCarSessionHelper] [0xD3C9] [Bonjour/USB] WiFi eligible: N (<disabled>), USB eligible: Y
+2026-09-29 10:10:48.014 Df airplayd[10072:2a43b1] [com.apple.airplay:APBrowserCarBonjour] [USB] Network interface name changed to en7
+2026-09-29 10:10:48.014 Df airplayd[10072:2a43b1] [com.apple.airplay:APBrowserCarBonjour] Creating osTransaction: APBrowserCarBonjour_USB.0xD178
+2026-09-29 10:10:48.014 Df airplayd[10072:2a43b1] [com.apple.airplay:APBrowserCarBonjour] [USB] Starting Bonjour browsing
+2026-09-29 10:10:48.014 Df airplayd[10072:2a43b1] [com.apple.airplay:APSPowerAssertion] [0xC6CD:com.apple.APEndpointManagerCarPlay] Raising temporary assertion for 30.000000 seconds
+2026-09-29 10:10:48.014 Df airplayd[10072:2a43b1] [com.apple.iokit:assertions] Resuming timer
+2026-09-29 10:10:48.021 Df SpringBoard[35:2a4327] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df SpringBoard[35:2a4327] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df SpringBoard[35:2a4327] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df SpringBoard[35:2a4327] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df SpringBoard[35:2a4327] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df CarPlay[597:2a358d] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df CarPlay[597:2a358d] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df CarPlay[597:2a358d] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df CarPlay[597:2a358d] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.021 Df locationd[9739:2a3827] [com.apple.locationd.Position:Proximity] {"msg":"#durian #hawkeye #hele requesting discovery scan to speed up proactive maintenance upon connecting to CarPlay or car BT"}
+2026-09-29 10:10:48.022 Df callservicesd[10478:2a42e0] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.022 Df callservicesd[10478:2a42e0] [com.apple.calls.copresencecore:Default] Got callback that CarPlay is starting a connection attempt on transport <private>
+2026-09-29 10:10:48.022 Df callservicesd[10478:2a44b9] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.022 Df callservicesd[10478:2a44b9] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.022 Df callservicesd[10478:2a44b9] [com.apple.calls.copresencecore:Default] Got callback that CarPlay is starting a connection attempt on transport <private>
+2026-09-29 10:10:48.022 Df mobiletimerd[3873:2a44b6] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.022 Df sharingd[75:2a4312] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df sharingd[75:2a4312] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df mediaremoted[39:2a43ff] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df contextstored[68:2a43ca] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df mediaremoted[39:2a43ff] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df destinationd[10744:2a399c] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df assistantd[37:2a4089] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df assistantd[37:2a4089] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df assistantd[37:2a4089] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df liveactivitiesd[131:2a44ff] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df locationd[9739:2a4476] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df carkitd[5532:2a44d5] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df backboardd[71:2a4120] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.023 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Trimmed connection events: 1
+2026-09-29 10:10:48.023 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Wrote CARConnectionEvent array to disk
+2026-09-29 10:10:48.024 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Recording CarConnectionEvent: <private> with date Tue Sep 29 10:10:47 2026 and identifier <private>
+2026-09-29 10:10:48.024 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Trimmed connection events: 1
+2026-09-29 10:10:48.024 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Wrote CARConnectionEvent array to disk
+2026-09-29 10:10:48.025 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Recording CarConnectionEvent: CARCarKitTransportEvent with date Tue Sep 29 10:10:48 2026 and identifier <private>
+2026-09-29 10:10:48.026 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Trimmed connection events: 1
+2026-09-29 10:10:48.026 Df carkitd[5532:2a41a0] [com.apple.carkit:ConnectionTime] Wrote CARConnectionEvent array to disk
+2026-09-29 10:10:48.026 Df carkitd[5532:2a41a0] [com.apple.carkit:General] Recording startedConnectionAttemptOnTransport
+2026-09-29 10:10:48.027 Df wifid[53:2a44ea] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.027 Df carkitd[5532:134a56] [com.apple.carkit:DNDWD] Fetched CM vehicle state: 1
+2026-09-29 10:10:48.027 Df navd[10742:2a44fe] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.027 Df carkitd[5532:134a56] [com.apple.carkit:DNDWD] Generated vehicle state Vehicle State 1, device ID CarKit AUDI MMI, Vehicular Hints: None: 0 Motion: 0 GPS: 0 Baseband: 0 WiFi: 0 Bluetooth: 16
+2026-09-29 10:10:48.027 A  carkitd[5532:2a41a0] (DoNotDisturb) com.apple.donotdisturb.DNDModeConfigurationService.getModeConfiguration
+2026-09-29 10:10:48.029 Df carkitd[5532:2a41a0] [com.apple.donotdisturb:ModeConfiguration] [com.apple.carkitd.assertion-service:<uuid>] Get mode configuration, identifier=com.apple.donotdisturb.mode.driving
+2026-09-29 10:10:48.029 Df carkitd[5532:2a41a0] [com.apple.carkit:DNDWD] User has configured a driving mode.
+2026-09-29 10:10:48.029 Df airplayd[10072:2a44e0] [com.apple.airplay:CarPlayControlServer] Server start
+2026-09-29 10:10:48.029 Df airplayd[10072:2a44f0] [com.apple.CoreUtils:BonjourBrowser] Creating shared connection to browse for _airplay._tcp.
+2026-09-29 10:10:48.030 Df mDNSResponder[198:11fb] [com.apple.mDNSResponder:Default] [R79625] DNSServiceCreateConnection START PID[10072](airplayd)
+2026-09-29 10:10:48.030 Df airplayd[10072:2a44f0] [com.apple.CoreUtils:BonjourBrowser] Starting browse for _airplay._tcp. on if en7, flagsAlt 0x2000000, flags 0x3000000000000000 < NoAWDLThreshold Traffic >
+2026-09-29 10:10:48.031 Df mDNSResponder[198:11fb] [com.apple.mDNSResponder:mDNS] [R79626] DNSServiceBrowse START -- service type: <mask.hash: 'rOJKXPzn9l+Du7dh92VoUQ=='>, domain: <mask.hash: 'NhEOJHaG9wRlYtm9QiduYw=='>, flags: 0x2004000, interface index: 31, client pid: 10072 (airplayd),
+2026-09-29 10:10:48.032 Df airplayd[10072:2a44f0] [com.apple.CoreUtils:BonjourBrowser] Starting detail browse for _airplay._tcp., if en7, flags 0x0
+2026-09-29 10:10:48.033 Df mDNSResponder[198:11fb] [com.apple.mDNSResponder:mDNS] [R79627] DNSServiceBrowse START -- service type: <mask.hash: 'rOJKXPzn9l+Du7dh92VoUQ=='>, domain: <mask.hash: 'NhEOJHaG9wRlYtm9QiduYw=='>, flags: 0x4000, interface index: 31, client pid: 10072 (airplayd),
+so_gencnt: 2325130 t_state: LISTEN process: airplayd:10072 so_qlimit: 0 error: 0 so_error: 0 svc/tc: 0
+so_gencnt: 2325131 t_state: LISTEN process: airplayd:10072 so_qlimit: 0 error: 0 so_error: 0 svc/tc: 0
+2026-09-29 10:10:48.040 Df ACCCarPlayService[10901:2a44d4] [com.apple.accessories.frameworks.core-accessories:CarPlay Service] [#ACCCarPlayService] CarPlay Connection Event: success -- iAP2 Endpoint Created at Tue Sep 29 10:10:47 2026, error: (null)
+2026-09-29 10:10:48.041 Df airplayd[10072:2a44e7] [com.apple.airplay:APBrowserCarSessionHelper] Releasing osTransaction: APCarPlayHelperSession_USB.0xD3C9
+2026-09-29 10:10:48.058 Df mDNSResponder[198:11fb] [com.apple.mDNSResponder:mDNS] [R79628] DNSServiceRegister START -- service type: <mask.hash: 'xF98absX0wkvpV3zTKxI0g=='>, domain: <mask.hash: 'E71bbR92AjXln0fDx5efqw=='>, port: 59965, flags: 0x800, interface index: 31, client pid: 10072 (airplayd), name hash: cbe26626
+2026-09-29 10:10:48.058 Df ACCCarPlayService[10901:2a3397] [com.apple.xpc:connection] [0xb2ec40140] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-29 10:10:48.061 Df airplayd[10072:2a44e0] [com.apple.CoreUtils:BonjourAdvertiser] Registering Bonjour _carplay-ctrl._tcp port 59965
+2026-09-29 10:10:48.061 Df airplayd[10072:2a44e0] [com.apple.CoreUtils:BonjourAdvertiser] Registered Bonjour Joseph’s iPhone._carplay-ctrl._tcp.local.
+2026-09-29 10:10:48.121 Df carkitd[5532:2a41a0] [com.apple.carkit:DNDWD] Evaluating transition to Non-vehicular state.
+2026-09-29 10:10:48.121 Df carkitd[5532:2a41a0] [com.apple.carkit:DNDWD] Manual trigger mode.
+2026-09-29 10:10:48.121 A  carkitd[5532:2a41a0] (DoNotDisturb) com.apple.donotdisturb.DNDStateService.queryCurrentState
+2026-09-29 10:10:48.121 Df carkitd[5532:2a41a0] [com.apple.donotdisturb:State] [com.apple.carkitd.assertion-service:<uuid>] Processing state request
+2026-09-29 10:10:48.124 Df caraccessoryd[1210:2a4500] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.128 Df carkitd[5532:2a44fc] [com.apple.xpc:connection] [0x7c2d0b480] invalidated because the client process (pid 10901) either cancelled the connection or exited
+2026-09-29 10:10:48.130 Df splashboardd[10760:2a438c] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.130 Df homed[239:2a4108] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.130 Df carkitd[5532:2a41a0] [com.apple.donotdisturb:State] [com.apple.carkitd.assertion-service:<uuid>] Got current state, state=<private>
+2026-09-29 10:10:48.130 Df carkitd[5532:2a41a0] [com.apple.carkit:DNDWD] Requested to disable Driving, but it wasn't active.
+2026-09-29 10:10:48.131 Df healthappd[10154:2a438d] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.131 Df replayd[2850:2a4243] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.131 Df com.apple.quicklook.ThumbnailsAgent[1246:2a438e] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.132 Df carkitd[5532:2a41a0] [com.apple.carkit:DNDWD] Not recording end event - we weren't driving?
+2026-09-29 10:10:48.132 Df carkitd[5532:2a41a0] [com.apple.carkit:DNDWD] Sending Driving event with start 0 reason 2
+2026-09-29 10:10:48.133 Df siriactionsd[161:2a422a] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.134 A  carkitd[5532:2a41a0] (BiomeStreams) BMStoreSource.sendEvent
+2026-09-29 10:10:48.139 Df carkitd[5532:134a56] [com.apple.carkit:DNDWD] Not recording end event - we weren't driving?
+2026-09-29 10:10:48.139 Df softwareupdateservicesd[345:2a42f8] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.225 Df airplayd[10072:2a43b1] [com.apple.iokit:assertions] powerd returned assertion id 0x8ba8 for async id 0x80010000
+2026-09-29 10:10:48.431 Df maild[10493:2a249f] [com.apple.carkit:General] attempting connection on transport USB
+2026-09-29 10:10:48.537 Df mDNSResponder[198:11fb] [com.apple.mDNSResponder:mDNS] [R79629] DNSServiceQueryRecord START -- qname: <mask.hash: '7h5WsJ7imVRarSvCNXmR3A=='>, qtype: TXT, flags: 0x404000, interface index: 31, client pid: 10072 (airplayd), name hash: 35502881
+2026-09-29 10:10:48.538 Df airplayd[10072:2a43b1] [com.apple.airplay:APBrowserCarBonjour] [USB] Bonjour device added/updated
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APAudioEngineCarPlay] [0x544E] Created
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] APTCSendCommandCache - created send command cache of size 20
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] APTCReceivedCommandCache - created received command cache of size 10
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] Created APEndpointCarPlay [0x0597] with name 'CarPlay' and id 'XX:XX:XX:XX:XX:XX'
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] Added new USB endpoint 0x0597 (CarPlayControlSupported: N)
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] UpdateBrowseContext [USB] Updating endpoint from 0x0000 to 0x0597
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] UpdateCurrentEndpoint posting 'AvailableEndpointsChanged' because the browser context changed
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] UpdateCurrentEndpoint posting 'EndpointsPresentChanged'
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] carManager_handlePendingAutoconnect: no pending autoconnections
+2026-09-29 10:10:48.541 E  airplayd[10072:2a43b1] [com.apple.airplay:APSLogUtils] carEndpoint_copyNonStateProperty:6793: got error -12784/0xFFFFCE10 kCMBaseObjectError_PropertyNotFound
+2026-09-29 10:10:48.550 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] FigStarkModeCopyController returned <FigStarkModeControllerRemote 0x804de9530 retainCount: 1 objectID: 2754090000000d01>
+2026-09-29 10:10:48.550 Df airplayd[10072:2a44e7] [com.apple.airplay:APSNetworkClockNTP] [0x53AF] <AirPlayClock> Created APSNetworkClock NTP
+user@mac ~ % 

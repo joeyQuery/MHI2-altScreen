@@ -1,0 +1,254 @@
+# NvssVideoImpl vtable and Screen B creation notes
+# Topic: Static notes behind the native Screen B interposition
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+NvssVideoImpl vtable
+The MU0678 binary has:
+_ZTV13NvssVideoImpl = 0xa92e0
+
+and the recovered virtual method set is:
+vptr + 0x00   destructor
+vptr + 0x04   deleting destructor
+vptr + 0x08   initialize      @ 0x80198
+vptr + 0x0c   finalize        @ 0x80188
+vptr + 0x10   start           @ 0x7fd2c
+vptr + 0x14   stop            @ 0x7fc2c
+vptr + 0x18   configure       @ 0x7feb4
+vptr + 0x1c   decode          @ 0x7faf0
+vptr + 0x20   setVisibility   @ 0x7f890
+
+That ordering is consistent with the Itanium C++ ABI layout and, importantly, with the direct call already recovered from ScreenStreamStart:
+ScreenStreamStart
+    ↓
+NvssVideoImpl vptr + 0x10
+    ↓
+start()
+
+So we do not need to guess a fake C++ interface.
+The stock B creation path is now completely clear
+ScreenStreamCreate @ 0x7f544
+        │
+        ├── allocates stream state
+        │
+        └── createVideoImpl()
+                │
+                ▼
+        new NvssVideoImpl
+                │
+                ├── +0x50 = NvSS handle
+                │
+                └── vptr = _ZTV13NvssVideoImpl
+
+Then:
+ScreenStreamStart
+    │
+    ├── configure(width, height, window, offset, fps)
+    │       └── vptr + 0x18
+    │
+    └── start()
+            └── vptr + 0x10
+                  │
+                  ▼
+             NvSSVideoOpen
+
+And subsequently:
+ScreenStreamProcessData
+        ↓
+_ScreenStreamDecodeAll
+        ↓
+NvssVideoImpl::decode @ 0x7faf0
+        ↓
+NvSSVideoDecode(
+    this + 0x50,
+    descriptor,
+    0,
+    opaque
+)
+
+The descriptor is already known exactly:
++0x00  encoded_data
++0x04  encoded_length
++0x08  uint64 timestamp
++0x10  bool
+
+That means B really does have an independent NvSS handle. There is no reason to route B through A.
+The safe first-stage stub
+I would not use the existing libaltscreen_fanout.c Stage 3 implementation for the first Type-111 test.
+That code deliberately does this:
+create second NvssVideoImpl
+       ↓
+configure
+       ↓
+start()
+       ↓
+NvSSVideoOpen
+       ↓
+cluster output
+
+That's already the second experiment.
+The safe experiment should instead be:
+                         TYPE 111
+                            │
+                            ▼
+                    ScreenStream B
+                            │
+                            ▼
+                    createVideoImpl()
+                            │
+                            ▼
+                       STUB B
+                    ┌──────────────┐
+                    │ no NvSS open │
+                    │ no layer 59  │
+                    │ no display   │
+                    └──────────────┘
+                            │
+                            ▼
+                    capture H.264
+                       as Annex-B
+
+while Type 110 remains completely untouched:
+TYPE 110
+   ↓
+real NvssVideoImpl A
+   ↓
+real NvSS
+   ↓
+MMI
+
+How to implement the stub safely
+The cleanest mechanism is a thread-local factory substitution around ScreenStreamCreate.
+Conceptually:
+static __thread int creating_type111 = 0;
+
+real_ScreenStreamCreate(...)
+{
+    creating_type111 = (stream_type == 111);
+
+    stream = real_ScreenStreamCreate(...);
+
+    creating_type111 = 0;
+    return stream;
+}
+
+Then interpose:
+createVideoImpl()
+
+and only while creating_type111 is true:
+createVideoImpl()
+        ↓
+return stub NvssVideoImpl
+
+For Type 110:
+createVideoImpl()
+        ↓
+real factory
+        ↓
+real NvssVideoImpl
+
+For Type 111:
+createVideoImpl()
+        ↓
+stub object
+
+The stub implements the exact nine-slot virtual layout above.
+Its methods should initially be:
+initialize       → harmless success/no-op
+finalize         → harmless no-op
+start            → NO NvSSVideoOpen
+stop             → no-op
+configure        → record geometry only
+decode           → write/capture Annex-B
+setVisibility    → record/ignore
+
+The important point is that the stub must never reach NvssVideoOpen.
+Why this is the right first runtime experiment
+It isolates the exact question we're trying to answer:
+Can MU0678 receive a genuine Type-111 ScreenStream, create B's independent stream object, process its encrypted ScreenStream frames, and reach the H.264 decode boundary without disturbing Type 110?
+
+If the answer is yes, the runtime trace becomes:
+iPhone
+ ↓
+Type 111 TCP
+ ↓
+_ScreenThread
+ ↓
+ProcessFrames @ 0x26a58
+ ↓
+ScreenStreamProcessData @ 0x7ea2c
+ ↓
+ScreenStream B
+ ↓
+decode @ 0x7faf0
+ ↓
+B stub
+ ↓
+Annex-B capture
+
+At that point we have proven the entire AirPlay → Type-111 → ScreenStream → B video pipeline without opening a second display layer.
+Only then do we replace the stub with the real B NvSS object.
+Then comes the layer-59 problem
+The next stage is exactly the issue you identified:
+A:
+NvssVideoOpen
+    outputDevice = 0
+    layer = 59
+        ↓
+       MMI
+
+B:
+NvssVideoOpen
+    outputDevice = 1
+    layer = 59   ← collision
+
+So the second-stage implementation should intercept the imported:
+NvssVideoOpen
+
+and distinguish the B open from A.
+For B we rewrite the open parameters, rather than changing the global stock configuration.
+That preserves:
+A → untouched
+
+and gives us:
+B → alternate output parameters
+
+The exact alternate layer/output values still need to come from the actual VC-side rendering path. We should not invent them.
+Bottom line
+We've now got a clean staged progression:
+STAGE 1
+Type 111
+   ↓
+SessionScreen B
+   ↓
+ScreenStream B
+   ↓
+B stub
+   ↓
+Annex-B
+
+then:
+STAGE 2
+Type 111
+   ↓
+SessionScreen B
+   ↓
+ScreenStream B
+   ↓
+NvssVideoImpl B
+   ↓
+intercept NvssVideoOpen
+   ↓
+B-specific VC output
+
+and only after that:
+STAGE 3
+B NvSS output
+   ↓
+actual MU0678 VC/KOMBI renderer
+   ↓
+DISPLAYABLE_KOMBI_MAP_VIEW
+   ↓
+1440 × 455
+
+The important thing is that we can now test Type-111 creation without touching layer 59 at all. That is the safest and most informative next runtime experiment.

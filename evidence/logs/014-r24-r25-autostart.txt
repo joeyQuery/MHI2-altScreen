@@ -1,0 +1,53 @@
+# r24-persist + r25-autostart
+# Topic: Persistent files, hook-spawned renderer, clone stage 7
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> grep -n -e "FORWARD" -e r24 -e r25 -e "AUDI display" -e "disabled" -e "fail-closed" -e "stage=" -e "noautostart" /tmp/altscreen111.log | cut -c1-170 | head -20; ls -l /mnt/app/root/mibr-carplay111-* /mnt/app/root/vc_render
+1:18.386 [altscreen111] r24-persist sync done
+21:18.438 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-pol
+155:20.594 [altscreen111] AUDI display clone stage=7 (uuid always unique)
+178:20.684 [altscreen111] NATIVE-B FORWARD MODE ON: frames go to vc_render on 127.0.0.1:19830 (no NvSS in dio_manager)
+179:20.694 [altscreen111] r25-autostart: spawn pid=2060402 h=542
+-rw-r--r--  1 root      root              0 Jan 01 01:11 /mnt/app/root/mibr-carplay111-drawoutside
+-rw-r--r--  1 root      root              0 Jan 01 00:53 /mnt/app/root/mibr-carplay111-native-b
+-rw-r--r--  1 root      root             23 Jan 01 00:31 /mnt/app/root/mibr-carplay111-safearea-idle.conf
+-rw-r--r--  1 root      root             24 Jan 01 01:08 /mnt/app/root/mibr-carplay111-safearea.conf
+-rw-r--r--  1 root      root             23 Jan 01 00:12 /mnt/app/root/mibr-carplay111-safearea.conf.off
+-rw-r--r--  1 root      root             24 Jan 01 01:11 /mnt/app/root/mibr-carplay111-safearea.conf.r15
+-rw-r--r--  1 root      root              9 Jan 01 00:53 /mnt/app/root/mibr-carplay111-size
+-rwxr-xr-x  1 root      root          31340 Jan 01 00:01 /mnt/app/root/vc_render
+
+/mnt/app/root/mibr-carplay111-backup:
+total 15403
+drwxr-xr-x  2 root      root           1024 Jan 01 00:05 .
+drwxrwxrwx  9 root      root           3072 Jan 01 00:01 ..
+-rwxr-xr-x  1 root      root         324407 Jan 01 00:06 libmibr_carplay111.so.prev-03fdccd43d6de96ab0ec014f5d8a28f7a3b75b8a2baab06e815dd7c10a3fc262
+-rwxr-xr-x  1 root      root         325419 Jan 01 00:03 libmibr_carplay111.so.prev-06f0c3f883efb8ae099b6eb1cefa82c46ba3cbba19eaadb49440f564b7444f1a
+-rwxr-xr-x  1 root      root         320560 Jan 01 00:41 libmibr_carplay111.so.prev-14d415fd1e7067e652c1abda2f7d089a966142fdfa4daa16fceb21cd519a4ca2
+-rwxr-xr-x  1 root      root         324311 Jan 01 00:07 libmibr_carplay111.so.prev-1ee2cfd9eafcf1210928f36942c0c3268df8f35018a8b773812dd0c17a36f53f
+-rwxr-xr-x  1 root      root         313824 Jan 01 00:03 libmibr_carplay111.so.prev-1f9963441ed125d67e2c672dc43e9c45e167db33cfa0dfcd1694d99409c8ecd1
+-rwxr-xr-x  1 root      root         317153 Jan 01 00:30 libmibr_carplay111.so.prev-2faf7fedb570b99900b7700ba4b9b40685d4164d8f2138523867ce6ac6b169fc
+-rwxr-xr-x  1 root      root         240600 Jan 01 00:09 libmibr_carplay111.so.prev-40fd679f5967a7a124821b1bc3cefc9372b09a934154f3d56bcad995b675bf20
+-rwxr-xr-x  1 root      root         290091 Jan 01 00:11 libmibr_carplay111.so.prev-422bfc07bedf482875b0f1140a5c388cc3d116df51c07efef00df72169558fa0
+-rwxr-xr-x  1 root      root         286295 Jan 01 00:00 libmibr_carplay111.so.prev-60acbc062e524f94f076fa1f97e23e9940fcb02bac5a70e9d166c5d905b676f6
+-rwxr-xr-x  1 root      root         319313 Jan 01 00:42 libmibr_carplay111.so.prev-6203c4c7aac01f64b5947c5f42be50c7296cde022c3d8e4cc80f912d61728929
+-rwxr-xr-x  1 root      root         279708 Jan 01 00:08 libmibr_carplay111.so.prev-64b7589f87a1c8b5f356d14ccb90feefd413806d51da25406fb43ee7b0df3a60
+-rwxr-xr-x  1 root      root         305276 Jan 01 00:10 libmibr_carplay111.so.prev-6e16a4c50928231f483b0d5ff73814984ff7f5c5c2399286dc4ecd58680006ac
+-rwxr-xr-x  1 root      root         280979 Jan 01 00:35 libmibr_carplay111.so.prev-8bcadee1f4895dfd6587df73073b8d090f6512b4748cc00d6b42e8dfaf4c48c3
+-rwxr-xr-x  1 root      root         319625 Jan 01 00:39 libmibr_carplay111.so.prev-8f7947abc8483a4c8a22959f4ce86fc9ff39602feede8d498595ecdd0fb416e8
+-rwxr-xr-x  1 root      root         244196 Jan 01 00:05 libmibr_carplay111.so.prev-8fb7db7ddd3fc53b779d87ffe56bd1d8b9d787c11c0ba6a7b4dae040f2728804
+-rwxr-xr-x  1 root      root         325467 Jan 01 00:03 libmibr_carplay111.so.prev-9323fa9cb6899a7c1a9ba4983069df7f7cae819c56d361f88ba8d809c3154067
+-rwxr-xr-x  1 root      root         323303 Jan 01 00:02 libmibr_carplay111.so.prev-9cb419122c4f6aa85769c9a95d1963c5aae28e61b5b54c483585dc500c4285d5
+-rwxr-xr-x  1 root      root         315752 Jan 01 00:13 libmibr_carplay111.so.prev-a49901e15b0ec3d58318d00cce22f1775a3159a7355c4d23c2f7fe1cb3f37650
+-rwxr-xr-x  1 root      root         321882 Jan 01 00:52 libmibr_carplay111.so.prev-c196cd2f1541363dc11375a287c2bca5ba3a8f8d4955d9dace8eb64ad4122bdd
+-rwxr-xr-x  1 root      root         288611 Jan 01 00:06 libmibr_carplay111.so.prev-c9a0117c29a7c0590c5bd2823ce90ac9460bc4fe4db1ab077ac33d3998ec71ba
+-rwxr-xr-x  1 root      root         325435 Jan 01 00:03 libmibr_carplay111.so.prev-d08035ab1bfe95ce0a81e25e7cce6ef869c2a385f459e318d5b28d9c573a0f90
+-rwxr-xr-x  1 root      root         246789 Jan 01 00:09 libmibr_carplay111.so.prev-e89c3fb9c8ee6aed542c1fb35497a3c72b0a7eceeb6382fa4940b6b914c97860
+-rwxr-xr-x  1 root      root         286403 Jan 01 00:01 libmibr_carplay111.so.prev-efc95f4a0629afe3ed6ec7b96cd0fd5ca9cd308cfacecfb0d98ca9311c085e16
+-rwxr-xr-x  1 root      root         319413 Jan 01 01:01 libmibr_carplay111.so.prev-f0785ec533b880fb83dff397789ee1d5516d5b8f4d22854e45c73c71123ba0cf
+-rwxr-xr-x  1 root      root         312332 Jan 01 01:09 libmibr_carplay111.so.prev-f7470faae73adbcd0b29f02fcd9eb284c085c73c692f3585acd532eb5aad0423
+-rwxr-xr-x  1 root      root         311288 Jan 01 00:45 libmibr_carplay111.so.prev-ff7c92322679ce2d11bd348bf769c7e0967281b72b3cebf9657fc3247f516777
+-rw-r--r--  1 root      root           6788 Jan 01 00:08 smartphone_integrator.json.stock
+-rw-r--r--  1 root      root            136 Jan 01 00:07 smartphone_integrator.json.stock.sha256
+root@mmx:/mnt/app/root> 

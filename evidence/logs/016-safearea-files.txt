@@ -1,0 +1,80 @@
+# Extracts of pasted unit output (session transcript). Redacted as in the other logs.
+# Timestamps: msg 2026-10-02T09:37:27.070Z, 2026-10-02T10:02:13.909Z, 2026-10-02T10:04:43.660Z ; attachments c001f852, e50028e2, 33dd4a6e
+# Shows: cat of safearea conf files (narrow-route 100/85/840/255; new 550/87/340/330; normal 485/85/840/322; idle 360/65/720/367), ls of safearea files, and "GEN2 two-view mode" log lines.
+# NOTE: pasted text verbatim; "attachment" = long paste the CLI stored as an uploaded .txt (user @-referenced or system-attached to this transcript).
+
+##### [user msg 49 | 2026-10-02T09:37:27.070Z]
+root@mmx:/mnt/app/root> grep -e "r56" -e "two-view" -e "r55" /tmp/altscreen111.log | tail -12 | cut -c1-200
+507.680 [altscreen111] r56 layout slot 1 (Rect width 460): already current
+508.411 [altscreen111] r55 zone: setZoomArea Rect=370:49:700:300
+508.414 [altscreen111] r56 layout -> slot 0 (Rect width 700) viewAreaIndex=1 intent rc=0
+508.418 [altscreen111] r55 zone: setZoomArea Rect=370:49:700:300
+508.418 [altscreen111] r56 layout slot 0 (Rect width 700): already current
+511.349 [altscreen111] r55 zone: setZoomArea Rect=490:49:460:300
+511.350 [altscreen111] r55 zone: setZoomArea Rect=490:49:460:300
+511.350 [altscreen111] r56 layout -> slot 1 (Rect width 460) viewAreaIndex=3 intent rc=0
+511.351 [altscreen111] r56 layout slot 1 (Rect width 460): already current
+574.243 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+574.244 [altscreen111] r56 layout narrow: idle=460x367@490,25 route=840x255@100,85 views=4
+574.245 [altscreen111] r56 start layout=0 view=0
+root@mmx:/mnt/app/root> cat /mnt/app/root/mibr-carplay111-safearea-narrow-route.conf
+x=100
+y=85
+w=840
+h=255
+root@mmx:/mnt/app/root>
+
+##### [user msg 290 | 2026-10-02T10:02:13.909Z]
+mount -uw /mnt/app
+cd /mnt/app/root
+for f in mibr-carplay111-safearea-narrow-route.conf mibr-carplay111-safearea-narrow-idle.conf; do
+  echo "x=550" > $f; echo "y=87" >> $f; echo "w=340" >> $f; echo "h=330" >> $f
+done
+mount -ur /mnt/app
+cat mibr-carplay111-safearea-narrow-route.conf
+
+I guess we should just leave it as this.
+
+##### [user msg 330 | 2026-10-02T10:04:43.660Z]
+root@mmx:/mnt/app/root> for f in /mnt/app/root/mibr-carplay111-safearea.conf /mnt/app/root/mibr-carplay111-safearea-idle.conf; do echo "== $f"; cat $f; done
+== /mnt/app/root/mibr-carplay111-safearea.conf
+x=485
+y=85
+w=840
+h=322
+== /mnt/app/root/mibr-carplay111-safearea-idle.conf
+x=360
+y=65
+w=720
+h=367
+root@mmx:/mnt/app/root>
+
+##### [attachment c001f852 (head: grep + ls of safearea conf files) | 2026-10-01T23:29Z(file mtime)]
+root@mmx:/mnt/app/root> grep -n -e "FORWARD" -e r24 -e r25 -e "AUDI display" -e "disabled" -e "fail-closed" -e "stage=" -e "noautostart" /tmp/altscreen111.log | cut -c1-170 | head -20; ls -l /mnt/app/root/mibr-carplay111-* /mnt/app/root/vc_render
+1:18.386 [altscreen111] r24-persist sync done
+21:18.438 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-pol
+155:20.594 [altscreen111] AUDI display clone stage=7 (uuid always unique)
+178:20.684 [altscreen111] NATIVE-B FORWARD MODE ON: frames go to vc_render on 127.0.0.1:19830 (no NvSS in dio_manager)
+179:20.694 [altscreen111] r25-autostart: spawn pid=2060402 h=542
+-rw-r--r--  1 root      root              0 Jan 01 01:11 /mnt/app/root/mibr-carplay111-drawoutside
+-rw-r--r--  1 root      root              0 Jan 01 00:53 /mnt/app/root/mibr-carplay111-native-b
+-rw-r--r--  1 root      root             23 Jan 01 00:31 /mnt/app/root/mibr-carplay111-safearea-idle.conf
+-rw-r--r--  1 root      root             24 Jan 01 01:08 /mnt/app/root/mibr-carplay111-safearea.conf
+-rw-r--r--  1 root      root             23 Jan 01 00:12 /mnt/app/root/mibr-carplay111-safearea.conf.off
+-rw-r--r--  1 root      root             24 Jan 01 01:11 /mnt/app/root/mibr-carplay111-safearea.conf.r15
+-rw-r--r--  1 root      root              9 Jan 01 00:53 /mnt/app/root/mibr-carplay111-size
+
+##### [attachment 33dd4a6e | 2026-10-02T10:03Z(file mtime)]
+root@mmx:/mnt/app/root> tail -60 /tmp/altscreen111.log | grep -v -e mprotect -e "page cloned" | cut -c1-170
+595.654 [altscreen111] renderer tee listening on 127.0.0.1:19820
+595.655 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+595.656 [altscreen111] hook destinations setup=7800937c start=78008918 teardown=7800aaf0 platform=78006a44 control=78008284 modeParser=7832f5b4
+595.657 [altscreen111] installed ARM hook SessionSetup target=78332fd8 replacement=7800937c trampoline=1b6000 page=78332000 pagesize=4096
+595.658 [altscreen111] installed ARM hook SessionStart target=78331360 replacement=78008918 trampoline=1b7000 page=78331000 pagesize=4096
+595.659 [altscreen111] installed ARM hook SessionTearDown target=78332b1c replacement=7800aaf0 trampoline=1b8000 page=78332000 pagesize=4096
+595.660 [altscreen111] installed ARM hook PlatformControl target=7832b710 replacement=78006a44 trampoline=1b9000 page=7832b000 pagesize=4096
+595.661 [altscreen111] installed ARM hook SessionControl target=78334d88 replacement=78008284 trampoline=1ba000 page=78334000 pagesize=4096
+595.664 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6000 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000
+595.665 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-polic
+851.006 [altscreen111] r24-persist sync done
+

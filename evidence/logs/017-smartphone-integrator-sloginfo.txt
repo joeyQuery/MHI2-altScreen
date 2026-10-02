@@ -1,0 +1,62 @@
+# smartphone_integrator sloginfo
+# Topic: pidin -p dio_manager returns nothing
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> sloginfo | grep -i -e smartphone -e dio_manager | tail -20
+Jan 01 00:00:09    5 10000     0 00:00:03.790 servicemgr BENCH_Startup 2 930 [SM] AS_INITIALIZING reported for smartphone_integrator
+Jan 01 00:00:09    5 10000     0 00:00:03.792 servicemgr BENCH_Startup 2 935 [SM] AS_INITIALIZED reported for smartphone_integrator
+Jan 01 00:00:09    5 10000     0 00:00:04.130 servicemgr BENCH_Startup 2 998 [SM] AS_RUNNING reported for smartphone_integrator
+Jan 01 00:00:09    5 10000     0 00:00:04.131 servicemgr BENCH_Startup 2 1003 [updateDomainState] domain 'smartphone_integration' state 0x1
+Jan 01 00:00:09    5 10000     0 00:00:04.131 servicemgr BENCH_Startup 2 1005 [SM] IS_RUNNING reported for smartphone_integrator
+Jan 01 00:00:09    5 10000     0 00:00:04.133 servicemgr BENCH_Startup 2 1006 [SM] APP_RUN_MODE 0 reported for smartphone_integrator
+Jan 01 00:00:09    5 10000     0 00:00:04.135 servicemgr BENCH_Startup 2 1010 [updateDomainState] domain 'smartphone_integration' state 0x0
+Jan 01 00:00:09    5 10000     0 00:00:04.434 servicemgr BENCH_Startup 2 1011 [SM] APP_RUN_MODE 8 reported for smartphone_integrator
+Jan 01 00:00:09    5 10000     0 00:00:04.434 servicemgr BENCH_Startup 2 1015 [updateDomainState] domain 'smartphone_integration' state 0x8
+Jan 01 00:00:17    5 10000     0 00:00:03.735 smartphone_integrator BENCH_Startup 2 2400 [SM] AS_INITIALIZED requested for smartphone_integrator
+Jan 01 00:00:17    5 10000     0 00:00:03.997 smartphone_integrator BENCH_Startup 2 2422 [SM] AS_RUNNING requested for smartphone_integrator
+Jan 01 00:00:17    5 10000     0 00:00:04.193 smartphone_integrator BENCH_Startup 2 2449 [SI] Received appRunMode=0x8
+Jan 01 00:00:17    5 10000     0 00:00:04.341 smartphone_integrator BENCH_Startup 2 2524 [SI] Read appCodingInfo=coding is [carplay=1|gal=1|mirrorlink=1|carlife=0]
+Jan 01 00:00:17    5 10000     0 00:00:04.369 smartphone_integrator BENCH_Startup 2 2531 [SI] Read uniqueIDs of size=68
+Jan 01 00:00:17    5 10000     0 00:00:04.431 smartphone_integrator BENCH_Startup 2 2543 [SI] Read usbInfo=valid=1, coding=IPOD, ports=0x3, hubSupport=0, forceJPVariant=0,
+Jan 01 00:00:17    5 10000     0 00:00:04.459 smartphone_integrator BENCH_Startup 2 2564 [SI] connectorType=NEW, variantJP=0
+Jan 01 00:00:17    5 10000     0 00:00:11.444 smartphone_integrator BENCH_Startup 2 2601 [SI] Read appFecInfo=FecState: [gal=GRANTED|carplay=GRANTED|mirrorlink=DENIED|usb=GRANTED|carlife=DENIED], exlabFecInfo=GRANTED
+Jan 01 00:00:45    5 10000     0 00:00:44.820 smartphone_integrator BENCH_Startup 2 4119 [SM] PS_ACC_MODE 2 requested for smartphone_integrator
+Jan 01 00:01:03    5 10000     0 00:00:08.916 hmi BENCH_Startup 2 27480 DSIAdapter.startService(org.dsi.ifc.smartphoneintegration.DSISmartphoneIntegration,0) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:09.305 hmi BENCH_Startup 2 27544 DSIAdapter.registerServiceProvider(org.dsi.ifc.smartphoneintegration.DSISmartphoneIntegration,0)
+root@mmx:/mnt/app/root> sloginfo | grep -i -e died -e crash -e terminated -e SIGSEGV -e "restart" -e "respawn" | tail -15
+root@mmx:/mnt/app/root> pidin -p smartphone_integrator; pidin -p dio_manager
+     pid tid name               prio STATE       Blocked                     
+ 1441825   1 rtphone_integrator  10r CONDVAR     (0xfedb0)                   
+ 1441825   2 rtphone_integrator  10r CONDVAR     (0x1d0b50)                  
+ 1441825   3 rtphone_integrator  10r RECEIVE     1                           
+ 1441825   4 rtphone_integrator  10r REPLY       1171503                     
+ 1441825   5 rtphone_integrator  10r CONDVAR     (0x219a74)                  
+ 1441825   6 rtphone_integrator  10r CONDVAR     (0x219c78)                  
+ 1441825   7 rtphone_integrator  10r CONDVAR     (0x219e58)                  
+ 1441825   8 rtphone_integrator  10r CONDVAR     (0x20fd20)                  
+ 1441825   9 rtphone_integrator  10r REPLY       884772                      
+ 1441825  10 rtphone_integrator  10r REPLY       405536                      
+ 1441825  11 rtphone_integrator  10r CONDVAR     (0x21e140)                  
+ 1441825  12 rtphone_integrator  10r CONDVAR     (0x216230)                  
+ 1441825  13 rtphone_integrator  10r RECEIVE     4                           
+ 1441825  14 rtphone_integrator  10r RECEIVE     4                           
+ 1441825  15 rtphone_integrator  10r CONDVAR     (0x21c7a4)                  
+ 1441825  16 rtphone_integrator  10r CONDVAR     (0x207b98)                  
+ 1441825  17 rtphone_integrator  10r RECEIVE     9                           
+ 1441825  18 rtphone_integrator  10r CONDVAR     (0x205d48)                  
+ 1441825  19 rtphone_integrator  10r CONDVAR     (0x205c20)                  
+ 1441825  20 rtphone_integrator  10r CONDVAR     (0x2058a8)                  
+ 1441825  21 rtphone_integrator  10r REPLY       1441802                     
+ 1441825  22 rtphone_integrator  10r REPLY       1380356                     
+ 1441825  23 rtphone_integrator  10r CONDVAR     (0x204d00)                  
+ 1441825  24 rtphone_integrator  21r CONDVAR     (0x2052c0)                  
+ 1441825  25 rtphone_integrator  10r RECEIVE     12                          
+ 1441825  26 rtphone_integrator  21r REPLY       966700                      
+ 1441825  27 rtphone_integrator  10r REPLY       1499211                     
+ 1441825  28 rtphone_integrator  10r CONDVAR     (0x21c42c)                  
+ 1441825  29 rtphone_integrator  10r CONDVAR     (0x2440d8)                  
+ 1441825  30 rtphone_integrator  10r REPLY       1638481                     
+ 1441825  31 rtphone_integrator  10r CONDVAR     (0x205a0c)                  
+     pid tid name               prio STATE       Blocked                     
+root@mmx:/mnt/app/root> 

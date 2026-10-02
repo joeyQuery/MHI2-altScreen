@@ -1,191 +1,65 @@
-# Status
+# Repository status
 
-The working MHI2Q AltScreen package is the functional specification. The objective is a literal functional replica on MHI2 with only unavoidable platform-specific translations.
+> **Project:** MHI2 AltScreen — Audi MU0678 / B9 Virtual Cockpit
+> **Platform:** Audi MHI2 `MU0678` (P3241), QNX 6.5, HARMAN iAP2 stack
+> **State as of:** 2026-10-02
+> **Purpose:** evidence-driven implementation of CarPlay secondary-screen navigation on the Virtual Cockpit.
 
-## Proven
+## Current state
 
-- 110 is the normal/main CarPlay stream.
-- 111 is the alternate/secondary CarPlay stream.
-- Q dynamically resolves the AirPlay SessionScreen lifecycle.
-- Q SETUP handling identifies stream type 111.
-- Q creates a second SessionScreen.
-- Q calls UpdateState(B,1).
-- Q calls Setup(B,stream111,CreateResult); argument 3 is the actual Create result.
-- Q calls SetTimeSynchronizer before security completion.
-- Q derives B AES material with DeriveAESKeySHA512ForScreen(session+0x1c8,16,negotiated64) and calls SetSecurityInfo.
-- Q opens a second listener through its 7-argument ServerSocketOpen ABI.
-- Q advertises {type:111,dataPort:N}.
-- Q creates a dedicated secondary worker (`pthread_create` at `0x4128`, start routine `0x38fc`).
-- That worker directly calls `SocketAccept` (`0x395c`), `NetSocket_CreateWithNative` (`0x3a70`), post-accept `StartSession(B,...)` (`0x3b60`), and `ProcessFrames(B, NetSocket, Q-context)` (`0x3bbc`).
-- Q resolves StartSession, but the proven type-111 setup block does not call it.
-- Q ScreenStreamCreate observes (*arg1)+0x38; the captured value is not subsequently read in the Q cluster, so this is not proven functionally required.
-- Q DIO callback s_sessionScreenCreatedCallback -> AirPlayReceiverSessionScreenSetDelegate is proven.
-- Q DIO loader contains executable ScreenCreate, ScreenRegisterDelegates, and ScreenRegister callsites.
-- The exact callback trigger is a cross-module boundary; the loader itself does not contain a direct type-111 call into that callback.
-- Q resolves OMX initialize/configure/start/decode/stop/visibility.
-- MHI2 stock frame path is ProcessFrames -> ScreenStreamProcessData -> ScreenStream/_ScreenStreamDecodeAll -> NvssVideoImpl::decode.
-- MU0678 SetTimeSynchronizer copies 12 bytes to screen+0x20 and ignores extra args.
-- Stock MU0678 ServerSocketOpen at 0x79910 is a normal seven-argument AAPCS call. The relevant screen/media listener is the stock 0x23380 call: arg1=*(uint8_t *)(session+0x51), arg2=1, arg3=6, arg4=0xFFFFE872, arg6=0xFFFD4000, with fresh arg5/arg7 output storage. The 0x23C48 TCP call is the RAOP event listener (-5001).
-- Q libmhi2qcarplaycluster.so imports spawnl and has a direct callsite at 0x4578 that passes P_WAIT-shaped mode 1 and the embedded --live-carplay argument.
-- Q libmhi2qcarplaycluster.so embeds /eso/bin/apps/mhi2q-aa-cluster-display.
-- Q mhi2q-aa-cluster-display directly compares argv[1] with --live-carplay at 0x103140 and selects a 1440x540 geometry state for that mode.
-- Q live-CarPlay framing is closed: the helper reads an exact 32-byte header requiring AAF1, byte 4 = 2, byte 7 = 32; the Q cluster constructs the matching 32-byte header at 0xa600 and writes it through the timed write path at 0xa1e8.
-- Q live-CarPlay loopback endpoint is 127.0.0.1:15557.
-- Q and MU0678 ProcessFrames context translation is closed: both use session+0x0c as the host context, but Q reads context+0x1c8 while stock MU0678 reads context+0xc8 at _ScreenThread 0x204d0.
-- The Q display helper dynamically resolves QNX Screen/display APIs including screen_create_window, screen_create_window_type, screen_create_window_buffers, screen_post_window, and destruction/property APIs.
-- The helper also contains usage: %s stream.h264, establishing an H.264 input mode in addition to its live-CarPlay mode.
+The CarPlay **second screen (stream 111)** is shown on the Virtual Cockpit of the reference car at ~29–30 fps.
+It starts by itself after boot, returns to the native map when the phone is unplugged, and comes back on replug.
+Steering-wheel zoom works, and the safe area follows the cluster's dial layout (two layouts verified).
 
-## Current MHI2 reverse-engineering work has established
+This is a **developer proof of concept**. It is not an installer and has only been run on one car.
 
-The MHI2 analysis has statically established the Type 111 detection, second SessionScreen lifecycle, UpdateState, ScreenSetup ABI, AES derivation, SetSecurityInfo, secondary listener, 111 response descriptor, accept worker, NetSocket wrapper, ProcessFrames, and an NvSS decode tee. This repository is the audited research/specification repository, and it now also records an exact reproduction of the supplied original MU0678 patch.
+## What is proven (runtime)
 
-## Q divergences / required platform translation
+| # | Finding | Trace |
+| --- | --- | --- |
+| 1 | Stock CarPlay = stream 110; the cluster map is a **second** stream, type 111, negotiated with `altScreen` + `viewAreas` | [001](traces/TRACE-001-gen1-hook-baseline.md), [005](traces/TRACE-005-iphone-side-negotiation.md) |
+| 2 | The unit's `pf` ruleset drops inbound TCP on `carplay0` except 5000:5001, 5010, 6000, 6030, 7000:7001, 7100 — our 6031 listener timed out silently | [006](traces/TRACE-006-unit-packet-filter.md) |
+| 3 | A native `Screen B` with a stub video sink receives stream 111 and reaches H.264 decode (SPS/PPS/IDR/slices counted) | [007](traces/TRACE-007-native-screen-b.md) |
+| 4 | Rewriting B's `NvSSVideoOpen` to `outputDevice 1`, layer 58, plus `dmdt sc 4 77`, shows the picture on the cluster | [008](traces/TRACE-008-first-cluster-video.md), [009](traces/TRACE-009-display-manager-state.md) |
+| 5 | B must start after stock stream A has configured; a 110-only teardown must not take 111 down | [010](traces/TRACE-010-stock-a-b-ordering.md) |
+| 6 | A separate `vc_render` process fed over loopback avoids the `NvSSVideoClose` hang inside `dio_manager` | [011](traces/TRACE-011-vc-render-forward-mode.md) |
+| 7 | The ~16 fps ceiling was the phone's choice (display record `features=0`); `features=2` + knob HID gives ~30 fps | [012](traces/TRACE-012-framerate-features2.md) |
+| 8 | Two view areas switched on `turns`; the phone applies the switch only with `adjacentViewAreas` | [013](traces/TRACE-013-viewareas-turns.md) |
+| 9 | Autostart, early/late plug, unplug → native map, replug | [014](traces/TRACE-014-autostart-persistence.md) |
+| 10 | `changeMapZoomLevel` (`zoomDirection` 0 = in, 1 = out) zooms the CarPlay map; wheel events and dial layout come from the HMI's DSI tracer | [015](traces/TRACE-015-cluster-controls.md) |
+| 11 | Final safe areas for small and big dials, and the measured rules behind them | [016](traces/TRACE-016-safe-area-tuning.md) |
 
-- Q passes its Create result as ScreenSetup arg 3, but MU0678 ScreenSetup @ 0x26400 overwrites caller r2 with internal sp+4 storage, so there is no MHI2 third-argument dependency.
-- Q and MHI2 both use the seven-argument AAPCS ServerSocketOpen shape; MHI2 requires the native screen/media values recovered from stock caller 0x23380.
-- Q's +0x38 ScreenStream capture is diagnostic/unproven functional state and should not be copied solely for parity.
-- Q loader DIO creation/registration operations are proven, but their exact linkage to the type-111 SessionScreen is across a callback boundary.
-- Current MHI2 manual UUID/client/end-time setters are not part of Q cluster's resolved API surface and should not define the replica lifecycle without proof.
-- The guarded-interposition audit now distinguishes the two concrete MU0678 host GOT hooks (HIDRegisterDevice/HIDDeregisterDevice) from Q-owned runtime hook/object state; see `docs/mu0678-guarded-interposition-audit-2026-09-27.md`.
-- Q uses OmxVideoImpl; MHI2 uses NvssVideoImpl. Translate only the decoder primitive.
-- The Q helper launch path and frame handoff are now statically closed at the protocol boundary: the cluster produces the AAF1 header plus payload, and the helper parses the same header and consumes the exact payload over the loopback TCP connection.
+## Experimental / open
 
-## Remaining static trace targets
+| Item | State | Trace |
+| --- | --- | --- |
+| HUD next turn (route guidance) | data path observed working with a patched third-party hook; **package rolled back**; session drop at route end unexplained; cluster arrow still visible on the small dials | [018](traces/TRACE-018-hud-route-guidance.md) |
+| Remove the native road-name bar | not solved; BAP-feed Java patch did not hide it and broke navigation (reverted) | [019](traces/TRACE-019-road-name-bar.md) |
+| Menu to return to the native map | not started (wheel click deliberately unmapped) | — |
+| Disable cluster left/right menus (keys 99/100) | not started | — |
+| Third dial layout | slot and files exist; never exercised (not on the test car) | [015](traces/TRACE-015-cluster-controls.md) |
+| Waze aliasing | Waze-only; Apple Maps and Google Maps are fine on the same stream | [012](traces/TRACE-012-framerate-features2.md) |
+| `dio_manager` crash loop seen once | cause undetermined, not shown to be the hook | [017](traces/TRACE-017-dio-manager-triage.md) |
+| Safe installer / other firmware | not started | — |
 
-No architecture-level static trace target remains open for the Q-to-MU0678 lifecycle. The implementation-ready translation is recorded in `docs/mu0678-111-implementation-blueprint-2026-09-27.md`.
+## Highest-value open questions
 
-The remaining work is the final target-specific integration and hardware validation:
-- bind the new MU0678 cluster into the exact MU0678 DIO image using the proven callback/interposition boundary;
-- connect the 111 SETUP response to the MU0678 secondary listener/dataPort path;
-- feed MU0678 NvSS encoded access units into the AAF1-compatible local output sink;
-- bind the output sink to a MU0678-native Screen/DMDT route targeting DISPLAYABLE_KOMBI_MAP_VIEW;
-- validate simultaneous 110+111 operation and stable teardown/reconnect.
+1. What closes the CarPlay session (USB re-enumeration, `mm-ipod` relaunch) a few hundred ms after a route ends
+   when the route-guidance hook is loaded — and does it also happen with the hook disabled (`rgd_disable`)?
+2. Is the small-dial arrow the cluster drawing the BAP maneuver descriptor itself (inseparable from the HUD feed), or a
+   separate tile path?
+3. Which BAP / DSI call opens the cluster's left (key 99) and right (key 100) menus, and can the head unit decline it?
+4. Can the native road-name bar be hidden without breaking navigation (BAP map-presentation flags are the lead)?
+5. Does the unit apply the layout from a third dial size, and what rectangle does the HMI announce for it?
+6. Do other Audi MHI2 trains (and the 12.3″ cluster) accept the same hook gates? See [firmware identity](mu0678/firmware.md).
 
-## Static closure
+## Evidence rules
 
-The socket boundary is no longer unresolved: ABI shape and the exact stock MHI2 screen/media listener recipe are proven in traces/016-static-closure-mhi2-listener.md. Q teardown ordering is also proven: original AirPlay SessionTearDown first, then secondary listener close, worker join, ScreenStreamStop, StopSession, ScreenDeregister, and duplicate-state clearing.
+Every finding is classified as one of:
 
-The Q output boundary is statically closed. The authoritative package proves the helper launch, live-CarPlay loopback input, accepted-descriptor identity, QNX Screen/display stack, and DMDT VC-routing invocation. The remaining uncertainty is hardware-specific physical mapping and MU0678 runtime behaviour.
+- **Proven (runtime)** — observed on the car, with a log or measurement in [`evidence/`](evidence/);
+- **Proven (static)** — read from strings, symbols, config or disassembly;
+- **Inferred** — consistent with evidence, not yet tested;
+- **Unknown** — no evidence.
 
-## Runtime gaps
-
-No complete successful live 111 run has shown the entire path through secondary decode/display.
-
-## Deferred safety
-
-Q SHA/layout fingerprint and patch refusal controls are documented separately and intentionally deferred until functionality is established.
-
-## 2026-09-27 correction / MHI2Q reference audit
-
-The canonical repository is joeyQuery/MHI2-AltScreen. The MHI2Q reference has been audited against the supplied implementation package and recorded in docs/mhi2q-reference-package-2026-09-27.md.
-
-The important implementation rule is now explicit: Q preserves the 110 path and constructs/drives a parallel 111 SessionScreen path. The proven Q type-111 setup sequence does not call AirPlayReceiverSessionScreen_StartSession, despite resolving that symbol. The Q ScreenStreamCreate +0x38 observation is diagnostic and not yet a proven functional dependency.
-
-Do not copy Q offsets or socket arguments directly into MHI2. The MHI2 replica must reproduce the Q operations at MU0678-native ABI/object boundaries.
-
-## Final static SessionScreen association
-
-AirPlayReceiverSessionScreen_StartSession @ 0x25fd0 creates the stream and then obtains the native main Screen to clone display geometry/properties into that stream. No hidden SessionScreen->native-Screen selector remains identified. The secondary 111 path therefore requires an explicit native Screen selection/property-cloning step for B; global ScreenCopyMain() changes are not acceptable because they would affect 110.
-
-## Final static conclusion — 2026-09-27
-
-The authoritative MHI2Q implementation is **not a libairplay replacement**.
-
-The supplied `install.zip` verifies and preserves the target `/eso/lib/libairplay.so` ABI. Its CarPlay implementation is delivered through a replacement DIO executable (`dio_manager.mhi2q_carplay_loader`) and `libmhi2qcarplaycluster.so`, which dynamically resolve the existing AirPlay SessionScreen/Screen APIs.
-
-Therefore the correct MU0678 implementation target is:
-
-```
-stock MU0678 libairplay.so
-        |
-        +-- existing 110/main AirPlay path
-        |
-        +-- DIO-side extension / loader
-                |
-                +-- detect 111
-                +-- SessionScreen B
-                +-- Q-equivalent Setup/time/security
-                +-- secondary listener + dataPort
-                +-- accept + NetSocket
-                +-- post-accept StartSession
-                +-- ProcessFrames
-                +-- independent decode/output sink
-```
-
-The supplied `libairplay_patched_v6.so` remains useful only as evidence of one possible MU0678 binary-injection mechanism. It is not the functional Q reference and must not be described as such.
-
-### Corrected implementation gate
-
-The authoritative Q implementation is now understood at the correct boundary.
-
-It preserves the stock `libairplay.so` file, loads `libmhi2qcarplaycluster.so` into the DIO process, resolves the live DIO/AirPlay APIs, and performs guarded runtime interposition with a 4-byte patch primitive.
-
-The stock MU0678 DIO executable has the required exported host callbacks. The direct MU0678 translation map is documented in:
-
-`docs/mu0678-external-cluster-implementation-2026-09-27.md`
-
-The implementation target is therefore a MU0678-compatible external CarPlay cluster loaded into the existing DIO process, with MU0678-native AirPlay/Screen/NvSS calls.
-
-The previous assumption that the working Q patch was equivalent to shipping a patched `libairplay.so` is corrected. The supplied MU0678 `libairplay_patched_v6.so` remains useful as a separate source of MU0678 internal patch-site evidence, but the authoritative Q mechanism is runtime interposition from the external cluster.
-
-### Remaining runtime gaps
-
-No complete successful live 111 run has shown the entire path through secondary decode/display.
-
-The implementation still requires:
-
-- MU0678 DIO runtime-interposition integration against the now-verified target executable;
-- dedicated secondary output sink;
-- hardware validation of 110+111 simultaneous operation;
-- stable teardown/reconnect.
-
-\n\n## 2026-09-27 implementation pass\n\nAn ARM EABI5 MU0678 external-cluster implementation has now been added under `src/mu0678/`. It preserves stock `libairplay.so`, resolves the existing SessionScreen lifecycle APIs dynamically, implements the MU0678-native ProcessFrames context translation (`session+0x0c` then `+0xc8`), reproduces the Q AAF1 32-byte live-output header, and exposes explicit entry points for SETUP, time-sync, accept, encoded-frame publication, and teardown.\n\nThe implementation is intentionally not labelled installable yet: the exact MU0678 DIO executable required for the final guarded interposition/SETUP trampoline is not present in the current authoritative upload, so inventing those patch sites would violate the evidence boundary. The source is therefore the implementation core, with the remaining integration boundary explicitly exposed rather than guessed.\n\n\n## Exact target executable now verified\n\nThe MU0678 target `dio_manager` is present in the repository dump at `dump/MU0678-MHI2_ER_AUG22_P3241-JTB-07429.06.161184010D/advanced/MU0678-appimg/eso/bin/apps/dio_manager`. Its Git blob SHA is `1f9dd87e2553f3a89fe083466d1ed3729dd9d094`, size 649413 bytes, and the exact callback anchors are recorded in `docs/mu0678-target-dio-audit-2026-09-27.md`. The previous statement that the target executable was unavailable is superseded.\n
-
-## 2026-09-27 integration boundary update
-
-A direct comparison of the Q type-111 routine and the MU0678 DIO binary resolved an important boundary:
-
-- Q's type-111 entry at `0x3c60` is a replacement callback with effective arguments `(session, streams, setup_result)`.
-- It is not the public `AirPlayReceiverSessionSetDelegate` callback table itself.
-- The public AirPlay delegate layout is confirmed independently: context, initialize, finalize, started, control, copyProperty, setProperty, modesChanged, requestUI, duckAudio, unduckAudio.
-- MU0678 imports `AirPlayReceiverSessionSetDelegate` at GOT `0x19d7a0` and `AirPlayReceiverSessionScreenSetDelegate` at `0x19d544`; these are preserved as ABI anchors, not guessed SETUP hooks.
-- Exact MU0678 DIO GOT translations of Q operations 1/2 are `0x19d734` (`HIDRegisterDevice`) and `0x19d7ec` (`HIDDeregisterDevice`), both guarded by the native PLT resolver word `0x115288`.
-
-The implementation therefore does not fabricate a callback-table field for SETUP. The guarded interposition substrate is now connected to the proven MU0678 SETUP boundary. It does not install guessed callback-table fields or Q absolute addresses.
-
-
-## Complete type-111 trace
-
-The implementation now covers the full statically proven path from MU0678 SETUP type 111 through response-port advertisement, secondary SessionScreen/security setup, MU-native listener/worker, secondary ScreenStream decoder capture, and secondary-only NvSS raw access-unit tee. See docs/mu0678-type111-complete-trace-2026-09-27.md for the exact addresses and guards. Remaining work is hardware validation of 111 negotiation, simultaneous 110/111 operation, display-helper compatibility, physical VC routing, and reconnect/teardown.
-
-
-## 2026-09-27 Q-parity gap closure
-
-The implementation pass has closed the source-level gaps identified by the direct working-package comparison:
-
-- the MU0678 secondary ScreenStream is retained so Q-equivalent `ScreenStreamStop(streamB)` teardown can occur;
-- the secondary worker and output accept worker are joined during teardown, matching the proven Q cleanup ordering;
-- the exact Q live-CarPlay helper launch is now present at sink startup using `spawnl(1,...,"--live-carplay",...)`;
-- MU0678 time synchronization now precedes AES/security and copies the three Q-equivalent words: `setup_result`, MU `_ScreenGetSynchronizedNTPTime @ 0x20650`, and MU `_ScreenGetUpTicksNearSynchronizedNTPTime @ 0x20644`;
-- the previously missing `mu0678_alt111_screen()` accessor is implemented;
-- the exact reference display helper is reproducibly staged by `tools/package-mu0678.sh`, with SHA-256 `0ad556112e427745da99e057affde5b18195db875398d2111cb131f790b7d65e`.
-
-The remaining boundary is deliberately not guessed: Q teardown also calls `ScreenDeregister(vc_screen)`, but the MU0678 native VC Screen registration/association required to supply that object has not been proven. The current code therefore does not deregister the stock 110 screen. Runtime validation and the MU-native VC routing association remain hardware gates.
-
-
-## 2026-09-27 reference-package parity correction
-
-A fresh byte-level audit of the supplied `install.zip` found and corrected implementation defects that were not visible from the earlier source-level lifecycle summary:
-
-- SETUP veneer now reads the proven setup-result slot `[sp+0xa0]` after its 56-byte register save and passes the live current stream from `r9` plus key-base `r10`.
-- NvSS decode veneer literal placement and its `+0x34` branch entry are now internally consistent.
-- AirPlay/CF symbol resolution now uses the loaded `libairplay.so` handle with the observed QNX loader mode instead of relying on `dlsym(NULL,...)`.
-- Response dictionary creation no longer uses the unproven `session+0x1408` byte; it uses null allocator/zero capacity with the recovered callback tables.
-- Interposition installation rolls back the earlier hook if a later hook fails.
-- The external cluster has a load-time constructor that invokes MU0678 interposition initialization.
-- The build output and SONAME now use the reference `libmhi2qcarplaycluster.so` identity.
-- Packaging now stages the exact reference DIO loader together with the newly built cluster and the exact reference live-CarPlay display helper.
-
-See `docs/mu0678-reference-gap-audit-2026-09-27.md` for the exact evidence and boundaries.
-
-The remaining unsolved boundary is no longer a guessed static ABI: it is target runtime proof of DIO loading, 111 negotiation/receipt, secondary decode, MU-native display routing, and teardown/reconnect.
+Disproven interpretations are kept in [docs/disproven.md](docs/disproven.md). Nothing is deleted when it turns out wrong.

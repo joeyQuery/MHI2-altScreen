@@ -1,0 +1,207 @@
+# iPhone log: airplayd session creation
+# Topic: APSenderSessionAirPlay created (usage=CarPlay)
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+user@mac ~ % log show --archive ~/carplay-phone.logarchive --start "2026-09-29 10:10:48" --end "2026-09-29 10:10:56" --style compact 2>/dev/null | grep -E "airplayd|CarPlay\[|carkitd" | grep -viE "attempting connection|mDNS|Bonjour|DND|xpc|assertion|ConnectionTime|osTransaction|MobileGestalt" | head -200
+2026-09-29 10:10:48.004 Df CarPlay[597:4553] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Server availability changed! State: 1
+2026-09-29 10:10:48.004 Df CarPlay[597:4553] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Trying to connect to server...
+2026-09-29 10:10:48.004 Df CarPlay[597:4553] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Client not sandboxed to EA service
+2026-09-29 10:10:48.005 Df airplayd[10072:2742b0] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Server availability changed! State: 1
+2026-09-29 10:10:48.005 Df airplayd[10072:2742b0] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Trying to connect to server...
+2026-09-29 10:10:48.005 Df airplayd[10072:2742b0] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Client not sandboxed to EA service
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Server availability changed! State: 1
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Trying to connect to server...
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.accessories.frameworks.core-accessories:External Accessory] [#ExternalAccessory] Client not sandboxed to EA service
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] Handling <private> notification
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] handling connected vehicles: <private>
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] starting CarPlay Control advertising over USB
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] connected vehicle: <private> has pairing <private>
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] [com.apple.carkit:General] sending device transport identifiers BT: <private> USB: <private>
+2026-09-29 10:10:48.011 Df carkitd[5532:134a56] (ExternalAccessory) [#ExternalAccessory] Call sendDeviceIdentifierNotification:usbIdentifier:forUUID: for accessoryUUID <private>
+2026-09-29 10:10:48.013 Df carkitd[5532:2a44d5] [com.apple.carkit:General] -[CRCarPlayCapabilitiesManager _worker_queue_reloadSessionIfNeeded]: updated partial session (null) (hasAccessory = NO)
+2026-09-29 10:10:48.026 Df carkitd[5532:2a41a0] [com.apple.carkit:General] Recording startedConnectionAttemptOnTransport
+2026-09-29 10:10:48.029 Df airplayd[10072:2a44e0] [com.apple.airplay:CarPlayControlServer] Server start
+so_gencnt: 2325130 t_state: LISTEN process: airplayd:10072 so_qlimit: 0 error: 0 so_error: 0 svc/tc: 0
+so_gencnt: 2325131 t_state: LISTEN process: airplayd:10072 so_qlimit: 0 error: 0 so_error: 0 svc/tc: 0
+2026-09-29 10:10:48.134 A  carkitd[5532:2a41a0] (BiomeStreams) BMStoreSource.sendEvent
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APAudioEngineCarPlay] [0x544E] Created
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] APTCSendCommandCache - created send command cache of size 20
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] APTCReceivedCommandCache - created received command cache of size 10
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] Created APEndpointCarPlay [0x0597] with name 'CarPlay' and id 'XX:XX:XX:XX:XX:XX'
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] Added new USB endpoint 0x0597 (CarPlayControlSupported: N)
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] UpdateBrowseContext [USB] Updating endpoint from 0x0000 to 0x0597
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] UpdateCurrentEndpoint posting 'AvailableEndpointsChanged' because the browser context changed
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] UpdateCurrentEndpoint posting 'EndpointsPresentChanged'
+2026-09-29 10:10:48.538 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointManagerCarPlay] carManager_handlePendingAutoconnect: no pending autoconnections
+2026-09-29 10:10:48.541 E  airplayd[10072:2a43b1] [com.apple.airplay:APSLogUtils] carEndpoint_copyNonStateProperty:6793: got error -12784/0xFFFFCE10 kCMBaseObjectError_PropertyNotFound
+2026-09-29 10:10:48.550 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] FigStarkModeCopyController returned <FigStarkModeControllerRemote 0x804de9530 retainCount: 1 objectID: 2754090000000d01>
+2026-09-29 10:10:48.550 Df airplayd[10072:2a44e7] [com.apple.airplay:APSNetworkClockNTP] [0x53AF] <AirPlayClock> Created APSNetworkClock NTP
+2026-09-29 10:10:48.550 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] Stats Collection Disabled, sourceVersion 2108100.
+2026-09-29 10:10:48.550 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Should establish Network Clock link
+2026-09-29 10:10:48.550 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] APSenderSessionAirPlay 0x91C5 with name CarPlay created (usage=CarPlay).
+2026-09-29 10:10:48.550 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] Created APSenderSessionAirPlay [0x91C5]
+2026-09-29 10:10:48.555 Df CarPlay[597:2a3108] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.555 Df CarPlay[597:2a3108] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.556 Df CarPlay[597:2a3108] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.556 Df CarPlay[597:2a3108] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.557 Df CarPlay[597:2a3108] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.557 Df CarPlay[597:2a3108] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.558 Df CarPlay[597:2a3108] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.558 Df CarPlay[597:2a3108] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.560 Df airplayd[10072:2a44e7] [com.apple.carkit:General] Connecting to CarKit service.
+2026-09-29 10:10:48.562 Df airplayd[10072:2a43b1] [com.apple.carkit:General] Connecting to CarKit service.
+2026-09-29 10:10:48.564 Df carkitd[5532:2a44d5] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.564 Df carkitd[5532:2a44d5] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:48.564 Df carkitd[5532:2a41a0] [com.apple.carkit:General] Receiving CarKit service connection <private> to service com.apple.carkit.service from 10072
+2026-09-29 10:10:48.575 Df carkitd[5532:134a56] [com.apple.carkit:General] Device supported features: <private>
+2026-09-29 10:10:48.576 Df airplayd[10072:2a43b1] [com.apple.airplay:APCarPlayCarServicesInterface] Fetching Session FeatureKey list for a vehicle: [
+2026-09-29 10:10:48.576 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] AirPlay switch overrode setting for videoPlayback to be Disabled
+2026-09-29 10:10:48.576 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] FeatureKey list proposed:[
+2026-09-29 10:10:48.577 Df airplayd[10072:2a4523] [com.apple.airplay:APAudioEngineCarPlay] [0x3675] Finalized
+2026-09-29 10:10:48.577 Df airplayd[10072:2a4523] [com.apple.coremedia:] -FigStarkModeControllerRemote- remoteFigStarkModeController_Finalize: Finalizing (0x804de9290/2754090000000c01)
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APSSystemUtils] Found USB DirectLink on the network interface en7
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Prefer DirectLink for connection
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Connect over DirectLink with "CarPlay" ( preferredConnection = DirectLink, isInfraAvailable = 1, isAWDLAvailable = 0, isNANAvailable = 0 )
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APConnectivityHelper] [0x3DA4] Registered event handler for client [0x6CE5]
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APConnectivityHelper] [0x3DA4] Registered client [0x6CE5] for event 'WiFi Available'. 1 registered clients
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APConnectivityHelper] [0x3DA4] Start listening for event 'WiFi Available'
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APConnectivityHelper] [0x3DA4] Dispatching event 'WiFi Available' to 1 clients
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APConnectivityHelper] [0x3DA4] Registered client [0x6CE5] for event 'USB Interface Changed'. 3 registered clients
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] created a new transport session [0x6CE5]
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Should skip Traffic Registration due to CarPlay session
+2026-09-29 10:10:48.579 Df airplayd[10072:2a4523] [com.apple.airplay:APConnectivityHelper] [0x3DA4] Registered client [0x6CE5] for event 'WiFi Power Changed'. 2 registered clients
+2026-09-29 10:10:48.579 Df airplayd[10072:2a4523] [com.apple.airplay:APConnectivityHelper] [0x3DA4] Deregistered client [0x6CE5] for event 'WiFi Available'. 0 registered clients
+2026-09-29 10:10:48.579 Df airplayd[10072:2a4523] [com.apple.airplay:APConnectivityHelper] [0x3DA4] Stop listening for event 'WiFi Available'
+2026-09-29 10:10:48.579 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportConnectionHTTP] [0xF1CC] APTransportConnectionHTTP with name 'CarPlay-ctrl' created. QoS: 0 Priority: 46
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportConnectionHTTP] [0x667D] APTransportConnectionHTTP with name 'CarPlay-rctl' created. QoS: 0 Priority: 46
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] [0x7530] APTransportStream with name CarPlay-ctrl holds receive connection [0x667D].
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] [0x7530] APTransportStream with name CarPlay-ctrl holds send connection [0xF1CC].
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] APTransportStream 0x7530 created with provider 0x0000.
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] APTransportStream 0x7530 with name CarPlay-ctrl created.
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportSession] [0x6CE5] APTransportSession with stream [0x7530] holds connection [0xF1CC]
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] DACP info unavailable when creating transport control stream
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] created a new transport control stream [0x7530]
+2026-09-29 10:10:48.584 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] [0x7530] Waiting for connection [0xF1CC].
+2026-09-29 10:10:48.584 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0xF1CC] Address resolved to CarPlay._airplay._tcp.local.%31:0, ifIndex: 0
+2026-09-29 10:10:48.584 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0xF1CC] Async connecting to 'CarPlay._airplay._tcp.local.%31' port 7000 ifIndex: 0
+2026-09-29 10:10:48.584 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xF1CC]: Connect start: 'CarPlay._airplay._tcp.local.%31'
+2026-09-29 10:10:48.584 Df airplayd[10072:2a4523] [com.apple.airplay:APTransportStream] [0x7530] Received event ? from connection [0xF1CC]
+2026-09-29 10:10:48.584 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xF1CC]: Querying SRV CarPlay._airplay._tcp.local.%31
+2026-09-29 10:10:48.585 Df airplayd[10072:2a4523] [com.apple.airplay:APTransportStream] [0x7530] Received event QueryingSRV from connection [0xF1CC]
+2026-09-29 10:10:48.585 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xF1CC]: SRV resolved CarPlay._airplay._tcp.local. -> mmx.local. port 5000, If 31, Flags 0x40000002, TTL 120
+2026-09-29 10:10:48.585 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xF1CC]: Resolving DNS mmx.local.%31
+2026-09-29 10:10:48.585 Df airplayd[10072:2a4523] [com.apple.airplay:APTransportStream] [0x7530] Received event ResolvingDNS from connection [0xF1CC]
+2026-09-29 10:10:48.588 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xF1CC]: Resolved DNS mmx.local. -> fe80::<redacted>%en7, Flags 0x40000002, If 31, TTL 120
+2026-09-29 10:10:48.588 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xF1CC]: Connecting to [fe80::<redacted>%en7]:5000, interface 31
+2026-09-29 10:10:48.588 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0xF1CC] Connecting to address: [fe80::<redacted>%en7]:5000
+2026-09-29 10:10:48.588 Df airplayd[10072:2a4523] [com.apple.airplay:APTransportStream] [0x7530] Received event Connecting from connection [0xF1CC]
+2026-09-29 10:10:48.589 Df kernel[0:2a43b1] [com.apple.xnu:skywalk] SK[5]: flow_entry_alloc               fe "0 proc kernel_task(0)airplayd nx_port 1 flow_uuid <uuid> flags 0x14120<CONNECTED,QOS_MARKING,EXT_PORT,EXT_FLOWID> ipver=96,src=<IPv6-redacted>.59966,dst=<IPv6-redacted>.5000,proto=0x06 mask=0x0000003f,hash=0x98c1542d tp_proto=0x06"
+so_gencnt: 2325147 t_state: SYN_SENT process: airplayd:10072 SYN in/out: 0/1 bytes in/out: 0/0 pkts in/out: 0/0 rtt: 0.0 ms rttvar: 250.0 ms base_rtt: 0 ms error: 0 so_error: 0 svc/tc: 0 flow: 0xaa4022cc
+so_gencnt: 2325147 t_state: ESTABLISHED process: airplayd:10072 SYN in/out: 1/1 bytes in/out: 0/0 pkts in/out: 0/0 rtt: 0.0 ms rttvar: 250.0 ms base_rtt: 0 ms error: 0 so_error: 0 svc/tc: 0 flow: 0xaa4022cc
+2026-09-29 10:10:48.590 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xF1CC]: Connected to [fe80::<redacted>%en7]:5000 (Reach=0.00 ms, SRV=0.66 ms, DNS=3.00 ms, Connect=1.80 ms, Total=5.69 ms)
+2026-09-29 10:10:48.590 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0xF1CC] Connected to address: [fe80::<redacted>%en7]:5000
+2026-09-29 10:10:48.591 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0xF1CC] HTTPClient connected to [fe80::<redacted>%en7]:5000 (from [fe80::<redacted>%en7]:59966) with CID 0x6F9D0000
+2026-09-29 10:10:48.591 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0xF1CC] HTTP connection connected
+2026-09-29 10:10:48.591 Df airplayd[10072:2a4523] [com.apple.airplay:APTransportStream] [0x7530] Received event Connected from connection [0xF1CC]
+2026-09-29 10:10:48.591 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] [0x7530] Connection succeeded.
+2026-09-29 10:10:48.591 Df airplayd[10072:2a43b1] [com.apple.airplay:APEndpointCarPlay] [0x0597] Endpoint connected state changed: isConnected = true
+2026-09-29 10:10:48.591 Df airplayd[10072:2a43b1] [com.apple.airplay:APEndpointCarPlay] [0x0597] Posting notification 'Endpoint_ConnectedStateChanged' with params {
+2026-09-29 10:10:48.591 Df airplayd[10072:2a4523] [com.apple.airplay:HTTPClientCore] Connect success: CID 0x6F9D0000, Peer NULL
+2026-09-29 10:10:48.591 Df airplayd[10072:2a4523] [com.apple.airplay:HTTPClientCore] Request start: CID 0x6F9D0001, Peer NULL, TimeoutSecs 60
+2026-09-29 10:10:48.591 Df airplayd[10072:2a4523] [com.apple.airplay:HTTPClientCore] Request written: CID 0x6F9D0001, Header 127 bytes, Body 33 bytes
+2026-09-29 10:10:48.593 E  airplayd[10072:2a4523] [com.apple.airplay:APSLogUtils] carEndpoint_copyNonStateProperty:6793: got error -12784/0xFFFFCE10 kCMBaseObjectError_PropertyNotFound
+2026-09-29 10:10:48.715 Df carkitd[5532:134a56] [com.apple.bluetooth:MobileBluetoothFramework] kCBMsgIdLocalDeviceGetModulePowerMsg reply with power state: ffffffff, result: 0
+2026-09-29 10:10:48.715 Df carkitd[5532:134a56] [com.apple.bluetooth:BluetoothManager] Bluetooth power state: ffffffff
+2026-09-29 10:10:48.888 Df airplayd[10072:2a43b1] [com.apple.airplay:HTTPClientCore] Response received: CID 0x6F9D0001, Header 115 bytes, Body 1076 bytes, Status 200
+2026-09-29 10:10:48.889 Df airplayd[10072:2a44e7] [com.apple.CoreUtils:MFiClientCore] MFi verify signature: 64 data bytes, 128 sig bytes, 908 cert bytes, extraInfo no
+2026-09-29 10:10:48.889 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] Returning 2 anchor cert(s) for types: 0x01
+2026-09-29 10:10:48.889 Df airplayd[10072:2a44e7] [com.apple.CoreUtils:MFiClientCore] MFi verify signature: 2 anchor certs
+2026-09-29 10:10:48.889 A  airplayd[10072:2a44e7] (Security) SecTrustEvaluateIfNecessary
+2026-09-29 10:10:48.892 A  airplayd[10072:2a44e7] (Security) SecKeyVerifySignature
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] Validating certificate...
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] certificate.length: 908, realtime: NO
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] Validating certificate... (internal)
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] certSerial: {length = 15, bytes = 0x2222aa151101aa04aa3506aa667578}
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] certIssuer: Apple iPod Accessories Certification Authority
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] expirationDate: Mon Feb 14 22:18:08 2022, issueDate: Mon Nov  2 01:28:27 2015
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] certSubject: C=US,O=Apple Inc.,OU=Apple iPod Accessories,CN=IPA_2222AA151101AA04AA3506AA667578
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] authVersion: [V2]
+2026-09-29 10:10:48.892 E  airplayd[10072:2a44e7] [com.apple.MessageSecurity:default] unable to decode content info (861 bytes)
+2026-09-29 10:10:48.892 Df airplayd[10072:2a44e7] [com.apple.securityd:SecError] failed to decode CMS message: Error Domain=MSErrorASN1Domain Code=1859794433 "unable to decode content info (861 bytes)" UserInfo={NSLocalizedDescription=unable to decode content info (861 bytes)}
+2026-09-29 10:10:48.893 E  airplayd[10072:2a44e7] [com.apple.MessageSecurity:default] unable to decode content info (861 bytes)
+2026-09-29 10:10:48.893 Df airplayd[10072:2a44e7] [com.apple.securityd:SecError] failed to decode CMS message: Error Domain=MSErrorASN1Domain Code=1859794433 "unable to decode content info (861 bytes)" UserInfo={NSLocalizedDescription=unable to decode content info (861 bytes)}
+2026-09-29 10:10:48.893 A  airplayd[10072:2a44e7] (Security) SecTrustEvaluateIfNecessary
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.accessories.frameworks:Certificate Auth] Returning certStatus: [Valid]
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Created APKeyHolderLegacy [0xE86C]
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.CoreUtils:NTPClockCore] Set IP_PKTINFO: enable 1, 0/0x0 noErr
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.CoreUtils:NTPClockCore] Set IPV6_RECVPKTINFO: enable 1, 0/0x0 noErr
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.CoreUtils:NTPClockCore] NTP server started on port 57374
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.airplay:APSNetworkClockNTP] [0x53AF] <AirPlayClock> Started APSNetworkClock NTP
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.airplay:APSNetworkClockNTP] [0x53AF] <AirPlayClock> Added client: [0x91C5]. Client count: 1
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Network clock [0x53AF] started
+2026-09-29 10:10:48.895 Df airplayd[10072:2a44e7] [com.apple.airplay:APSSystemUtils] BootUUID <uuid>
+2026-09-29 10:10:48.896 Df airplayd[10072:2a4523] [com.apple.airplay:HTTPClientCore] Request start: CID 0x6F9D0002, Peer NULL, TimeoutSecs 60
+2026-09-29 10:10:48.896 Df airplayd[10072:2a4523] [com.apple.airplay:HTTPClientCore] Request written: CID 0x6F9D0002, Header 174 bytes, Body 788 bytes
+2026-09-29 10:10:48.907 Df airplayd[10072:2a4523] [com.apple.airplay:HTTPClientCore] Response received: CID 0x6F9D0002, Header 121 bytes, Body 77 bytes, Status 200
+2026-09-29 10:10:48.908 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportConnectionHTTP] [0x2A74] APTransportConnectionHTTP with name 'CarPlay-evnt' created. QoS: 0 Priority: 46
+2026-09-29 10:10:48.908 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] [0xDB39] APTransportStream with name CarPlay-evnt holds send connection [0x2A74].
+2026-09-29 10:10:48.908 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] APTransportStream 0xDB39 created with provider 0x0000.
+2026-09-29 10:10:48.908 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] APTransportStream 0xDB39 with name CarPlay-evnt created.
+2026-09-29 10:10:48.908 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportSession] [0x6CE5] APTransportSession with stream [0xDB39] holds connection [0x2A74]
+2026-09-29 10:10:48.908 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] [0xDB39] Waiting for connection [0x2A74].
+2026-09-29 10:10:48.908 Df airplayd[10072:2a44e0] [com.apple.airplay:APTransportStream] [0xDB39] Received event ? from connection [0x2A74]
+2026-09-29 10:10:48.908 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0x2A74] Async connecting to '[fe80::<redacted>%en7]:5001' port 5001 ifIndex: 31
+2026-09-29 10:10:48.908 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0x2A74]: Connect start: '[fe80::<redacted>%en7]:5001'
+2026-09-29 10:10:48.909 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0x2A74]: Connecting to [fe80::<redacted>%en7]:5001, interface 31
+2026-09-29 10:10:48.909 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0x2A74] Connecting to address: [fe80::<redacted>%en7]:5001
+2026-09-29 10:10:48.909 Df airplayd[10072:2a44e0] [com.apple.airplay:APTransportStream] [0xDB39] Received event Connecting from connection [0x2A74]
+2026-09-29 10:10:48.909 Df kernel[0:2a43b1] [com.apple.xnu:skywalk] SK[0]: flow_entry_alloc               fe "0 proc kernel_task(0)airplayd nx_port 1 flow_uuid <uuid> flags 0x14120<CONNECTED,QOS_MARKING,EXT_PORT,EXT_FLOWID> ipver=96,src=<IPv6-redacted>.59967,dst=<IPv6-redacted>.5001,proto=0x06 mask=0x0000003f,hash=0x33733b27 tp_proto=0x06"
+so_gencnt: 2325428 t_state: SYN_SENT process: airplayd:10072 SYN in/out: 0/1 bytes in/out: 0/0 pkts in/out: 0/0 rtt: 0.0 ms rttvar: 250.0 ms base_rtt: 2 ms error: 0 so_error: 0 svc/tc: 0 flow: 0xb6e6013b
+so_gencnt: 2325428 t_state: ESTABLISHED process: airplayd:10072 SYN in/out: 1/1 bytes in/out: 0/0 pkts in/out: 0/0 rtt: 0.0 ms rttvar: 250.0 ms base_rtt: 2 ms error: 0 so_error: 0 svc/tc: 0 flow: 0xb6e6013b
+2026-09-29 10:10:48.910 Df airplayd[10072:2a43b1] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0x2A74]: Connected to [fe80::<redacted>%en7]:5001 (Reach=0.00 ms, SRV=0.00 ms, DNS=0.00 ms, Connect=1.37 ms, Total=1.65 ms)
+2026-09-29 10:10:48.910 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0x2A74] Connected to address: [fe80::<redacted>%en7]:5001
+2026-09-29 10:10:48.913 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0x2A74] HTTPServer connected to [fe80::<redacted>%en7]:5001 (from [fe80::<redacted>%en7]:59967)
+2026-09-29 10:10:48.913 Df airplayd[10072:2a43b1] [com.apple.airplay:APTransportConnectionHTTP] [0x2A74] HTTP connection connected
+2026-09-29 10:10:48.913 Df airplayd[10072:2a44e0] [com.apple.airplay:APTransportStream] [0xDB39] Received event Connected from connection [0x2A74]
+2026-09-29 10:10:48.913 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportStream] [0xDB39] Connection succeeded.
+2026-09-29 10:10:48.913 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Stage 1 succeeded
+2026-09-29 10:10:48.913 Df airplayd[10072:2a44e0] [com.apple.airplay:HTTPClientCore] Request start: CID 0x6F9D0003, Peer NULL, TimeoutSecs 60
+2026-09-29 10:10:48.914 Df airplayd[10072:2a44e0] [com.apple.airplay:HTTPClientCore] Request written: CID 0x6F9D0003, Header 88 bytes, Body 0 bytes
+2026-09-29 10:10:48.981 Df airplayd[10072:2a44e0] [com.apple.airplay:HTTPClientCore] Response received: CID 0x6F9D0003, Header 124 bytes, Body 21097 bytes, Status 200
+2026-09-29 10:10:48.981 Df airplayd[10072:2a44e7] (ExternalAccessory) [#ExternalAccessory] Returning connectedAccessories count 0
+2026-09-29 10:10:48.982 Df airplayd[10072:2a44e7] [com.apple.airplay:APCarPlayAudioFormat] jitter buffer latency 50 ms. main high 0 ms
+2026-09-29 10:10:48.982 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [AirPlayVolume] [0x91C5] No Initial Volume from receiver
+2026-09-29 10:10:48.982 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [AirPlayVolume] [0x91C5] apsession_ensureInitialVolumeFetched: initialVolume = -999.000000 dB
+2026-09-29 10:10:48.982 Df airplayd[10072:2a4524] [com.apple.airplay:HTTPClientCore] Request start: CID 0x6F9D0004, Peer NULL, TimeoutSecs 60
+2026-09-29 10:10:48.982 Df airplayd[10072:2a4524] [com.apple.airplay:HTTPClientCore] Request written: CID 0x6F9D0004, Header 106 bytes, Body 0 bytes
+2026-09-29 10:10:48.997 Df airplayd[10072:2a4524] [com.apple.airplay:HTTPClientCore] Response received: CID 0x6F9D0004, Header 53 bytes, Body 0 bytes, Status 200
+2026-09-29 10:10:48.997 Df airplayd[10072:2a44e7] [com.apple.airplay:APTransportKeepAliveControllerStandard] [0x4184] APTransportKeepAliveControllerStandard created for stream [0x7530]
+2026-09-29 10:10:48.997 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Setting keepAliveType to 2 Standard
+2026-09-29 10:10:48.997 Df airplayd[10072:2a4523] [com.apple.airplay:APTransportKeepAliveControllerStandard] [0x4184] Started keep alive with interval 2017 ms
+2026-09-29 10:10:48.997 Df airplayd[10072:2a44e7] [com.apple.airplay:APSenderSessionAirPlay] [0x91C5] Stage 2 succeeded
+2026-09-29 10:10:48.997 Df airplayd[10072:2a4523] [com.apple.airplay:APEndpointCarPlay] [0x0597] Posting notification 'Endpoint_AuthenticationSucceeded' with params {
+2026-09-29 10:10:48.997 E  airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] carEndpoint_checkCarPlayFeatureAcceptance failed: altScreen not defined but display structures found.
+2026-09-29 10:10:48.997 E  airplayd[10072:2a44e7] [com.apple.airplay:APSLogUtils] carEndpoint_validateEnabledFeaturesWithAccessory:2263: got error -16720/0xFFFFBEB0 kFigEndpointError_InvalidParameter
+2026-09-29 10:10:48.998 E  airplayd[10072:2a44e7] [com.apple.airplay:APSLogUtils] carEndpoint_activateInternal:9433: got error -16720/0xFFFFBEB0 kFigEndpointError_InvalidParameter
+2026-09-29 10:10:48.998 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] Deactivating endpoint 'CarPlay' with reason 'Activation Failed'...
+2026-09-29 10:10:48.998 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] CarPlay Session Breakdown For CarPlay
+2026-09-29 10:10:48.998 Df airplayd[10072:2a44f0] [com.apple.airplay:APEndpointCarPlay] [0x0597] Received event stream message of type 'born'
+2026-09-29 10:10:48.998 Df airplayd[10072:2a44e7] [com.apple.airplay:APEndpointCarPlay] [0x0597] Starting teardown of the streams and the session, using HTTP timeout of 1 sec (connection still valid)
+2026-09-29 10:10:48.998 Df airplayd[10072:2a44e0] [com.apple.airplay:HTTPClientCore] Request start: CID 0x6F9D0005, Peer NULL, TimeoutSecs 1
+2026-09-29 10:10:48.998 Df airplayd[10072:2a44e0] [com.apple.airplay:HTTPClientCore] Request written: CID 0x6F9D0005, Header 176 bytes, Body 42 bytes
+2026-09-29 10:10:48.999 Df airplayd[10072:2a4523] [com.apple.airplay:APEndpointCarPlay] [0x0597] Posting notification 'Endpoint_AuthorizationSucceeded' with params {
+2026-09-29 10:10:48.999 Df airplayd[10072:2a4523] [com.apple.airplay:APEndpointCarPlay] [0x0597] Posting notification 'Endpoint_Failed' with params {
+2026-09-29 10:10:49.004 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.004 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.005 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.005 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.006 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.006 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.008 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.008 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.009 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.009 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.010 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+2026-09-29 10:10:49.010 Df CarPlay[597:2a358d] [com.apple.carkit:General] session isAuthenticated:0, isActivated:0
+user@mac ~ % 

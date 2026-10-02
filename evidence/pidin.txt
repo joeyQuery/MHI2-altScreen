@@ -1,0 +1,134 @@
+     pid Arguments
+       1 procnto-smp-instr -v -mL -F 9000
+       2 devc-ser8250-tegra2 -e -t12 -T12 -F -S -b115200 -M -c408000000 0x70006300^2,122
+       3 slogger -s 500k
+    8197 devg-nvsku
+   16391 i2c-tegra2 -c5 -f12000000
+   20486 devb-mmcsd-tegra3-devlite blk alloc=upfront,cache=10m,stack=100k,vnode=8192,noatime,exclusive mmcsd ioport=0x78000600,irq=63,bs=nocd,bw=8,timeo=2900,devtype=1,skipinit,nolv,rfsh=60,inpclk=102000000,log=0x8 disk name=mnand,translation=64:64 cam retries=3:0:0:0,cache
+   28680 devg-nvpower
+   36875 devg-nvgpio
+   45069 random -pt
+   53260 mqueue
+   57359 nvmemctrl
+   77840 devg-nvclock -v 1
+   94225 i2cioc -c INFO -s WARN
+   94226 ooc -l INFO
+  106515 devg-nvos
+  155662 pipe
+  163861 devg-nvrm
+  258072 i2c-tegra2 -c1
+  266249 i2c-tegra2 -c4
+  389143 /usr/sbin/cap_app
+  389150 /sbin/devg-nvcapture -w 1024 -h 480 -o v -v 2 -p 15 -b 4 -t 250
+  438300 io-pkt-v6-hc -S -ptcpip threads_max=1000,enmap=0,stacksize=8192,pkt_typed_mem=/ram/dma,random -ppf-v6
+  544790 devf-generic-tegra2 -x 1 -s0x48000000,64M -r -b5 -w0 -p400,32
+  585757 pci-bios -v -p 1
+  688155 tinit
+  712736 login
+  712738 dumper -v -m -z 9 -w -n -d /mnt/ota/system/core
+  712739 devc-pty
+  884772 /eso/bin/broker
+  884773 /eso/bin/apps/displaymanager 2_lvds
+  884775 devg-nvtmon
+  925737 devb-mmcsd-tegra3-devlite blk cache=2m mmcsd ioport=0x78000000,irq=46,bs=cd=D3:wp=V2:rs=V6,bw=4,inpclk=45333333,nolv disk name=sda cam retries=3:0:0:0,cache
+  925739 devb-mmcsd-tegra3-devlite blk cache=2m mmcsd ioport=0x78000400,irq=51,bs=cd=D4:wp=V3:rs=V7,bw=4,inpclk=45333333,nolv disk name=sdb cam retries=3:0:0:0,cache
+  958504 devb-ram blk cache=512k ram capacity=40960 disk name=sysramdisk
+  966700 io-usb -c -d tegra3-ehci-arc ioport=0x7D000100,irq=52,has_hostpc,cache=1,ioport=0x7D008100,irq=129,has_hostpc,cache=1
+ 1015853 /armle/sbin/io-sdiorm-mib2 -p33 -c45000000 -h ioport=0x78000200,irq=47,inpclk=45000000 -d nowlan_reset
+ 1019953 /root/bin-target/deva-nvaudio -2 -1 -p 21 -i 26
+ 1101857 devb-ram blk cache=512k ram capacity=20480 disk name=organizer
+ 1171503 /eso/bin/traceserver
+ 1171506 /eso/bin/servicemgrmibhigh
+ 1282101 /eso/bin/apps/mediaconnector -v1 -map 0x11,0x10
+ 1282106 challenge -p 22111 -f
+ 1282110 ./IRCOutpost
+ 1298486 pps -m /ramdisk/pps -p /ramdisk/pps_dummy_persist
+ 1306679 /ifs/jre/bin/j9 -Dipl.config.dir=/etc/eso/production -Dipl.config.myProcName=hmi -Xmjit:code=2000,singleCache -Xquickstart -noverify -Xcompactexplicitgc -Xgcpolicy:gencon -Xssi32 -Xss4096K -Djava.library.path=.:/mnt/app/eso/hmi/graphics:/root/lib-target:/ifs/jre/bin:/mnt/app/eso/hmi/lsd:/armle/lib:/armle/lib/dll:/armle/usr/lib:/eso/lib:/navigation:/navigation/lib:/armle/graphics -Dcom.ibm.oti.vm.bootstrap.library.path=.:/mnt/app/eso/hmi/graphics:/root/lib-target:/ifs/jre/bin:/mnt/app/eso/hmi/lsd:/armle/lib:/armle/lib/dll:/armle/usr/lib:/eso/lib:/navigation:/navigation/lib:/armle/graphics -Xmca16k -Xmco16k -Xmoi0 -Xmn10m -Xmo30m -Xmx40m -DOEM=AU -DREGION=ER -DRUN_MODE=normal -Dhwg.font.path=/mnt/app/eso/hmi/fonts -DImageRoot=/mnt/app/eso/hmi/lsd/images -DKzbRoot=/mnt/app/eso/hmi/lsd/kzbs -DealMemorySize=100 -DmergeSelectionDrawerOnDemand=true -DErrorDumpDir=/mnt/ota/system/logs/ -Dexternalized.logs.path=/mnt/app/eso/hmi/lsd/ext_logs/ -Dipl.config.resource=/resources -Dipl.config.dir.hmi_startup=/mnt/app/eso/hmi/lsd -DSpellerCharacterSetPath=/mnt/app/eso/hmi/lsd/SpellerCharacterSets -DSYNC_EARLY_RVC=true -DWAIT_FOR_MAP_AVAILABLE=20000 -DWAIT_FOR_AUDIO_TIMEOUT=1 -DWAIT_FOR_SDS_AVAILABLE=1 -Dtv.startup.config.force.enable=true -DenableNLU=true -DsdsLogicalPopup=true -DexternalSDS=true -Dde.audi.gem.path.scriptfifo=/var -Dde.audi.gem.path.esdfiles=/mnt/app/eso/hmi/engdefs -Dde.audi.gem.image.path=/mnt/app/eso/hmi/lsd/images/GEM -Dde.audi.gem.font.path=/mnt/app/eso/hmi/fonts/ -DenableGEM=true -DIS_PRODUCTION_MODE=true -DuseNewTtsClient=true -DLOG=all=0,Ext.Power=5 -DSLOG=Ext.Startup=5,Fw.Error=2 -DErrorDumpTriggerPort=6767 -DSWDLAutoRetries=0 -Dde.audi.tghu.traceConfig=/mnt/app/eso/hmi/lsd/traceConfig.properties -Dde.audi.tghu.engineering.base_dir=/mnt/app/eso/hmi/engdefs -Dgreenmenu.jobs.searchLocation=sd*/home/jobs/job.mf@/fs -Dde.audi.gem.SlideShowSearchPath=sd*/slideshow/*.png@/fs -DmyAudi.VIN=<redacted> -DmyAudi.IMSI=<redacted> -Xbootclasspath::/mnt/app/eso/hmi/lsd/jars/lang_data.zip:/mnt/app/eso/hmi/lsd/jars/DevelopmentStubEvo.jar:/mnt/app/eso/hmi/lsd/jars/xEventRecorderEvo.jar:/mnt/app/eso/hmi/lsd/jars/locale.zip:/mnt/app/eso/hmi/lsd/jars/xEventRecorder.jar:/mnt/app/eso/hmi/lsd/jars/AppDevelopment.jar:/mnt/app/eso/hmi/lsd/jars/xTcpKeyPanel.jar:/mnt/app/eso/hmi/lsd/jars/diag.jar:/mnt/app/eso/hmi/lsd/jars/RemoteHMI-Libs-Ext.jar:/mnt/app/eso/hmi/lsd/jars/xTcpLog.jar:/ifs/lsd.jxe -jxe:/ifs/lsd.jxe
+ 1355827 cartimeprovider
+ 1380356 ./bin/apps/persistenceTNG_mibhigh -sm-name persistence_mibhigh -sm-id 104 -sm-time 2815 -sm-restart 0
+ 1384474 systracker
+ 1384505 heartbeat -p11 -%4
+ 1384507 sh /etc/boot/startup.sh
+ 1384511 ./slf -f /etc/slf/slf.cfg
+ 1384516 devb-eide-mmx eide noslave blk marking=none,cache=2m,ro cam resmgr,quiet mem name=/ram/dma cdrom timeout=20:10:7:7,retries=3
+ 1409084 /sbin/ejectd
+ 1413181 devp-iso-mmx-mib2 -R -S196 -i0 -B3 -P32 -Q24 -m/dev/mlb -MisoRX1 -v5 -p16
+ 1417282 devp-iso-mmx-mib2 -R -S196 -i1 -B3 -P32 -Q24 -m/dev/mlb -MisoRX2 -v5 -p16
+ 1417285 devp-iso-mmx-mib2 -T -S188 -i2 -B3 -P64 -Q18 -m/dev/mlb -MisoTX1 -v5 -p16
+ 1421382 devp-iso-mmx-mib2 -T -S188 -i3 -B3 -P64 -Q18 -m/dev/mlb -MisoTX2 -v5 -p16
+ 1441802 ./bin/apps/medialauncher -sm-name medialauncher -sm-id 307 -sm-time 3266 -sm-restart 0
+ 1441817 ./bin/apps/connectivity_launcher -sm-name connectivity_launcher -sm-id 315 -sm-time 3269 -sm-restart 0
+ 1441823 ./bin/apps/smartphone_integrator -sm-name smartphone_integrator -sm-id 353 -sm-time 3271 -sm-restart 0
+ 1445930 usblauncher -e -v -c /etc/usblauncher.lua -M /etc/mcd.mnt -t -l -m /ramdisk/pps -p 2 -s /mnt/app/armle/lib/dll/pubs -n /dev/io-usb/io-usb -S 0
+ 1445959 mcd -Vv /etc/mcd.conf
+ 1462320 autorunner
+ 1491000 /mnt/app/eso/bin/apps/media
+ 1503306 /mnt/app/armle/bin/mmcsdpub -l -f /dev/sda0 -f /dev/sdb0 -m /ramdisk/pps -s /mnt/app/armle/lib/dll/pubs
+ 1503307 /sbin/devb-ram blk cache=0k ram capacity=71680 disk name=hd13
+ 1503308 /mnt/app/armle/bin/cdpub -l -f /dev/cd0:/dev/cam0/000 -m /ramdisk/pps -p 250:500 -n 12 -s /mnt/app/armle/lib/dll/pubs
+ 1511476 ./bin/apps/sdtool -sm-name sdtool -sm-id 352 -sm-time 4319 -sm-restart 0
+ 1519683 ./bin/apps/diagnosis -sm-name MMXDiagService -sm-id 319 -sm-time 4321 -sm-restart 0
+ 1531976 usblauncher -w 10000 -H -r -e -v -c /etc/usblauncher_otg.lua -M /etc/mcd_otg.mnt -t -l -m /ramdisk/pps -p 2 -s /mnt/app/armle/lib/dll/pubs -n /dev/io-usb/otg -S 1
+ 1531977 ./bin/apps/fec -sm-name MMXFecService -sm-id 326 -sm-time 4323 -sm-restart 0
+ 1536046 ./bin/apps/systemservices -sm-name systemservices -sm-id 332 -sm-time 4328 -sm-restart 0
+ 1593424 /sbin/mnand_tlog -d /dev/mnand0 -p /mnt/persist/mnand_tlog.txt
+ 1630285 /armle/usr/sbin/wpa_supplicant -Bi mlan0 -c /ramdisk/wpa_supplicant.conf
+ 1638478 /mnt/app/eso/bin/apps/sseProc -sm-name sseProc -sm-id 347 -sm-time 7274 -sm-restart 0
+ 1638479 /eso/bin/apps/connectionmanager connectionmanager 0
+ 1638481 ./bin/apps/swdlclient -sm-name swdlclient -sm-id 318 -sm-time 7276 -sm-restart 0
+ 1638484 ./bin/apps/cinflash -sm-name cinflash -sm-id 343 -sm-time 7278 -sm-restart 0
+ 1646674 /eso/bin/apps/btstack btstack 1
+ 1675347 inetd
+ 1683542 /eso/bin/apps/dnsmasq
+ 1683543 /eso/bin/apps/dnsmasq
+ 1683544 /eso/bin/apps/nad nad 2
+ 1695764 devc-serusb -I 8192 -O 8192 -v -d path=/dev/io-usb/io-usb,vid=0x1e2d,did=0x60,busno=0x1,devno=0x1,ign_remove,module=wireless_modules
+ 1695782          
+ 1749077 /eso/bin/apps/telephone telephone 3
+ 1773658 /eso/bin/apps/bluetooth bluetooth 4
+ 1863771 /eso/bin/apps/dev-upnp dev-upnp 5
+ 1900633 ./bin/apps/esoposprovider -sm-name EsoPosProviderProcess -sm-id 349 -sm-time 11275 -sm-restart 0
+ 1908828 /mnt/app/root/bin-target/devm-nvavp -c
+ 1908829 ./bin/apps/rdiserver -sm-name rdiserver -sm-id 341 -sm-time 13764 -sm-restart 0
+ 1921118 /eso/bin/comm_forwarder
+ 1921119 ./bin/apps/mediarouter -sm-name mediarouter -sm-id 344 -sm-time 14521 -sm-restart 0
+ 1921123 ./bin/apps/organizer -sm-name organizerProc -sm-id 310 -sm-time 15029 -sm-restart 0
+ 1941600 /eso/bin/apps/messaging messaging 6
+ 1941601 ./bin/apps/esosearch -sm-name esosearchProc -sm-id 336 -sm-time 16999 -sm-restart 0
+ 1941602 /speech/SpeechLauncher -sm-name speechProc -sm-id 300 -sm-time 17446 -sm-restart 0
+ 1941604 /navigation/navStartup -sm-name navigationProc -sm-id 311 -sm-time 17448 -sm-restart 0
+ 1949797 /navigation/DRController deadrec /navigation/DRController.cfg
+ 1949798 /navigation/IconProviderApp iconprv /navigation/IconProviderApp.cfg
+ 1949799 /navigation/PNavApp pnav /navigation/PNavApp.cfg
+ 1953896 /navigation/AppStartATF navi /navigation/SignalMapper-1.5.cfg
+ 1966185 ./bin/apps/trufflesSpeech -sm-name trufflesSpeech -sm-id 455 -sm-time 19453 -sm-restart 0
+ 2089066 ./bin/apps/rdv_controller -sm-name rdv_controller -sm-id 327 -sm-time 26596 -sm-restart 0
+ 2105451 ./bin/apps/trdevapp -sm-name trdevapp -sm-id 345 -sm-time 29275 -sm-restart 0
+ 2740332 ./bin/apps/explorer -sm-name explorerProc -sm-id 317 -sm-time 36002 -sm-restart 0
+ 2740333 ./bin/apps/radiodata -sm-name radiodata -sm-id 350 -sm-time 36590 -sm-restart 0
+ 2748527 devb-ram blk cache=512k ram capacity=10240 disk name=logos
+ 2814062 /mnt/app/eso/bin/apps/videoovermost -sm-name videoovermost -sm-id 333 -sm-time 37344 -sm-restart 0
+ 2814066 /mnt/app/armle/usr/sbin/qdb -c /ramdisk/pps/qdb -o threadhi=16,threadlow=2,tempstore=/fs/tmpfs,profile,verchk=major -s de_DE@cldr -W 2500 -X /mnt/app/eso/bin/apps/database_corruption_handler
+ 2818164 /mnt/app/armle/usr/sbin/mm-sync -c /etc/mm/mm-sync.conf
+ 2826355 /mnt/app/armle/usr/sbin/mm-renderer -r /ramdisk/pps/multimedia -k
+ 2867317 ./bin/apps/browser -sm-name browserProc -sm-id 301 -sm-time 40658 -sm-restart 0
+ 2883703 /usr/sbin/dhcp.client -h mmx -H -A 1 -n -k -i ecm0
+ 2912368 ./bin/apps/mediaonline -sm-name mediaonline -sm-id 337 -sm-time 43237 -sm-restart 0
+ 2920561 /gemib/gemib_launcher -sm-name gemmiProc -sm-id 325 -sm-time 43641 -sm-restart 0
+ 2945149 /streetview/streetview_launcher -sm-name streetviewProc -sm-id 328 -sm-time 44149 -sm-restart 0
+ 2961526 gemib_commserver
+ 2965625 gemib 2
+ 2982008 gemib 1
+ 2982010 ./bin/apps/voice_encoder_app -sm-name voice_encoder_app -sm-id 330 -sm-time 44654 -sm-restart 0
+ 2994299 streetview
+ 3002494 devb-ram blk cache=512k ram capacity=10240 disk name=geram
+ 3440769 /bin/sh /net/mmx/mnt/app/eso/hmi/engdefs/scripts/ssh/usr/sbin/start_sshd
+ 3444866 /net/mmx/mnt/app/eso/hmi/engdefs/scripts/ssh/usr/sbin/sshd -i -f /net/mmx/mnt/app/eso/hmi/engdefs/scripts/ssh/etc/sshd_config
+ 3457155 -sh
+ 4055104 memmonit -c /etc/memmonit/memmonit.cfg
+ 6848639 /usr/sbin/dhcp.client -h mmx -H -A 1 -n -k -R -i ecm1
+ 6877249 io-usb-dcd -d /mnt/app/armle/lib/dll/devu-iap2ncm-tegra3-ci.so ioport=0x7D004000,irq=53,verbose=10 -n /dev/io-usb/otg_dev
+ 6877316 /mnt/app/eso/bin/apps/dio_manager
+ 6881408 mm-ipod -d iap2,config=/etc/mm/iap2.cfg,probe,ppsdir=/ramdisk/pps/iap2 -a i2c,addr=0x11,path=/dev/i2c8,speed=50000 -t usbdevice,path=/dev/io-usb/otg_dev -l /dev/shmem/iap2.log -vvvvvv
+ 6914183 /mnt/app/armle/usr/sbin/mdnsd
+ 7147644 pidin ar

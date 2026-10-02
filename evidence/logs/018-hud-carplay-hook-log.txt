@@ -1,0 +1,59 @@
+# HUD: carplay_hook.log (rgd_hook, v1)
+# Topic: BAPBridge / RouteGuidance lines, rgd_no_rgstatus marker
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> root@mmx:/mnt/app/root> ls /mnt/app/rgd_* 2>/dev/null
+/mnt/app/rgd_no_rgstatus
+root@mmx:/mnt/app/root> grep -i -e suppress -e Started -e "RG presentation" -e "cluster" -e BAP /tmp/carplay_hook.log | tail -50 | cut -c1-220
+27939 [INF] [BAPBridge] CR: stopped (renderer blanked; stays up; server socket persists)
+27944 [INF] [BAPBridge] cluster-state[shutdown] clusterService=null | sync type=0 state=1 pending=false cancelled= | sync threw java.lang.NoSuchMethodError: de/audi/app/bap/fw/functionsync/IFunctionSynchronizationHandler
+27958 [INF] [BAPBridge] Shutdown (full teardown)
+27963 [INF] [BAPBridge] REPLACE: takeover disengaged (stock RG gate reopened)
+27971 [INF] [BAPBridge] bap: distToManeuver m=0 value=-1 unit=0 barOn=false bar=0
+27982 [INF] [BAPBridge] bap: exitView variant=0 num=0
+28007 [INF] [BAPBridge] CR: stopped (renderer blanked; stays up; server socket persists)
+28032 [INF] [BAPBridge] cluster-state[shutdown] clusterService=null | sync type=0 state=1 pending=false cancelled= | sync threw java.lang.NoSuchMethodError: de/audi/app/bap/fw/functionsync/IFunctionSynchronizationHandler
+28057 [INF] [BAPBridge] Shutdown (full teardown)
+28064 [INF] [BAPBridge] REPLACE: takeover disengaged (stock RG gate reopened)
+40925 [INF] [ClusterSvc] bapDescriptor(2): [3] 9:128:0 0:0:0 0:0:0
+40936 [INF] [ClusterSvc] rgiString: [2] 9 128
+61465 [INF] [BAPBridge] KOMO service acquired
+61478 [INF] [BAPBridge] ClusterAccess init OK
+61507 [INF] [BAPBridge] cluster identity: 541=2 466=4 467=1 469=9 4168=1 kombiType=1
+61543 [INF] [BAPBridge] Pre-gate: skipped — native cancel disabled (touch /mnt/app/rgd_cancel_native to enable)
+61717 [INF] [BAPBridge] rgActive/rgiValid suppressed (/mnt/app/rgd_no_rgstatus)
+61762 [INF] [BAPBridge] bap: RGStatus=1 rgType=2
+61777 [INF] [BAPBridge] bap: RGStatus/ActiveRGType suppressed (/mnt/app/rgd_no_rgstatus)
+61800 [INF] [BAPBridge] bap: distToManeuver m=0 value=-1 unit=0 barOn=false bar=0
+61811 [INF] [BAPBridge] bap: exitView variant=1 num=0
+61824 [INF] [BAPBridge] Started (rgType=2, cr=false)
+61852 [INF] [BAPBridge] cluster-state[start] rgActive=true isFadeOut: false DSIKOMONavInfo: n/a DSIKOMOView: available DSIKOMOGfxStreamSink: n/a cityName:  currentStreet: offroad distanceToDest: -1 distanceToDestUnit: -1
+62130 [INF] [ClusterSvc] bapDescriptor(2): [3] 10:160:0 0:0:0 0:0:0
+62169 [INF] [RouteGuidance] RG presentation CONFIRMED: BAP snapshot published + popup frame ready
+62195 [INF] [ClusterSvc] rgiString: [2] 10 160
+62218 [INF] [ScreenModule] setNavActive(true) recorded; cluster context left alone (/mnt/app/rgd_cluster_ctx absent)
+62243 [INF] [ClusterSvc] bapDescriptor(2): [3] 6:48:0 0:0:0 0:0:0
+62289 [INF] [ClusterSvc] rgiString: [2] 6 48
+62723 [INF] [BAPBridge] cluster: nothing (count>0 but no list) type=-1 idx=-1 distToManeuver=0m prepareAt=1500m approach=false count=22 rs=6
+62805 [INF] [BAPBridge] cluster: list:
+62863 [INF] [BAPBridge] bap: distToManeuver m=0 value=-1 unit=0 barOn=false bar=0
+62914 [INF] [BAPBridge] off-road ON: drawing the stock arrow
+63045 [INF] [BAPBridge] bargraph off; the cluster draws it instead of the distance
+63106 [INF] [BAPBridge] Approach zone ENTER (dist=1m, highway=false, prepThr=1500, barDen=225)
+63180 [INF] [ClusterSvc] nextManeuver: type=3 dist= distToMan=null turnTo=<street-A> streetIcon=/4399 exit=/-1 destIdx=0 maneuver[1] 13:64:0
+63225 [INF] [BAPBridge] cluster-state[first-descriptor] rgActive=true isFadeOut: false DSIKOMONavInfo: n/a DSIKOMOView: available DSIKOMOGfxStreamSink: n/a cityName:  currentStreet: offroad distanceToDest: -1 distanceToD
+63441 [INF] [ClusterSvc] nextManeuver: type=3 dist=null distToMan=null turnTo=null streetIcon=null/0 exit=null/-1 destIdx=0 maneuver[1] 6:0:0
+63482 [INF] [ClusterSvc] rgiString: [2] 6 0
+63528 [INF] [BAPBridge] cluster tile: element=6 dir=0 dist=null street=null
+63570 [INF] [BAPBridge] cluster: maneuver descriptor type=1 idx=1 distToManeuver=1m prepareAt=1500m approach=true count=22 rs=6
+63614 [INF] [BAPBridge] cluster: list: 0:t11/0m 1:t1/0m
+63667 [INF] [BAPBridge] bap: exitView variant=0 num=0
+63726 [INF] [ClusterSvc] nextManeuver: type=3 dist=10 yd distToMan=null turnTo=null streetIcon=null/0 exit=null/-1 destIdx=0 maneuver[1] 6:0:0
+63796 [INF] [BAPBridge] cluster tile: element=6 dir=0 dist=10 yd street=null
+63847 [INF] [BAPBridge] bap: distToManeuver m=1 value=100 unit=2 barOn=false bar=0
+63869 [INF] [ClusterSvc] nextManeuver: type=3 dist=10 yd distToMan=null turnTo=<street-B> streetIcon=null/0 exit=null/-1 destIdx=0 maneuver[1] 6:0:0
+63895 [INF] [BAPBridge] cluster tile: element=6 dir=0 dist=10 yd street=<street-B>
+63915 [INF] [BAPBridge] bap: maneuverState=4
+64594 [INF] [ClusterSvc] nextManeuver: type=3 dist= distToMan=null turnTo=<street-A> streetIcon=/4399 exit=/-1 destIdx=0 maneuver[1] 13:64:0
+root@mmx:/mnt/app/root> 

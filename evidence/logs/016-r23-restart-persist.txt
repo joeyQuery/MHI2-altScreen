@@ -1,0 +1,43 @@
+# r23 restart + r24-persist sync
+# Topic: Persistent safe-area files loaded at hook start
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> tail -60 /tmp/altscreen111.log | grep -v -e mprotect -e "page cloned" | cut -c1-170
+595.654 [altscreen111] renderer tee listening on 127.0.0.1:19820
+595.655 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+595.656 [altscreen111] hook destinations setup=7800937c start=78008918 teardown=7800aaf0 platform=78006a44 control=78008284 modeParser=7832f5b4
+595.657 [altscreen111] installed ARM hook SessionSetup target=78332fd8 replacement=7800937c trampoline=1b6000 page=78332000 pagesize=4096
+595.658 [altscreen111] installed ARM hook SessionStart target=78331360 replacement=78008918 trampoline=1b7000 page=78331000 pagesize=4096
+595.659 [altscreen111] installed ARM hook SessionTearDown target=78332b1c replacement=7800aaf0 trampoline=1b8000 page=78332000 pagesize=4096
+595.660 [altscreen111] installed ARM hook PlatformControl target=7832b710 replacement=78006a44 trampoline=1b9000 page=7832b000 pagesize=4096
+595.661 [altscreen111] installed ARM hook SessionControl target=78334d88 replacement=78008284 trampoline=1ba000 page=78334000 pagesize=4096
+595.664 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6000 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000
+595.665 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-polic
+851.006 [altscreen111] r24-persist sync done
+851.008 [altscreen111] build audi-mu0678-r23-rxstats enabled=1
+851.010 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+851.011 [altscreen111] renderer tee listening on 127.0.0.1:19820
+851.013 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+851.013 [altscreen111] hook destinations setup=7800937c start=78008918 teardown=7800aaf0 platform=78006a44 control=78008284 modeParser=7832f5b4
+851.014 [altscreen111] installed ARM hook SessionSetup target=78332fd8 replacement=7800937c trampoline=1b6000 page=78332000 pagesize=4096
+851.016 [altscreen111] installed ARM hook SessionStart target=78331360 replacement=78008918 trampoline=1b7000 page=78331000 pagesize=4096
+851.016 [altscreen111] installed ARM hook SessionTearDown target=78332b1c replacement=7800aaf0 trampoline=1b8000 page=78332000 pagesize=4096
+851.017 [altscreen111] installed ARM hook PlatformControl target=7832b710 replacement=78006a44 trampoline=1b9000 page=7832b000 pagesize=4096
+851.019 [altscreen111] installed ARM hook SessionControl target=78334d88 replacement=78008284 trampoline=1ba000 page=78334000 pagesize=4096
+851.021 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6000 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000
+851.022 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-polic
+869.602 [altscreen111] r24-persist sync done
+869.605 [altscreen111] build audi-mu0678-r23-rxstats enabled=1
+869.607 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+869.608 [altscreen111] renderer tee listening on 127.0.0.1:19820
+869.610 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+869.610 [altscreen111] hook destinations setup=7800937c start=78008918 teardown=7800aaf0 platform=78006a44 control=78008284 modeParser=7832f5b4
+869.612 [altscreen111] installed ARM hook SessionSetup target=78332fd8 replacement=7800937c trampoline=1b6000 page=78332000 pagesize=4096
+869.614 [altscreen111] installed ARM hook SessionStart target=78331360 replacement=78008918 trampoline=1b7000 page=78331000 pagesize=4096
+869.614 [altscreen111] installed ARM hook SessionTearDown target=78332b1c replacement=7800aaf0 trampoline=1b8000 page=78332000 pagesize=4096
+869.616 [altscreen111] installed ARM hook PlatformControl target=7832b710 replacement=78006a44 trampoline=1b9000 page=7832b000 pagesize=4096
+869.617 [altscreen111] installed ARM hook SessionControl target=78334d88 replacement=78008284 trampoline=1ba000 page=78334000 pagesize=4096
+869.619 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6000 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000
+869.620 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-polic
+root@mmx:/mnt/app/root> 

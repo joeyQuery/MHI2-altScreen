@@ -1,0 +1,206 @@
+# Triage: no dio_manager in pidin
+# Topic: Backup hashes and /tmp listing
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> pidin | grep -i -e dio -e smartphone -e servicemgr -e carplay
+ 1024045   1 bin/io-sdiorm-mib2  10r SIGWAITINFO                             
+ 1024045   2 bin/io-sdiorm-mib2  21r RECEIVE     1                           
+ 1024045   3 bin/io-sdiorm-mib2  21r RECEIVE     4                           
+ 1024045   4 bin/io-sdiorm-mib2  21r RECEIVE     7                           
+ 1024045   5 bin/io-sdiorm-mib2  21r SEM         f19f6020                    
+ 1028145   1 arget/deva-nvaudio  10r RECEIVE     1                           
+ 1028145   2 arget/deva-nvaudio  26f RECEIVE     5                           
+ 1028145   3 arget/deva-nvaudio  26f RECEIVE     8                           
+ 1028145   4 arget/deva-nvaudio  21r SEM         fbb0f6fc                    
+ 1028145   5 arget/deva-nvaudio  21r SEM         fbb0f748                    
+ 1028145   6 arget/deva-nvaudio  21r SEM         ffcac16c                    
+ 1171506   1 /servicemgrmibhigh  10r CONDVAR     (0x1ad7f0)                  
+ 1171506   2 /servicemgrmibhigh  10r CONDVAR     (0x1b8d70)                  
+ 1171506   3 /servicemgrmibhigh  10r RECEIVE     1                           
+ 1171506   4 /servicemgrmibhigh  10r REPLY       1171503                     
+ 1171506   5 /servicemgrmibhigh  10r CONDVAR     (0x1b2fcc)                  
+ 1171506   6 /servicemgrmibhigh  10r CONDVAR     (0x1b31d0)                  
+ 1171506   7 /servicemgrmibhigh  10r CONDVAR     (0x1b33b0)                  
+ 1171506   8 /servicemgrmibhigh  10r CONDVAR     (0x1b2100)                  
+ 1171506   9 /servicemgrmibhigh  10r REPLY       884772                      
+ 1171506  10 /servicemgrmibhigh  10r REPLY       405536                      
+ 1171506  11 /servicemgrmibhigh  10r CONDVAR     (0x1bd720)                  
+ 1171506  12 /servicemgrmibhigh  10r RECEIVE     4                           
+ 1171506  13 /servicemgrmibhigh  10r CONDVAR     (0x1bd244)                  
+ 1171506  14 /servicemgrmibhigh  10r SIGWAITINFO                             
+ 1171506  15 /servicemgrmibhigh  10r REPLY       1441825                     
+ 1171506  16 /servicemgrmibhigh  10r CONDVAR     (0x1f8214)                  
+ 1171506  17 /servicemgrmibhigh  10r CONDVAR     (0x1f7eac)                  
+ 1171506  18 /servicemgrmibhigh  10r CONDVAR     (0x1f7ae0)                  
+ 1171506  19 /servicemgrmibhigh  10r CONDVAR     (0x1f6024)                  
+ 1171506  20 /servicemgrmibhigh  10r CONDVAR     (0xff778)                   
+ 1171506  21 /servicemgrmibhigh  10r REPLY       1384475                     
+ 1171506  22 /servicemgrmibhigh  10r CONDVAR     (0x1f5bd0)                  
+ 1171506  23 /servicemgrmibhigh  10r REPLY       94226                       
+ 1171506  24 /servicemgrmibhigh  10r CONDVAR     (0x1f4998)                  
+ 1171506  25 /servicemgrmibhigh  10r CONDVAR     (0x1f5ed0)                  
+ 1171506  26 /servicemgrmibhigh  10r REPLY       1                           
+ 1171506  27 /servicemgrmibhigh  10r REPLY       1380356                     
+ 1171506  28 /servicemgrmibhigh  15r RECEIVE     4                           
+ 1171506  29 /servicemgrmibhigh  10r CONDVAR     (0x211fac)                  
+ 1171506  30 /servicemgrmibhigh  10r REPLY       1441802                     
+ 1171506  31 /servicemgrmibhigh  10r REPLY       1441823                     
+ 1171506  32 /servicemgrmibhigh  10r REPLY       1646678                     
+ 1171506  33 /servicemgrmibhigh  10r REPLY       1638482                     
+ 1171506  34 /servicemgrmibhigh  10r REPLY       1499208                     
+ 1171506  35 /servicemgrmibhigh  10r REPLY       1503309                     
+ 1171506  36 /servicemgrmibhigh  10r REPLY       1499211                     
+ 1171506  37 /servicemgrmibhigh  10r REPLY       1499209                     
+ 1171506  38 /servicemgrmibhigh  10r REPLY       1962089                     
+ 1171506  39 /servicemgrmibhigh  10r REPLY       1638481                     
+ 1171506  40 /servicemgrmibhigh  10r REPLY       1638480                     
+ 1171506  41 /servicemgrmibhigh  10r REPLY       1753177                     
+ 1171506  42 /servicemgrmibhigh  10r REPLY       1777756                     
+ 1171506  43 /servicemgrmibhigh  10r REPLY       1781853                     
+ 1171506  44 /servicemgrmibhigh  10r REPLY       1843298                     
+ 1171506  45 /servicemgrmibhigh  10r CONDVAR     (0x2329f4)                  
+ 1171506  46 /servicemgrmibhigh  10r REPLY       1900645                     
+ 1171506  47 /servicemgrmibhigh  10r REPLY       1900644                     
+ 1171506  48 /servicemgrmibhigh  10r REPLY       2039918                     
+ 1171506  49 /servicemgrmibhigh  10r REPLY       2146416                     
+ 1171506  50 /servicemgrmibhigh  10r REPLY       2785393                     
+ 1171506  51 /servicemgrmibhigh  10r REPLY       2793586                     
+ 1171506  52 /servicemgrmibhigh  10r REPLY       2859123                     
+ 1171506  53 /servicemgrmibhigh  10r REPLY       2916460                     
+ 1171506  54 /servicemgrmibhigh  10r REPLY       2924653                     
+ 1171506  55 /servicemgrmibhigh  10r REPLY       2924662                     
+ 1171506  56 /servicemgrmibhigh  10r REPLY       2965629                     
+ 1171506  57 /servicemgrmibhigh  10r REPLY       3022974                     
+ 2793586   1 bin/apps/radiodata  10r CONDVAR     (0xfef00)                   
+ 2793586   2 bin/apps/radiodata  10r CONDVAR     (0x1c29c8)                  
+ 2793586   3 bin/apps/radiodata  10r RECEIVE     1                           
+ 2793586   4 bin/apps/radiodata  10r REPLY       1171503                     
+ 2793586   5 bin/apps/radiodata  10r CONDVAR     (0x1c1134)                  
+ 2793586   6 bin/apps/radiodata  10r CONDVAR     (0x1c1338)                  
+ 2793586   7 bin/apps/radiodata  10r CONDVAR     (0x1c1518)                  
+ 2793586   8 bin/apps/radiodata  10r CONDVAR     (0x204aa0)                  
+ 2793586   9 bin/apps/radiodata  10r REPLY       884772                      
+ 2793586  10 bin/apps/radiodata  10r REPLY       405536                      
+ 2793586  11 bin/apps/radiodata  10r CONDVAR     (0x1f6808)                  
+ 2793586  12 bin/apps/radiodata  10r CONDVAR     (0x2041e0)                  
+ 2793586  13 bin/apps/radiodata  10r RECEIVE     4                           
+ 2793586  14 bin/apps/radiodata  10r RECEIVE     4                           
+ 2793586  15 bin/apps/radiodata  10r REPLY       1638481                     
+ 2793586  16 bin/apps/radiodata  10r CONDVAR     (0x1f4c0c)                  
+ 2793586  17 bin/apps/radiodata  10r CONDVAR     (0x1fdab8)                  
+ 2793586  18 bin/apps/radiodata  10r RECEIVE     4                           
+ 2793586  19 bin/apps/radiodata  10r CONDVAR     (0x1fde64)                  
+ 2793586  20 bin/apps/radiodata  10r REPLY       1380356                     
+ 2793586  21 bin/apps/radiodata  10r CONDVAR     (0x1ec370)                  
+ 2793586  22 bin/apps/radiodata  10r CONDVAR     (0x1ec1b8)                  
+ 2793586  23 bin/apps/radiodata  10r CONDVAR     (0x1ec794)                  
+root@mmx:/mnt/app/root> sloginfo | tail -25
+Jan 01 00:01:20    5 10000     0 00:00:36.469 radiodata BENCH_Startup 2 45405 [SM] AS_RUNNING requested for radiodata
+Jan 01 00:01:22    5 10001     0 00:01:22.298 MMX BENCH_STARTUP: Change NavStateOfOperation to 5
+Jan 01 00:01:23    5 10000     0 00:00:38.174 videoovermost BENCH_Startup 2 51837 [SM] AS_INITIALIZED requested for videoovermostApp
+Jan 01 00:01:23    5 10000     0 00:00:38.189 videoovermost BENCH_Startup 2 51845 [SM] AS_RUNNING requested for videoovermostApp
+Jan 01 00:01:26    5 10000     0 00:00:41.227 browserProc BENCH_Startup 2 52170 [SM] AS_INITIALIZED requested for browser
+Jan 01 00:01:26    5 10000     0 00:00:41.233 browserProc BENCH_Startup 2 52179 [SM] AS_RUNNING requested for browser
+Jan 01 00:01:27    5 10000     0 00:00:42.707 mediaonline BENCH_Startup 2 52900 [SM] AS_INITIALIZED requested for mediaonline
+Jan 01 00:01:27    5 10000     0 00:00:42.722 mediaonline BENCH_Startup 2 52911 [SM] AS_RUNNING requested for mediaonline
+Jan 01 00:01:28    5 10000     0 00:00:43.442 gemmiProc BENCH_Startup 2 53122 [SM] AS_INITIALIZED requested for gemib
+Jan 01 00:01:28    5 10000     0 00:00:43.472 gemmiProc BENCH_Startup 2 53137 [SM] AS_RUNNING requested for gemib
+Jan 01 00:01:28    5 10000     0 00:00:44.069 streetviewProc BENCH_Startup 2 53410 [SM] AS_INITIALIZED requested for streetview
+Jan 01 00:01:28    5 10000     0 00:00:44.080 streetviewProc BENCH_Startup 2 53421 [SM] AS_RUNNING requested for streetview
+Jan 01 00:01:29    5 10000     0 00:00:44.718 voice_encoder_app BENCH_Startup 2 53644 [SM] AS_INITIALIZED requested for voice_encoder_app
+Jan 01 00:01:29    5 10000     0 00:00:44.754 voice_encoder_app BENCH_Startup 2 53651 [SM] AS_RUNNING requested for voice_encoder_app
+Jan 01 00:01:31    5 10000     0 00:00:46.276 gemibMain2 BENCH_Startup 2 53852 [gemib.cc] wait till we get GoogleActive (setConnectionInformation != 255) from HMI
+
+Jan 01 00:01:31    5 10000     0 00:00:46.408 gemibMain BENCH_Startup 2 53895 [gemib.cc] wait till we get GoogleActive (setConnectionInformation != 255) from HMI
+
+Jan 01 00:01:44    5 10107   1001 00:01:44.459 MMX BENCH_Startup: OperationManager#fireTimer( NavInitializationChecker )
+Jan 01 00:01:47    5 10113     1 HB: T=057C, CPU=15%, Free mem=887MB
+Jan 01 00:02:05    5    19   1800 mmc_vendor_cmd: processing vendor command 129
+Jan 01 00:02:05    5    19   1800 mmc_vendor_cmd: processing vendor command 128
+Jan 01 00:02:05    5    19   1800 mmc_vendor_cmd: processing vendor command 128
+Jan 01 00:02:05    5    19   1800 mmc_vendor_cmd: processing vendor command 128
+Jan 01 00:02:05    5    19   1800 Refresh Interval set to 0 milliseconds
+root@mmx:/mnt/app/root> ls -lt /mnt/app/root/mibr-carplay111-backup/
+total 26984
+-rwxr-xr-x  1 root      root         312332 Jan 01 01:09 libmibr_carplay111.so.prev-f7470faae73adbcd0b29f02fcd9eb284c085c73c692f3585acd532eb5aad0423
+-rwxr-xr-x  1 root      root         319413 Jan 01 01:01 libmibr_carplay111.so.prev-f0785ec533b880fb83dff397789ee1d5516d5b8f4d22854e45c73c71123ba0cf
+-rwxr-xr-x  1 root      root         321882 Jan 01 00:52 libmibr_carplay111.so.prev-c196cd2f1541363dc11375a287c2bca5ba3a8f8d4955d9dace8eb64ad4122bdd
+-rwxr-xr-x  1 root      root         311288 Jan 01 00:45 libmibr_carplay111.so.prev-ff7c92322679ce2d11bd348bf769c7e0967281b72b3cebf9657fc3247f516777
+-rwxr-xr-x  1 root      root         319313 Jan 01 00:42 libmibr_carplay111.so.prev-6203c4c7aac01f64b5947c5f42be50c7296cde022c3d8e4cc80f912d61728929
+-rwxr-xr-x  1 root      root         320560 Jan 01 00:41 libmibr_carplay111.so.prev-14d415fd1e7067e652c1abda2f7d089a966142fdfa4daa16fceb21cd519a4ca2
+-rwxr-xr-x  1 root      root         319625 Jan 01 00:39 libmibr_carplay111.so.prev-8f7947abc8483a4c8a22959f4ce86fc9ff39602feede8d498595ecdd0fb416e8
+drwxr-xr-x  2 root      root           3072 Jan 01 00:36 .
+-rwxr-xr-x  1 root      root         280979 Jan 01 00:35 libmibr_carplay111.so.prev-8bcadee1f4895dfd6587df73073b8d090f6512b4748cc00d6b42e8dfaf4c48c3
+-rwxr-xr-x  1 root      root         340740 Jan 01 00:31 libmibr_carplay111.so.prev-7602d45fe81cbc0102fff3fe50c5bd72d41c06d9f476800f93170638f585a6a3
+-rwxr-xr-x  1 root      root         317153 Jan 01 00:30 libmibr_carplay111.so.prev-2faf7fedb570b99900b7700ba4b9b40685d4164d8f2138523867ce6ac6b169fc
+-rwxr-xr-x  1 root      root         337652 Jan 01 00:27 libmibr_carplay111.so.prev-3fb47136fb7958583856be497098183db690dc88bbfb619112623b2cc0220f5d
+-rwxr-xr-x  1 root      root         336310 Jan 01 00:24 libmibr_carplay111.so.prev-3bc5f044e3ccf86bc1eea59376dca6e8477ea5c34e37671091d01622baa1cf6c
+-rwxr-xr-x  1 root      root         315752 Jan 01 00:13 libmibr_carplay111.so.prev-a49901e15b0ec3d58318d00cce22f1775a3159a7355c4d23c2f7fe1cb3f37650
+-rwxr-xr-x  1 root      root         290091 Jan 01 00:11 libmibr_carplay111.so.prev-422bfc07bedf482875b0f1140a5c388cc3d116df51c07efef00df72169558fa0
+-rwxr-xr-x  1 root      root         331507 Jan 01 00:10 libmibr_carplay111.so.prev-09079dd7593b4fe6564b044aace0dfed2a7f1c77769bdcfdc4ce55bf6c5c7943
+-rwxr-xr-x  1 root      root         305276 Jan 01 00:10 libmibr_carplay111.so.prev-6e16a4c50928231f483b0d5ff73814984ff7f5c5c2399286dc4ecd58680006ac
+-rwxr-xr-x  1 root      root         246789 Jan 01 00:09 libmibr_carplay111.so.prev-e89c3fb9c8ee6aed542c1fb35497a3c72b0a7eceeb6382fa4940b6b914c97860
+-rwxr-xr-x  1 root      root         240600 Jan 01 00:09 libmibr_carplay111.so.prev-40fd679f5967a7a124821b1bc3cefc9372b09a934154f3d56bcad995b675bf20
+-rw-r--r--  1 root      root           6788 Jan 01 00:08 smartphone_integrator.json.stock
+-rwxr-xr-x  1 root      root         279708 Jan 01 00:08 libmibr_carplay111.so.prev-64b7589f87a1c8b5f356d14ccb90feefd413806d51da25406fb43ee7b0df3a60
+-rwxr-xr-x  1 root      root         324311 Jan 01 00:07 libmibr_carplay111.so.prev-1ee2cfd9eafcf1210928f36942c0c3268df8f35018a8b773812dd0c17a36f53f
+-rwxr-xr-x  1 root      root         327207 Jan 01 00:07 libmibr_carplay111.so.prev-84a0f4dcfc9747a746db850651ed4930b4daaf8b6adedd63f0fc031bd5bc124b
+-rw-r--r--  1 root      root            136 Jan 01 00:07 smartphone_integrator.json.stock.sha256
+-rwxr-xr-x  1 root      root         324407 Jan 01 00:06 libmibr_carplay111.so.prev-03fdccd43d6de96ab0ec014f5d8a28f7a3b75b8a2baab06e815dd7c10a3fc262
+-rwxr-xr-x  1 root      root         288611 Jan 01 00:06 libmibr_carplay111.so.prev-c9a0117c29a7c0590c5bd2823ce90ac9460bc4fe4db1ab077ac33d3998ec71ba
+-rwxr-xr-x  1 root      root         326666 Jan 01 00:06 libmibr_carplay111.so.prev-69b650e3220d6a37a522fb357c91a3e0cd572baed80d78b4ca2661b607bfcfa8
+-rwxr-xr-x  1 root      root         325515 Jan 01 00:05 libmibr_carplay111.so.prev-87538db4d6f2e7a5bcd4254ab22c448f041f21adf26b606c846f400d692f7a93
+-rwxr-xr-x  1 root      root         326046 Jan 01 00:05 libmibr_carplay111.so.prev-720ac70282b83dc0615d044400e4f51d718f1f5a2b2b9f611b6fb6ebf3d840de
+-rwxr-xr-x  1 root      root         324927 Jan 01 00:05 libmibr_carplay111.so.prev-4503140875c5f23cf07252fe2e63810237268510b683df5d552209a7f7e4befb
+-rwxr-xr-x  1 root      root         244196 Jan 01 00:05 libmibr_carplay111.so.prev-8fb7db7ddd3fc53b779d87ffe56bd1d8b9d787c11c0ba6a7b4dae040f2728804
+-rwxr-xr-x  1 root      root         326450 Jan 01 00:04 libmibr_carplay111.so.prev-78eaa96ef68a33674357c7ffd6beb0e071f67bdc38600a8b1ee06c43deebacee
+-rwxr-xr-x  1 root      root         325561 Jan 01 00:04 libmibr_carplay111.so.prev-251905c7bb7ddf5081cd71cc9942e0394a3a7628133a4cae10b35135756e3104
+-rwxr-xr-x  1 root      root         332015 Jan 01 00:04 libmibr_carplay111.so.prev-2fc7b7f9de0b9bd450aff25a93671256babb52fa6eb091accfd9bc5f29ce4940
+-rwxr-xr-x  1 root      root         325467 Jan 01 00:03 libmibr_carplay111.so.prev-9323fa9cb6899a7c1a9ba4983069df7f7cae819c56d361f88ba8d809c3154067
+-rwxr-xr-x  1 root      root         325489 Jan 01 00:03 libmibr_carplay111.so.prev-1b8498db74e5b0cc2c679538bd29bad1465e267e06321008845a7bb1ab62d377
+-rwxr-xr-x  1 root      root         325419 Jan 01 00:03 libmibr_carplay111.so.prev-06f0c3f883efb8ae099b6eb1cefa82c46ba3cbba19eaadb49440f564b7444f1a
+-rwxr-xr-x  1 root      root         325435 Jan 01 00:03 libmibr_carplay111.so.prev-d08035ab1bfe95ce0a81e25e7cce6ef869c2a385f459e318d5b28d9c573a0f90
+-rwxr-xr-x  1 root      root         326410 Jan 01 00:03 libmibr_carplay111.so.prev-b1def26e3376c19a121965e438959c61c2f9709b612e321246e41e853b5c5c57
+-rwxr-xr-x  1 root      root         313824 Jan 01 00:03 libmibr_carplay111.so.prev-1f9963441ed125d67e2c672dc43e9c45e167db33cfa0dfcd1694d99409c8ecd1
+-rwxr-xr-x  1 root      root         325473 Jan 01 00:03 libmibr_carplay111.so.prev-2b59af636f1d80d41e7f077441013778293e8afe37fc3ca2626c76f16a144903
+-rwxr-xr-x  1 root      root         326650 Jan 01 00:03 libmibr_carplay111.so.prev-3166eadc698cbedf22d57c70a7bfa5bd2113435d4b31db10b0347fa77b6409a8
+-rwxr-xr-x  1 root      root         326850 Jan 01 00:02 libmibr_carplay111.so.prev-5474793ac061ca24adb3e27aeb1a9ff5e385d6ab59c193b05cccd05254f97f96
+-rwxr-xr-x  1 root      root         323303 Jan 01 00:02 libmibr_carplay111.so.prev-9cb419122c4f6aa85769c9a95d1963c5aae28e61b5b54c483585dc500c4285d5
+-rwxr-xr-x  1 root      root         286403 Jan 01 00:01 libmibr_carplay111.so.prev-efc95f4a0629afe3ed6ec7b96cd0fd5ca9cd308cfacecfb0d98ca9311c085e16
+drwxrwxrwx  9 root      root           3072 Jan 01 00:01 ..
+-rwxr-xr-x  1 root      root         332015 Jan 01 00:01 libmibr_carplay111.so.prev-d98377c45153a21918fe57c36b26ddc143213d914d78c3852acf63c0ce32286a
+-rwxr-xr-x  1 root      root         286295 Jan 01 00:00 libmibr_carplay111.so.prev-60acbc062e524f94f076fa1f97e23e9940fcb02bac5a70e9d166c5d905b676f6
+root@mmx:/mnt/app/root> ls -l /mnt/app/eso/lib/libmibr_carplay111.so; ls /tmp | head -30
+-rwxr-xr-x  1 root      root         344648 Jan 01 00:35 /mnt/app/eso/lib/libmibr_carplay111.so
+IBRConfigSHM
+IBRIPCSurface_0_0
+IBRIPCSurface_0_1
+IBRIPCSurface_0_2
+IBRIPCSurface_0_3
+IBRIPCSurface_0_4
+IBRIPCSurface_0_5
+IBRIPCSurface_0_6
+IBRIPCSurface_1_0
+IBRIPCSurface_1_1
+IBRIPCSurface_1_2
+IBRIPCSurface_1_3
+IBRIPCSurface_1_4
+IBRIPCSurface_1_5
+IBRIPCSurface_1_6
+IBRIPCSurface_2_0
+IBRIPCSurface_2_1
+IBRIPCSurface_2_2
+IBRIPCSurface_2_3
+IBRIPCSurface_2_4
+IBRIPCSurface_2_5
+IBRIPCSurface_2_6
+IBRIPCSurface_3_0
+IBRIPCSurface_3_1
+IBRIPCSurface_3_2
+IBRIPCSurface_3_3
+IBRIPCSurface_3_4
+IBRIPCSurface_3_5
+IBRIPCSurface_3_6
+IBRIPCSurface_4_0
+root@mmx:/mnt/app/root> 

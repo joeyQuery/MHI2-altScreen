@@ -1,0 +1,93 @@
+/net/mmx.mibhigh.net/dev/logos0t77 on /logosdisk type qnx4 
+/net/mmx.mibhigh.net/mnt/navdb/database/eu/mapStyles/1/navigation_styles_AU_EU.iso on /navigation/resources/iso/au/eu type cd (rrip) 
+/net/mmx.mibhigh.net/dev/hd130t77 on /fs/tmpfs type qnx4 
+/net/mmx.mibhigh.net/dev/sda0t12 on /fs/sda0 type dos (fat32) 
+/net/mmx.mibhigh.net/dev/organizer0t77 on /organizerdisk type qnx4 
+/net/mmx.mibhigh.net/dev/sysramdisk0t77 on /ramdisk type qnx4 
+/net/mmx.mibhigh.net/mnt/boardbook/boardbook_en_GB.iso on /eso/browser/public/boardbook type cd (joliet) 
+/net/mmx.mibhigh.net/dev/geram0t77 on /mnt/gemodels type qnx4 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/common_poicat/common_poicat.iso on /mnt/speech-sr-vde-common_poicat type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Switzerland/Switzerland.iso on /mnt/speech-sr-vde-Switzerland type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/common/common.iso on /mnt/speech-sr-vde-common type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Germany/Germany.iso on /mnt/speech-sr-vde-Germany type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/BosniaHerzegovina/BosniaHerzegovina.iso on /mnt/speech-sr-vde-BosniaHerzegovina type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/CzechRepublic/CzechRepublic.iso on /mnt/speech-sr-vde-CzechRepublic type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Croatia/Croatia.iso on /mnt/speech-sr-vde-Croatia type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Ireland/Ireland.iso on /mnt/speech-sr-vde-Ireland type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Sweden/Sweden.iso on /mnt/speech-sr-vde-Sweden type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Denmark/Denmark.iso on /mnt/speech-sr-vde-Denmark type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Iceland/Iceland.iso on /mnt/speech-sr-vde-Iceland type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Russia/Russia.iso on /mnt/speech-sr-vde-Russia type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Malta/Malta.iso on /mnt/speech-sr-vde-Malta type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Norway/Norway.iso on /mnt/speech-sr-vde-Norway type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Portugal/Portugal.iso on /mnt/speech-sr-vde-Portugal type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Belarus/Belarus.iso on /mnt/speech-sr-vde-Belarus type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Bulgaria/Bulgaria.iso on /mnt/speech-sr-vde-Bulgaria type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Lithuania/Lithuania.iso on /mnt/speech-sr-vde-Lithuania type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/SanMarino/SanMarino.iso on /mnt/speech-sr-vde-SanMarino type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Slovakia/Slovakia.iso on /mnt/speech-sr-vde-Slovakia type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Kosovo/Kosovo.iso on /mnt/speech-sr-vde-Kosovo type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Serbia/Serbia.iso on /mnt/speech-sr-vde-Serbia type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Hungary/Hungary.iso on /mnt/speech-sr-vde-Hungary type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Romania/Romania.iso on /mnt/speech-sr-vde-Romania type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Luxembourg/Luxembourg.iso on /mnt/speech-sr-vde-Luxembourg type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Latvia/Latvia.iso on /mnt/speech-sr-vde-Latvia type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Italy/Italy.iso on /mnt/speech-sr-vde-Italy type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Netherlands/Netherlands.iso on /mnt/speech-sr-vde-Netherlands type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Ukraine/Ukraine.iso on /mnt/speech-sr-vde-Ukraine type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Liechtenstein/Liechtenstein.iso on /mnt/speech-sr-vde-Liechtenstein type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Moldova/Moldova.iso on /mnt/speech-sr-vde-Moldova type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/GreatBritain/GreatBritain.iso on /mnt/speech-sr-vde-GreatBritain type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Albania/Albania.iso on /mnt/speech-sr-vde-Albania type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Gibraltar/Gibraltar.iso on /mnt/speech-sr-vde-Gibraltar type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Andorra/Andorra.iso on /mnt/speech-sr-vde-Andorra type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Turkey/Turkey.iso on /mnt/speech-sr-vde-Turkey type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Monaco/Monaco.iso on /mnt/speech-sr-vde-Monaco type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Greece/Greece.iso on /mnt/speech-sr-vde-Greece type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/France/France.iso on /mnt/speech-sr-vde-France type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Finland/Finland.iso on /mnt/speech-sr-vde-Finland type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Cyprus/Cyprus.iso on /mnt/speech-sr-vde-Cyprus type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Montenegro/Montenegro.iso on /mnt/speech-sr-vde-Montenegro type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Macedonia/Macedonia.iso on /mnt/speech-sr-vde-Macedonia type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/VaticanCity/VaticanCity.iso on /mnt/speech-sr-vde-VaticanCity type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Estonia/Estonia.iso on /mnt/speech-sr-vde-Estonia type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Austria/Austria.iso on /mnt/speech-sr-vde-Austria type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Poland/Poland.iso on /mnt/speech-sr-vde-Poland type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Belgium/Belgium.iso on /mnt/speech-sr-vde-Belgium type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Spain/Spain.iso on /mnt/speech-sr-vde-Spain type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/navdb/speech/sr/vde/EU/Slovenia/Slovenia.iso on /mnt/speech-sr-vde-Slovenia type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-pt-PT_female.iso on /mnt/speech-tts-pt-PT_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-fr-FR_female.iso on /mnt/speech-tts-fr-FR_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-hu-HU_female.iso on /mnt/speech-tts-hu-HU_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-sv-SE_female.iso on /mnt/speech-tts-sv-SE_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-no-NO_female.iso on /mnt/speech-tts-no-NO_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-it-IT_female.iso on /mnt/speech-tts-it-IT_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-nl-NL_female.iso on /mnt/speech-tts-nl-NL_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-es-ES_female.iso on /mnt/speech-tts-es-ES_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-ar-SA_male.iso on /mnt/speech-tts-ar-SA_male type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-en-GB_male.iso on /mnt/speech-tts-en-GB_male type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-pl-PL_female.iso on /mnt/speech-tts-pl-PL_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-en-US_female.iso on /mnt/speech-tts-en-US_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-tr-TR_male.iso on /mnt/speech-tts-tr-TR_male type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-pt-BR_female.iso on /mnt/speech-tts-pt-BR_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-es-MX_female.iso on /mnt/speech-tts-es-MX_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-de-DE_female.iso on /mnt/speech-tts-de-DE_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-de-DE_male.iso on /mnt/speech-tts-de-DE_male type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-cs-CZ_female.iso on /mnt/speech-tts-cs-CZ_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-en-GB_female.iso on /mnt/speech-tts-en-GB_female type cd (rrip) 
+/net/mmx.mibhigh.net/mnt/speech/tts/voices/speech-tts-ru-RU_female.iso on /mnt/speech-tts-ru-RU_female type cd (rrip) 
+/dev/fs0p2 on /mnt/persist type flash 
+/net/mmx.mibhigh.net/dev/mnand0t179 on /mnt/ota type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178.9 on /mnt/media type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178.8 on /mnt/navdb type qnx6 
+/dev/fs0p1 on /mnt/system type flash 
+/net/mmx.mibhigh.net/dev/mnand0t178.7 on /mnt/ols type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178.6 on /mnt/gecache type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178.5 on /mnt/adb type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178.4 on /mnt/icab type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178.3 on /mnt/mmebackup type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178.2 on /mnt/gracenotedb type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178.1 on /mnt/speech type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t178 on /mnt/boardbook type qnx6 
+/net/mmx.mibhigh.net/dev/mnand0t177 on /mnt/app type qnx6 
+/net/mmx.mibhigh.net/mnt/app/eso/lib/icu.iso on /mnt/app/eso/lib/icudt53l type cd (rrip) 

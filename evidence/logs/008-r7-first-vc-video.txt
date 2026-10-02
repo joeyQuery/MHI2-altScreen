@@ -1,0 +1,104 @@
+# r7-port6000: native Screen B into layer 58
+# Topic: First stream-111 decode into NvSS (outputDevice 1, layer 58)
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> grep -c "build audi-mu0678-r7-port6000" /tmp/altscreen111.log
+8
+root@mmx:/mnt/app/root> grep -n "build audi-mu0678" /tmp/altscreen111.log
+1:188.496 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+366:327.156 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+385:341.912 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+581:685.618 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+885:790.506 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+1159:874.647 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+1162:1015.134 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+1391:1033.088 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+root@mmx:/mnt/app/root> 
+root@mmx:/mnt/app/root> grep -v FLIGHT /tmp/altscreen111.log | tail -80
+1034.795 [altscreen111] SETUP stock result=0 response=yes
+1034.795 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+1034.797 [altscreen111] AUDI features policy=replace(upstream)
+1034.797 [altscreen111] AUDI enabledFeatures[final]=array count=2
+1034.798 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+1034.798 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+1034.827 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+1034.828 [altscreen111] AUDI features policy=replace(upstream)
+1034.829 [altscreen111] AUDI enabledFeatures[final]=array count=2
+1034.829 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+1034.830 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+1034.883 [altscreen111] GEN2 stock display URL capability altScreenSuggestUIURLs=<absent>
+1034.883 [altscreen111] GEN2 stock display URL capability altScreenURLs=<absent>
+1034.884 [altscreen111] GEN2 stock display URL capability uiContextURLs=<absent>
+1034.884 [altscreen111] GEN2 stock display capability baseline: features=2 primaryInputDevice=<absent>0; alt clone removes primaryInputDevice
+1034.886 [altscreen111] AUDI display clone stage=6 (uuid always unique)
+1034.887 [altscreen111] GEN2 advertised altScreenSuggestUIURLs[0]=maps:/car/instrumentcluster [1]=maps:/car/instrumentcluster/map [2]=maps:/car/instrumentcluster/instructioncard
+1034.887 [altscreen111] GEN2 ViewArea full=1440x456 safe=640x300@390,90
+1034.888 [altscreen111] AUDI hidDevices[0] name=Eso_Knob
+1034.888 [altscreen111] AUDI hidDevices[1] name=Eso_Playback
+1034.888 [altscreen111] AUDI hidDevices[2] name=Eso_Telephony
+1034.889 [altscreen111] AUDI hidDevices[3] name=Eso_TrackPad
+1034.889 [altscreen111] GEN2 /info ready: root=altScreen+viewAreas type=111 maxFPS=30 features=0 input=none geometry=1440x456 physical=200x63 uuid=b7e6c5a0-2222-4000-8000-000000000002 url=maps:/car/instrumentcluster
+1034.900 [altscreen111] GEN2 PC startSession
+1034.957 [altscreen111] SETUP entry streams=1 types=111
+1034.960 [altscreen111] GEN2 PC setUpStreams
+1034.962 [altscreen111] SETUP stock result=0 response=yes
+1034.963 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+1034.964 [altscreen111] AUDI features policy=replace(upstream)
+1034.965 [altscreen111] AUDI enabledFeatures[final]=array count=2
+1034.965 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+1034.966 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+1034.966 [altscreen111] GEN2 SETUP contains stream111 cid=11340274998809086209 otherStreams=0
+1034.969 [altscreen111] NATIVE-B DISPLAY MODE ON: outputDevice=1 layerID=58 size=1440x456 offset=0,0
+1034.976 [altscreen111] NATIVE-B Screen B ready: cid=11340274998809086209 dataPort=6000 family=24 (native ServerSocketOpen, stub video sink)
+1034.982 [altscreen111] GEN2 stream111 SETUP accepted cid=11340274998809086209 dataPort=6000 response=cloned-request+streamID111; UI acquisition armed
+1034.983 [altscreen111] gen2 UI command dispatched type=1 request=1 awaiting completion
+1034.986 [altscreen111] gen2 UI completion type=1 request=1 status=0 core_rc=0
+1034.994 [altscreen111] gen2 UI command dispatched type=4 request=2 awaiting completion
+1034.995 [altscreen111] GEN2 PC disableBluetooth
+1034.996 [altscreen111] NATIVE-B iPhone connected on stream-111 port 6000 fd=39
+1035.001 [altscreen111] NATIVE-B stub impl registered self=1a8600 (no NvSS init)
+1035.004 [altscreen111] gen2 UI completion type=4 request=2 status=0 core_rc=0
+1035.016 [altscreen111] NATIVE-B NvSSVideoOpen rewrite: outputDevice 0 -> 1, layerID 59 -> 58
+1035.195 [altscreen111] SETUP entry streams=1 types=110
+1035.199 [altscreen111] GEN2 PC setUpStreams
+1035.203 [altscreen111] SETUP stock result=0 response=yes
+1035.205 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+1035.208 [altscreen111] AUDI features policy=replace(upstream)
+1035.215 [altscreen111] AUDI enabledFeatures[final]=array count=2
+1035.217 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+1035.218 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+1035.357 [altscreen111] NATIVE-B real start -> 0 (NvSS open)
+1035.733 [altscreen111] NATIVE-B real configure 1440 456 1440 456 0 0 30 (stock args 1024 480 1024 480 0 0 30) -> 0
+1035.744 [altscreen111] NATIVE-B ScreenStream B started; entering ProcessFrames
+1035.804 [altscreen111] NATIVE-B decode#1 len=33 real_rc=0
+1035.833 [altscreen111] NATIVE-B decode#2 len=162 real_rc=0
+1035.916 [altscreen111] NATIVE-B decode#3 len=53 real_rc=0
+1035.980 [altscreen111] SETUP entry streams=1 types=100
+1035.990 [altscreen111] GEN2 PC setUpStreams
+1036.719 [altscreen111] SETUP stock result=0 response=yes
+1036.719 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+1036.722 [altscreen111] AUDI features policy=replace(upstream)
+1036.723 [altscreen111] AUDI enabledFeatures[final]=array count=2
+1036.723 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+1036.724 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+1045.540 [altscreen111] NATIVE-B decode#300 len=4540 real_rc=0
+1055.540 [altscreen111] NATIVE-B decode#600 len=4375 real_rc=0
+1065.540 [altscreen111] NATIVE-B decode#900 len=4474 real_rc=0
+1075.538 [altscreen111] NATIVE-B decode#1200 len=4409 real_rc=0
+1085.542 [altscreen111] NATIVE-B decode#1500 len=4490 real_rc=0
+1095.542 [altscreen111] NATIVE-B decode#1800 len=4463 real_rc=0
+1105.540 [altscreen111] NATIVE-B decode#2100 len=4527 real_rc=0
+1115.540 [altscreen111] NATIVE-B decode#2400 len=4569 real_rc=0
+1125.536 [altscreen111] NATIVE-B decode#2700 len=4450 real_rc=0
+1135.537 [altscreen111] NATIVE-B decode#3000 len=4599 real_rc=0
+1145.538 [altscreen111] NATIVE-B decode#3300 len=4597 real_rc=0
+1155.536 [altscreen111] NATIVE-B decode#3600 len=4566 real_rc=0
+1165.539 [altscreen111] NATIVE-B decode#3900 len=4550 real_rc=0
+1175.539 [altscreen111] NATIVE-B decode#4200 len=4614 real_rc=0
+root@mmx:/mnt/app/root> 
+root@mmx:/mnt/app/root> pidin ar | grep dio_manager
+10272897 /mnt/app/eso/bin/apps/dio_manager
+11178118 grep dio_manager
+root@mmx:/mnt/app/root> ls -l /mnt/app/root /tmp | grep core
+root@mmx:/mnt/app/root> 

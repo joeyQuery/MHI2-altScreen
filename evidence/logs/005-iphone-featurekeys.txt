@@ -1,0 +1,89 @@
+# iPhone log: FeatureKey list proposed
+# Topic: altScreen / viewAreas negotiated
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+user@mac ~ %    sudo log collect --device --last 10m --output ~/carplay-phone5.logarchive
+Archive successfully written to <home>/<path>
+user@mac ~ %    log show --archive ~/carplay-phone5.logarchive --info --debug --style compact --predicate '(eventMessage CONTAINS[c] "carEndpoint" OR eventMessage CONTAINS[c] "altScreen" OR eventMessage CONTAINS[c] "instrumentcluster" OR eventMessage CONTAINS[c] "Activation Failed" OR eventMessage CONTAINS[c] "ScreenStream") AND process != "runningboardd" AND process != "powerexperienced" AND process != "mediaremoted" AND process != "backboardd" AND process != "contextstored"' | head -80
+Timestamp               Ty Process[PID:TID]
+2026-09-29 10:55:02.727 E  airplayd[10072:2b16a4] [com.apple.airplay:APSLogUtils] carEndpoint_copyNonStateProperty:6793: got error -12784/0xFFFFCE10 kCMBaseObjectError_PropertyNotFound
+2026-09-29 10:55:02.766 Df airplayd[10072:2b158a] [com.apple.airplay:APCarPlayCarServicesInterface] Fetching Session FeatureKey list for a vehicle: [
+    "uiContext",
+    "viewAreas",
+    "cornerMasks",
+    "focusTransfer",
+    "h.264Level5.1",
+    "mainBuffered",
+    "altScreen",
+    "enhancedSiri",
+    "hevc",
+    "vehicleStateProtocol",
+    "sessionManagement",
+    "videoPlayback",
+    "logTransfer",
+    "iAPChannel"
+]
+2026-09-29 10:55:02.766 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597] FeatureKey list proposed:[
+    "uiContext",
+    "viewAreas",
+    "cornerMasks",
+    "focusTransfer",
+    "h.264Level5.1",
+    "mainBuffered",
+    "altScreen",
+    "enhancedSiri",
+    "hevc",
+    "vehicleStateProtocol",
+    "sessionManagement",
+    "logTransfer",
+    "iAPChannel"
+]
+2026-09-29 10:55:02.779 E  airplayd[10072:2b158a] [com.apple.airplay:APSLogUtils] carEndpoint_copyNonStateProperty:6793: got error -12784/0xFFFFCE10 kCMBaseObjectError_PropertyNotFound
+2026-09-29 10:55:03.112 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597] FeatureKey list negotiated:[
+    "altScreen",
+    "viewAreas"
+]
+2026-09-29 10:55:03.115 E  airplayd[10072:2b16d2] [com.apple.airplay:APSLogUtils] carEndpoint_copyNonStateProperty:6793: got error -12784/0xFFFFCE10 kCMBaseObjectError_PropertyNotFound
+2026-09-29 10:55:03.115 Df CarPlay[597:2b140a] [com.apple.CarPlayServices:CarPlayServices] serviceFetchInstrumentClusterURLs: updating geo
+2026-09-29 10:55:03.124 Df CarPlay[597:4553] [com.apple.CarPlayServices:CarPlayServices] serviceFetchInstrumentClusterURLs: URLs supported: (
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster/instructioncard",
+    "maps:/car/instrumentcluster"
+)
+2026-09-29 10:55:03.124 Df airplayd[10072:2b17e4] [com.apple.airplay:APCarPlayCarServicesInterface] Fetching Cluster Urls: [
+    "maps:/car/instrumentcluster/map",
+    "maps:/car/instrumentcluster/instructioncard",
+    "maps:/car/instrumentcluster"
+]
+2026-09-29 10:55:03.124 Df airplayd[10072:2b17e4] [com.apple.carkit:General] [CARInstrumentClusterURLController] invalidating connection.
+2026-09-29 10:55:03.257 Df airplayd[10072:2b16a4] [com.apple.airplay:APSPowerAssertion] [0x923B:com.apple.APEndpointCarPlay.AltScreen] Raise requested; raising.
+2026-09-29 10:55:03.282 Df distnoted[106:2b15a9] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 900000002 pid: 71
+2026-09-29 10:55:03.282 Df distnoted[106:2b15a9] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 700000002 pid: 10742
+2026-09-29 10:55:03.282 Df distnoted[106:2b15a9] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 2a00000027 pid: 10744
+2026-09-29 10:55:03.282 Df distnoted[106:2b15a9] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 300000000 pid: 131
+2026-09-29 10:55:03.282 Df distnoted[106:2b15a9] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 1a00000017 pid: 37
+2026-09-29 10:55:03.285 Df distnoted[106:2b15a9] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 7a00000029 pid: 35
+2026-09-29 10:55:03.287 Df distnoted[106:2b15a9] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 400000001 pid: 9739
+2026-09-29 10:55:03.287 Df distnoted[106:2b1762] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: c0000000c pid: 117
+2026-09-29 10:55:03.287 Df distnoted[106:2b1762] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: a00000007 pid: 39
+2026-09-29 10:55:03.289 Df distnoted[106:2b1762] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 400000001 pid: 2850
+2026-09-29 10:55:03.291 Df distnoted[106:2b1762] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: d0000000b pid: 75
+2026-09-29 10:55:03.292 Df distnoted[106:2b15a9] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 300000000 pid: 68
+2026-09-29 10:55:03.294 Df distnoted[106:2b1762] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: c0000000c pid: 239
+2026-09-29 10:55:03.298 Df distnoted[106:2b1762] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: 600000001 pid: 53
+2026-09-29 10:55:03.298 Df distnoted[106:2b1762] [com.apple.distnoted:diagnostic] register name: CRInstrumentClusterURLsDidChangeNotification object: kCFNotificationAnyObject token: f00000002 pid: 5532
+2026-09-29 10:55:03.298 Df airplayd[10072:2b16a0] [com.apple.airplay:APEndpointCarPlay] [0x0597] Unhandled command 'showUI' dict '{
+    "type" : "showUI",
+    "params" : 
+    {
+        "url" : "maps:/car/instrumentcluster",
+        "uuid" : "b7e6c5a0-2222-4000-8000-000000000002",
+    },
+}
+', forwarding to clients
+2026-09-29 10:55:03.298 Df airplayd[10072:2b16d2] [com.apple.airplay:APEndpointCarPlay] [0x0597] Posting notification 'UnknownRemoteEvent' with params {
+    "type" : "showUI",
+    "ActivationSeed" : 1,
+    "params" : 
+user@mac ~ % 

@@ -1,0 +1,46 @@
+# r5/r6 native Screen B on port 6000
+# Topic: stream-111 receiver ready, video config received
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> ls -l /tmp/mibr-alt111-audi.native-b /tmp/mibr-alt111-audi.native-b-display
+-rw-r--r--  2 root      root              0 Jan 01 00:05 /tmp/mibr-alt111-audi.native-b
+-rw-r--r--  2 root      root              0 Jan 01 00:05 /tmp/mibr-alt111-audi.native-b-display
+root@mmx:/mnt/app/root> grep stream111 /tmp/altscreen111.log
+190.614 [altscreen111] GEN2 SETUP contains stream111 cid=13688592430774634056 otherStreams=0
+190.625 [altscreen111] stream111 receiver ready: conn=13688592430774634056 dataPort=6000 transport=IPv6-dualstack
+190.629 [altscreen111] GEN2 stream111 SETUP accepted cid=13688592430774634056 dataPort=6000 response=cloned-request+streamID111; UI acquisition armed
+190.974 [altscreen111] gen2: stream111 valid transactional video config received
+root@mmx:/mnt/app/root> tail -30 /tmp/altscreen111.log
+464.772 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+466.788 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+468.806 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+470.822 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+472.841 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+474.855 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+476.876 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+478.888 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+480.911 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+482.921 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+484.938 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+486.956 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+488.973 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+490.990 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+493.007 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+495.025 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+497.040 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+499.058 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+501.073 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+503.091 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+505.113 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+507.125 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+509.146 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+511.165 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+513.179 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+515.199 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+517.208 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+519.232 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+521.243 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+523.261 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304050 private111=0
+525.278 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=updateFeedback commandRef=78345110 rc=0 out=304128 private111=0
+root@mmx:/mnt/app/root> 

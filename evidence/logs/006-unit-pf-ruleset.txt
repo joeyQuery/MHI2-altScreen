@@ -1,0 +1,122 @@
+# Unit packet filter ruleset (pfctl -sr)
+# Topic: carplay0 default block explains the 6031 timeout
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+ls: No such file or directory (/mnt/system/pf.conf)
+/etc/pf.conf
+root@mmx:/mnt/app/root> pfctl -sr
+scrub in all
+pass quick on mmx0 all allow-opts
+block drop in quick on uap0 from <blacklist> to any
+block drop in quick on uap0 from any to (ecm0)
+block drop in quick on uap0 from any to (en0)
+pass in quick on uap0 proto udp from any port = bootpc to any port = bootp keep state (if-bound) allow-opts
+block drop in quick on uap0 inet from ! (uap0:network) to any
+pass in quick on uap0 inet proto icmp from (uap0:network) to (uap0) keep state (if-bound) allow-opts
+pass in quick on uap0 inet6 proto ipv6-icmp from any to (uap0) keep state (if-bound) allow-opts
+pass in quick on uap0 proto udp from (uap0:network) to (uap0) port = domain keep state (if-bound) allow-opts
+pass in quick on uap0 proto tcp from (uap0:network) to (uap0) port = domain keep state (if-bound) allow-opts
+pass in quick on ecm0 proto tcp from any to (ecm0) port = ssh keep state (if-bound) allow-opts
+pass in quick on uap0 proto tcp from any to (uap0) port = ssh keep state (if-bound) allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = ssh keep state (if-bound) allow-opts
+pass in quick on uap0 inet from any to 239.255.255.0/24 allow-opts
+pass in quick on uap0 proto tcp from any to (uap0) port = 49152 keep state (if-bound) allow-opts
+pass in quick on uap0 proto udp from any to (uap0) port 49153:49162 allow-opts
+pass in quick on uap0 proto tcp from (uap0:network) to (uap0) port = 21001 keep state (if-bound) allow-opts
+pass in quick on uap0 proto tcp from <sdis> to (uap0) port = 20001 allow-opts
+pass out quick on uap0 proto tcp from (uap0) port = 20001 to <sdis> allow-opts queue(med_out, med_ack)
+pass in quick on uap0 proto tcp from (uap0:network) to (uap0) port = 30001 allow-opts
+pass out quick on uap0 proto tcp from (uap0) port = 30001 to (uap0:network) allow-opts queue(med_out, med_ack)
+pass in quick on uap0 proto tcp from <sdis> to (uap0) port = 23100 allow-opts
+pass out quick on uap0 proto tcp from (uap0) port = 23100 to <sdis> allow-opts queue(video_out, video_ack)
+pass in quick on uap0 proto udp from <sdis> port = 23100 to (uap0) allow-opts
+pass out quick on uap0 proto udp from (uap0) to <sdis> port = 23100 allow-opts queue(video_out, video_ack)
+pass in quick on uap0 proto tcp from <sdis> to (uap0) port = 23101 allow-opts
+pass out quick on uap0 proto tcp from (uap0) port = 23101 to <sdis> allow-opts queue(control_out, control_ack)
+pass in quick on uap0 proto udp from <sdis> to (uap0) port = 23101 allow-opts
+pass out quick on uap0 proto udp from (uap0) port = 23101 to <sdis> allow-opts queue(control_out, control_ack)
+pass in quick on uap0 proto tcp from <sdis> to (uap0) port 22222:22223 allow-opts
+pass out quick on uap0 proto tcp from (uap0) port 22222:22223 to <sdis> allow-opts queue(audio_out, audio_ack)
+pass in quick on uap0 proto tcp from (uap0:network) to (uap0) port 21600:21601 allow-opts
+pass out quick on uap0 proto tcp from (uap0) port 21600:21601 to (uap0:network) allow-opts queue(control_out, control_ack)
+pass in quick on uap0 proto tcp from <sdis> to (uap0) port = 21602 allow-opts
+pass out quick on uap0 proto tcp from (uap0) port = 21602 to <sdis> allow-opts queue(control_out, control_ack)
+pass in quick on uap0 proto tcp from <sdis> to (uap0) port 21603:21605 allow-opts
+pass out quick on uap0 proto tcp from (uap0) port 21603:21605 to <sdis> allow-opts queue(high_out, high_ack)
+anchor "EXLAP" in on uap0 proto tcp from any to (uap0) port = 25010
+anchor "EXLAP" in on uap0 proto udp from any to (uap0) port = 28500
+pass in quick on uap0 proto tcp from any to (uap0) port = 25010 flags S/SA keep state (source-track rule, max-src-states 9, max-src-conn 8, max-src-nodes 8, overload <blacklist> flush, if-bound)
+block drop in quick proto tcp from any to any port 1500:1501
+block drop in quick proto tcp from any to any port 1504:1505
+block drop in quick proto tcp from any to any port = 31337
+block drop in quick on uap0 from any to (uap0)
+pass in quick on uap0 from (uap0:network) to (uap0:network) keep state (if-bound) allow-opts
+pass out quick on uap0 all keep state (if-bound) allow-opts
+block drop quick on mlan0 all
+pass in quick on ecm0 proto udp from any port = bootp to any port = bootpc keep state (if-bound)
+pass in quick on ecm1 proto udp from any port = bootp to any port = bootpc keep state (if-bound)
+pass out quick on ecm0 proto udp from any port = bootpc to any port = bootp keep state (if-bound) queue ack_ack
+pass out quick on ecm1 proto udp from any port = bootpc to any port = bootp keep state (if-bound) queue ack_ack
+block drop in quick on ecm0 all
+block drop in quick on ecm1 all
+block drop quick on ecm0 from any to <multicast>
+block drop quick on ecm1 from any to <multicast>
+block drop out quick on ecm0 from (ecm0) to (en0:network)
+block drop out quick on ecm1 from (ecm1) to (en0:network)
+block drop out quick on ecm0 proto icmp from (mmx0) to (ecm0)
+block drop out quick on ecm1 proto icmp from (mmx0) to (ecm1)
+block drop out quick on ecm0 from ! (ecm0) to any
+block drop out quick on ecm1 from ! (ecm1) to any
+pass in quick on en0 proto tcp from any to (en0) port = 123 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 851 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 7800 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 57005 allow-opts
+pass out quick on en0 proto tcp from (en0) port = 123 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 851 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 7800 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 57005 to any allow-opts
+pass in quick on en0 proto udp from any to (en0) port = 851 allow-opts
+pass out quick on en0 proto udp from (en0) port = 851 to any allow-opts
+pass in quick on en0 proto udp from any port = bootp to any port = bootpc keep state (if-bound)
+block drop quick on en0 inet from any to 224.0.0.0/4
+block drop in quick on en0 inet from 127.0.0.0/8 to any
+pass in quick on en0 inet proto icmp from any to (en0) keep state (if-bound) allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = telnet allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 1800 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 2012 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 10123 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 15000 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 16001 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port = 21002 allow-opts
+pass in quick on en0 proto tcp from any to (en0) port 22110:22111 allow-opts
+pass out quick on en0 proto tcp from (en0) port = telnet to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 1800 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 2012 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 10123 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 15000 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 16001 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port = 21002 to any allow-opts
+pass out quick on en0 proto tcp from (en0) port 22110:22111 to any allow-opts
+pass in quick on carplay0 proto tcp from any to any port 5000:5001 allow-opts
+pass in quick on carplay0 proto tcp from any to any port = 5010 allow-opts
+pass in quick on carplay0 proto tcp from any to any port = xserver allow-opts
+pass in quick on carplay0 proto tcp from any to any port = 6030 allow-opts
+pass in quick on carplay0 proto tcp from any to any port 7000:7001 allow-opts
+pass in quick on carplay0 proto tcp from any to any port = 7100 allow-opts
+pass in quick on carplay0 proto udp from any to any port 67:68 allow-opts
+pass in quick on carplay0 proto udp from any to any port 6001:6002 allow-opts
+pass in quick on carplay0 proto udp from any to any port 6010:6011 allow-opts
+pass in quick on carplay0 proto udp from any to any port 6020:6021 allow-opts
+pass in quick on carplay0 proto udp from any to any port 7010:7011 allow-opts
+pass in quick on carplay0 proto udp from any to any port 7070:7071 allow-opts
+pass in quick on carplay0 proto udp from any to any port = 5353 allow-opts
+pass in quick on carplay0 inet6 proto ipv6-icmp all keep state (if-bound) allow-opts
+block drop in on carplay0 all
+pass out on carplay0 all allow-opts
+block drop in quick on en0 all
+pass out quick on en0 all keep state (if-bound) allow-opts
+anchor "dns_data" out on ecm0 from (ecm0) to <dns_server>
+anchor "wlan_data" in on uap0 from (uap0:network) to any
+anchor "mmi_data" out on ecm0 from (ecm0) to any
+pass out quick on mmx0 inet from any to 10.0.0.16 keep state (if-bound) allow-opts

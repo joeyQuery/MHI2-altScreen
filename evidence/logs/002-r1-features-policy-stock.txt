@@ -1,0 +1,328 @@
+# r1 hook, features policy stock
+# Topic: Full 110 setUpStreams / modesChanged flight dumps; phone requests only stream 110
+# Source: unit/host paste captured during the work (trimmed: first 260 + last 60 lines kept). Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> touch /tmp/mibr-alt111-audi.features-stock
+root@mmx:/mnt/app/root> touch /tmp/mibr-alt111-audi.no-alt-display
+root@mmx:/mnt/app/root> slay smartphone_integrator
+root@mmx:/mnt/app/root> cat /tmp/altscreen111.log
+44.817 [altscreen111] build audi-mu0678-r1 enabled=1
+44.890 [altscreen111] renderer tee listening on 127.0.0.1:19820
+44.895 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+44.897 [altscreen111] hook destinations setup=78006388 start=780059d0 teardown=78006fc4 platform=780043d8 control=7800546c modeParser=782cf5b4
+44.900 [altscreen111] SessionSetup target mprotect RW denied page=782d2000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+44.901 [altscreen111] SessionSetup target page cloned private RW at 782d2000 size=4096
+44.902 [altscreen111] installed ARM hook SessionSetup target=782d2fd8 replacement=78006388 trampoline=1b6000 page=782d2000 pagesize=4096
+44.904 [altscreen111] SessionStart target mprotect RW denied page=782d1000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+44.905 [altscreen111] SessionStart target page cloned private RW at 782d1000 size=4096
+44.905 [altscreen111] installed ARM hook SessionStart target=782d1360 replacement=780059d0 trampoline=1b7000 page=782d1000 pagesize=4096
+44.906 [altscreen111] installed ARM hook SessionTearDown target=782d2b1c replacement=78006fc4 trampoline=1b8000 page=782d2000 pagesize=4096
+44.907 [altscreen111] PlatformControl target mprotect RW denied page=782cb000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+44.908 [altscreen111] PlatformControl target page cloned private RW at 782cb000 size=4096
+44.908 [altscreen111] installed ARM hook PlatformControl target=782cb710 replacement=780043d8 trampoline=1b9000 page=782cb000 pagesize=4096
+44.909 [altscreen111] SessionControl target mprotect RW denied page=782d4000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+44.909 [altscreen111] SessionControl target page cloned private RW at 782d4000 size=4096
+44.911 [altscreen111] installed ARM hook SessionControl target=782d4d88 replacement=7800546c trampoline=1ba000 page=782d4000 pagesize=4096
+44.915 [altscreen111] GEN2 candidate active: 111=1440x455@30 physical=200x63 altPort=6031 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000-8000-000000000002 viewAreas=1 autoShow=0 bit26Mode=0
+44.917 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-policy.enabled persistentMarker=/mnt/app/root/mibr-alt111-keyframe-policy.enabled
+47.498 [altscreen111] captured stock CarPlay master AES key at SetSecurityInfo caller
+47.499 [altscreen111] SETUP entry streams=<none>
+47.501 [altscreen111] GEN2 FLIGHT PlatformControl enter session=2e8760 flags=1 command=setUpStreams commandRef=783432f4 qualifier=0 params=2d9cf8 outParams=0
+47.502 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params type=dict count=15 depth=0
+47.503 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.et type=int value=16
+47.504 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.updateSessionRequest type=bool value=0
+47.504 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features type=array count=13 depth=1
+47.507 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[0] type=string value=uiContext
+47.507 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[1] type=string value=viewAreas
+47.508 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[2] type=string value=cornerMasks
+47.509 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[3] type=string value=focusTransfer
+47.512 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[4] type=string value=h.264Level5.1
+47.513 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[5] type=string value=mainBuffered
+47.514 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[6] type=string value=altScreen
+47.514 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[7] type=string value=enhancedSiri
+47.514 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[8] type=string value=hevc
+47.515 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[9] type=string value=vehicleStateProtocol
+47.516 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[10] type=string value=sessionManagement
+47.516 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[11] type=string value=logTransfer
+47.517 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[12] type=string value=iAPChannel
+47.518 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.model type=string value=iPhone16,2
+47.518 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.osName type=string value=iPhone OS
+47.519 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.deviceID type=redacted value=REDACTED
+47.519 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.name type=redacted value=REDACTED
+47.519 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.sessionCorrelationUUID type=redacted value=REDACTED
+47.520 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.timingPort type=int value=61946
+47.520 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.sessionUUID type=redacted value=REDACTED
+47.521 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.statsCollectionEnabled type=bool value=0
+47.521 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.osVersion type=string value=26.3.1
+47.521 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.macAddress type=redacted value=REDACTED
+47.522 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.osBuildVersion type=string value=23D8133
+47.522 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.sourceVersion type=string value=935.7.1
+47.524 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8760 command=setUpStreams commandRef=783432f4 rc=0 out=0
+47.525 [altscreen111] SETUP stock result=0 response=yes
+47.526 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+47.528 [altscreen111] AUDI features policy=replace(upstream)
+47.528 [altscreen111] AUDI enabledFeatures[final]=array count=2
+47.529 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+47.529 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+47.562 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+47.564 [altscreen111] AUDI features policy=replace(upstream)
+47.567 [altscreen111] AUDI enabledFeatures[final]=array count=2
+47.569 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+47.572 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+47.577 [altscreen111] AUDI /info: no-alt-display marker present; stock displays unchanged
+47.594 [altscreen111] GEN2 FLIGHT PlatformControl enter session=2e8760 flags=1 command=startSession commandRef=78343188 qualifier=0 params=0 outParams=0
+47.595 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8760 command=startSession commandRef=78343188 rc=0 out=0
+47.632 [altscreen111] GEN2 TEARDOWN entry request=dict reason=0 alt=0 main110=0 otherStreams=0 private111_decoupled=1
+47.636 [altscreen111] GEN2 FLIGHT PlatformControl enter session=2e8760 flags=1 command=tearDownStreams commandRef=783431b4 qualifier=0 params=2d9e18 outParams=0
+47.637 [altscreen111] GEN2 FLIGHT DUMP command=tearDownStreams path=params type=dict count=0 depth=0
+47.639 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8760 command=tearDownStreams commandRef=783431b4 rc=0 out=0
+191.326 [altscreen111] build audi-mu0678-r1 enabled=1
+191.328 [altscreen111] renderer tee listening on 127.0.0.1:19820
+191.329 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+191.329 [altscreen111] hook destinations setup=78006388 start=780059d0 teardown=78006fc4 platform=780043d8 control=7800546c modeParser=782cf5b4
+191.330 [altscreen111] SessionSetup target mprotect RW denied page=782d2000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+191.330 [altscreen111] SessionSetup target page cloned private RW at 782d2000 size=4096
+191.331 [altscreen111] installed ARM hook SessionSetup target=782d2fd8 replacement=78006388 trampoline=1b6000 page=782d2000 pagesize=4096
+191.331 [altscreen111] SessionStart target mprotect RW denied page=782d1000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+191.332 [altscreen111] SessionStart target page cloned private RW at 782d1000 size=4096
+191.332 [altscreen111] installed ARM hook SessionStart target=782d1360 replacement=780059d0 trampoline=1b7000 page=782d1000 pagesize=4096
+191.332 [altscreen111] installed ARM hook SessionTearDown target=782d2b1c replacement=78006fc4 trampoline=1b8000 page=782d2000 pagesize=4096
+191.333 [altscreen111] PlatformControl target mprotect RW denied page=782cb000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+191.334 [altscreen111] PlatformControl target page cloned private RW at 782cb000 size=4096
+191.334 [altscreen111] installed ARM hook PlatformControl target=782cb710 replacement=780043d8 trampoline=1b9000 page=782cb000 pagesize=4096
+191.334 [altscreen111] SessionControl target mprotect RW denied page=782d4000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+191.335 [altscreen111] SessionControl target page cloned private RW at 782d4000 size=4096
+191.335 [altscreen111] installed ARM hook SessionControl target=782d4d88 replacement=7800546c trampoline=1ba000 page=782d4000 pagesize=4096
+191.337 [altscreen111] GEN2 candidate active: 111=1440x455@30 physical=200x63 altPort=6031 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000-8000-000000000002 viewAreas=1 autoShow=0 bit26Mode=0
+191.339 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-policy.enabled persistentMarker=/mnt/app/root/mibr-alt111-keyframe-policy.enabled
+193.222 [altscreen111] captured stock CarPlay master AES key at SetSecurityInfo caller
+193.222 [altscreen111] SETUP entry streams=<none>
+193.224 [altscreen111] GEN2 FLIGHT PlatformControl enter session=2e8708 flags=1 command=setUpStreams commandRef=783432f4 qualifier=0 params=2dacf8 outParams=0
+193.224 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params type=dict count=15 depth=0
+193.225 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.et type=int value=16
+193.226 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.updateSessionRequest type=bool value=0
+193.227 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features type=array count=13 depth=1
+193.227 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[0] type=string value=uiContext
+193.228 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[1] type=string value=viewAreas
+193.228 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[2] type=string value=cornerMasks
+193.228 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[3] type=string value=focusTransfer
+193.229 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[4] type=string value=h.264Level5.1
+193.229 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[5] type=string value=mainBuffered
+193.230 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[6] type=string value=altScreen
+193.230 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[7] type=string value=enhancedSiri
+193.230 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[8] type=string value=hevc
+193.231 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[9] type=string value=vehicleStateProtocol
+193.231 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[10] type=string value=sessionManagement
+193.231 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[11] type=string value=logTransfer
+193.232 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.features[12] type=string value=iAPChannel
+193.232 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.model type=string value=iPhone16,2
+193.232 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.osName type=string value=iPhone OS
+193.233 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.deviceID type=redacted value=REDACTED
+193.233 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.name type=redacted value=REDACTED
+193.233 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.sessionCorrelationUUID type=redacted value=REDACTED
+193.234 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.timingPort type=int value=59915
+193.234 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.sessionUUID type=redacted value=REDACTED
+193.234 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.statsCollectionEnabled type=bool value=0
+193.234 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.osVersion type=string value=26.3.1
+193.235 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.macAddress type=redacted value=REDACTED
+193.235 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.osBuildVersion type=string value=23D8133
+193.235 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.sourceVersion type=string value=935.7.1
+193.237 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8708 command=setUpStreams commandRef=783432f4 rc=0 out=0
+193.239 [altscreen111] SETUP stock result=0 response=yes
+193.239 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+193.240 [altscreen111] AUDI features policy=stock (enabledFeatures untouched)
+193.263 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+193.263 [altscreen111] AUDI features policy=stock (enabledFeatures untouched)
+193.264 [altscreen111] AUDI /info: no-alt-display marker present; stock displays unchanged
+193.275 [altscreen111] GEN2 FLIGHT PlatformControl enter session=2e8708 flags=1 command=startSession commandRef=78343188 qualifier=0 params=0 outParams=0
+193.276 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8708 command=startSession commandRef=78343188 rc=0 out=0
+193.338 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=modesChanged commandRef=302c80 qualifier=0 params=2dad40 outParams=a2fc38
+193.339 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params type=dict count=2 depth=0
+193.339 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates type=array count=3 depth=1
+193.340 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0] type=dict count=2 depth=2
+193.340 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].entity type=int value=0
+193.340 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].appStateID type=int value=2
+193.341 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1] type=dict count=3 depth=2
+193.341 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].entity type=int value=0
+193.341 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].appStateID type=int value=1
+193.342 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].speechMode type=int value=-1
+193.342 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2] type=dict count=2 depth=2
+193.342 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].entity type=int value=0
+193.343 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].appStateID type=int value=3
+193.344 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources type=array count=2 depth=1
+193.344 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0] type=dict count=3 depth=2
+193.345 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].entity type=int value=2
+193.345 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].resourceID type=int value=2
+193.346 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].permanentEntity type=int value=2
+193.346 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1] type=dict count=3 depth=2
+193.347 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].entity type=int value=2
+193.347 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].resourceID type=int value=1
+193.347 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].permanentEntity type=int value=2
+193.348 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=modesChanged commandRef=302c80 rc=0 out=0 private111=0
+193.349 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=1 delta=0x3f screen=2 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+193.427 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=disableBluetooth commandRef=302a28 qualifier=0 params=2dae18 outParams=a2fc38
+193.429 [altscreen111] GEN2 FLIGHT DUMP command=disableBluetooth path=sessionControl.params type=dict count=1 depth=0
+193.430 [altscreen111] GEN2 FLIGHT DUMP command=disableBluetooth path=sessionControl.params.deviceID type=redacted value=REDACTED
+193.430 [altscreen111] GEN2 FLIGHT PlatformControl enter session=2e8708 flags=1 command=disableBluetooth commandRef=302a28 qualifier=0 params=2dae18 outParams=a2fc38
+193.431 [altscreen111] GEN2 FLIGHT DUMP command=disableBluetooth path=params type=dict count=1 depth=0
+193.431 [altscreen111] GEN2 FLIGHT DUMP command=disableBluetooth path=params.deviceID type=redacted value=REDACTED
+193.432 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8708 command=disableBluetooth commandRef=302a28 rc=0 out=0
+193.433 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=disableBluetooth commandRef=302a28 rc=0 out=0 private111=0
+193.463 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=modesChanged commandRef=302218 qualifier=0 params=2dacf8 outParams=a2fc38
+193.477 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params type=dict count=2 depth=0
+193.486 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates type=array count=3 depth=1
+193.489 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0] type=dict count=2 depth=2
+193.490 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].entity type=int value=0
+193.491 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].appStateID type=int value=2
+193.491 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1] type=dict count=3 depth=2
+193.492 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].entity type=int value=0
+193.492 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].appStateID type=int value=1
+193.493 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].speechMode type=int value=-1
+193.493 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2] type=dict count=2 depth=2
+193.493 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].entity type=int value=0
+193.494 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].appStateID type=int value=3
+193.494 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources type=array count=2 depth=1
+193.495 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0] type=dict count=3 depth=2
+193.495 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].entity type=int value=2
+193.495 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].resourceID type=int value=2
+193.496 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].permanentEntity type=int value=2
+193.497 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1] type=dict count=3 depth=2
+193.498 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].entity type=int value=1
+193.502 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].resourceID type=int value=1
+193.509 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].permanentEntity type=int value=1
+193.512 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=modesChanged commandRef=302218 rc=0 out=0 private111=0
+193.515 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=2 delta=0x01 screen=1 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+193.524 [altscreen111] SETUP entry streams=1 types=110
+193.526 [altscreen111] GEN2 FLIGHT PlatformControl enter session=2e8708 flags=1 command=setUpStreams commandRef=783432f4 qualifier=0 params=2dacf8 outParams=0
+193.527 [altscreen111] GEN2 FLIGHT command=setUpStreams streams=1
+193.528 [altscreen111] GEN2 FLIGHT stream[0] type=110 streamConnectionID=17321479001117772031 streamID=<absent>0 dataPort=<absent>0 displayID=<absent>0 screenID=<absent>0
+193.528 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params type=dict count=1 depth=0
+193.528 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams type=array count=1 depth=1
+193.530 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0] type=dict count=4 depth=2
+193.531 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].uuid type=string value=<uuid>
+193.532 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].latencyMs type=int value=25
+193.533 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].type type=int value=110
+193.533 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].streamConnectionID type=int value=-1125265072591779585
+193.534 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8708 command=setUpStreams commandRef=783432f4 rc=0 out=0
+193.535 [altscreen111] SETUP stock result=0 response=yes
+193.536 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+193.537 [altscreen111] AUDI features policy=stock (enabledFeatures untouched)
+193.751 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=modesChanged commandRef=302728 qualifier=0 params=2daf38 outParams=a2fc38
+193.755 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params type=dict count=2 depth=0
+193.760 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates type=array count=3 depth=1
+193.761 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0] type=dict count=2 depth=2
+193.764 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].entity type=int value=0
+193.776 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].appStateID type=int value=2
+193.784 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1] type=dict count=3 depth=2
+193.786 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].entity type=int value=0
+193.788 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].appStateID type=int value=1
+193.789 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].speechMode type=int value=-1
+193.792 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2] type=dict count=2 depth=2
+193.793 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].entity type=int value=0
+193.794 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].appStateID type=int value=3
+193.795 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources type=array count=2 depth=1
+193.796 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0] type=dict count=3 depth=2
+193.797 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].entity type=int value=1
+193.801 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].resourceID type=int value=2
+193.804 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].permanentEntity type=int value=1
+193.812 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1] type=dict count=3 depth=2
+193.814 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].entity type=int value=1
+193.815 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].resourceID type=int value=1
+193.817 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].permanentEntity type=int value=1
+193.823 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=modesChanged commandRef=302728 rc=0 out=0 private111=0
+193.837 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=3 delta=0x02 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+194.057 [altscreen111] SETUP entry streams=1 types=100
+194.060 [altscreen111] GEN2 FLIGHT PlatformControl enter session=2e8708 flags=1 command=setUpStreams commandRef=783432f4 qualifier=0 params=2daf38 outParams=0
+194.061 [altscreen111] GEN2 FLIGHT command=setUpStreams streams=1
+194.062 [altscreen111] GEN2 FLIGHT stream[0] type=100 streamConnectionID=<absent>0 streamID=<absent>0 dataPort=<absent>0 displayID=<absent>0 screenID=<absent>0
+194.063 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params type=dict count=1 depth=0
+194.065 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams type=array count=1 depth=1
+194.065 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0] type=dict count=5 depth=2
+194.066 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].audioType type=string value=media
+194.066 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].supportsHighAccuracyTimestamps type=bool value=1
+194.067 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].audioLatencyMs type=int value=50
+194.067 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].type type=int value=100
+194.068 [altscreen111] GEN2 FLIGHT DUMP command=setUpStreams path=params.streams[0].audioFormat type=int value=32768
+194.558 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8708 command=setUpStreams commandRef=783432f4 rc=0 out=0
+194.559 [altscreen111] SETUP stock result=0 response=yes
+194.560 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+194.560 [altscreen111] AUDI features policy=stock (enabledFeatures untouched)
+194.562 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=modesChanged commandRef=302e18 qualifier=0 params=304098 outParams=a2fc38
+194.562 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params type=dict count=2 depth=0
+194.563 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates type=array count=3 depth=1
+194.563 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0] type=dict count=2 depth=2
+194.563 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].entity type=int value=0
+194.564 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].appStateID type=int value=2
+194.564 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1] type=dict count=3 depth=2
+194.564 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].entity type=int value=0
+194.565 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].appStateID type=int value=1
+194.566 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].speechMode type=int value=-1
+194.566 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2] type=dict count=2 depth=2
+194.567 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].entity type=int value=0
+194.567 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].appStateID type=int value=3
+194.568 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources type=array count=2 depth=1
+194.568 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0] type=dict count=3 depth=2
+
+[... 90 lines trimmed ...]
+
+201.521 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].entity type=int value=0
+201.522 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].appStateID type=int value=1
+201.522 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].speechMode type=int value=-1
+201.522 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2] type=dict count=2 depth=2
+201.523 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].entity type=int value=0
+201.523 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].appStateID type=int value=3
+201.523 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources type=array count=2 depth=1
+201.524 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0] type=dict count=3 depth=2
+201.524 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].entity type=int value=2
+201.525 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].resourceID type=int value=2
+201.525 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].permanentEntity type=int value=1
+201.525 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1] type=dict count=3 depth=2
+201.526 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].entity type=int value=1
+201.526 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].resourceID type=int value=1
+201.526 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].permanentEntity type=int value=1
+201.527 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=modesChanged commandRef=302e18 rc=0 out=0 private111=0
+201.528 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=7 delta=0x00 screen=1 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+201.534 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=modesChanged commandRef=302c98 qualifier=0 params=304200 outParams=93fc38
+201.534 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params type=dict count=2 depth=0
+201.535 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates type=array count=3 depth=1
+201.536 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0] type=dict count=2 depth=2
+201.536 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].entity type=int value=0
+201.536 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[0].appStateID type=int value=2
+201.537 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1] type=dict count=3 depth=2
+201.537 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].entity type=int value=0
+201.537 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].appStateID type=int value=1
+201.538 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[1].speechMode type=int value=-1
+201.538 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2] type=dict count=2 depth=2
+201.538 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].entity type=int value=0
+201.539 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.appStates[2].appStateID type=int value=3
+201.539 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources type=array count=2 depth=1
+201.539 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0] type=dict count=3 depth=2
+201.540 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].entity type=int value=2
+201.540 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].resourceID type=int value=2
+201.541 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[0].permanentEntity type=int value=1
+201.542 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1] type=dict count=3 depth=2
+201.542 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].entity type=int value=1
+201.543 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].resourceID type=int value=1
+201.543 [altscreen111] GEN2 FLIGHT DUMP command=modesChanged path=sessionControl.params.resources[1].permanentEntity type=int value=1
+201.544 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=modesChanged commandRef=302c98 rc=0 out=0 private111=0
+201.545 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=8 delta=0x00 screen=1 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+203.404 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=updateFeedback commandRef=78345110 qualifier=0 params=2da6c8 outParams=93fc38
+203.408 [altscreen111] GEN2 FLIGHT DUMP command=updateFeedback path=sessionControl.params type=dict count=0 depth=0
+203.413 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=updateFeedback commandRef=78345110 rc=0 out=0 private111=0
+205.404 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=updateFeedback commandRef=78345110 qualifier=0 params=2daf38 outParams=93fc38
+205.408 [altscreen111] GEN2 FLIGHT DUMP command=updateFeedback path=sessionControl.params type=dict count=0 depth=0
+205.414 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=updateFeedback commandRef=78345110 rc=0 out=0 private111=0
+207.466 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=updateFeedback commandRef=78345110 qualifier=0 params=2da6c8 outParams=93fc38
+207.466 [altscreen111] GEN2 FLIGHT DUMP command=updateFeedback path=sessionControl.params type=dict count=0 depth=0
+207.467 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=updateFeedback commandRef=78345110 rc=0 out=0 private111=0
+209.465 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=updateFeedback commandRef=78345110 qualifier=0 params=2daf38 outParams=93fc38
+209.466 [altscreen111] GEN2 FLIGHT DUMP command=updateFeedback path=sessionControl.params type=dict count=0 depth=0
+209.466 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=updateFeedback commandRef=78345110 rc=0 out=0 private111=0
+211.465 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=updateFeedback commandRef=78345110 qualifier=0 params=2da6c8 outParams=93fc38
+211.466 [altscreen111] GEN2 FLIGHT DUMP command=updateFeedback path=sessionControl.params type=dict count=0 depth=0
+211.466 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=updateFeedback commandRef=78345110 rc=0 out=0 private111=0
+213.471 [altscreen111] GEN2 FLIGHT SessionControl enter session=2e8708 flags=1 command=updateFeedback commandRef=78345110 qualifier=0 params=2daf38 outParams=93fc38
+213.471 [altscreen111] GEN2 FLIGHT DUMP command=updateFeedback path=sessionControl.params type=dict count=0 depth=0
+213.472 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8708 command=updateFeedback commandRef=78345110 rc=0 out=0 private111=0
+root@mmx:/mnt/app/root> 

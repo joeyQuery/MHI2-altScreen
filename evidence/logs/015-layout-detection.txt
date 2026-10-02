@@ -1,0 +1,42 @@
+# Extracts of pasted unit output (session transcript). Redacted as in the other logs.
+# Timestamps: msg 2026-10-02T09:37:27.070Z ; attachment 4e1346dd 2026-10-02T11:42Z(file mtime; attached in msg ts 2026-10-02T10:42:20.423Z)
+# Shows: setZoomArea Rect=370:49:700:300 / 490:49:460:300 (r55) and r56 layout slot switching with viewAreaIndex; later r56 layout narrow/full/start layout lines after TEARDOWN.
+# NOTE: pasted text verbatim; "attachment" = long paste the CLI stored as an uploaded .txt (user @-referenced or system-attached to this transcript).
+
+##### [user msg 49 | 2026-10-02T09:37:27.070Z]
+root@mmx:/mnt/app/root> grep -e "r56" -e "two-view" -e "r55" /tmp/altscreen111.log | tail -12 | cut -c1-200
+507.680 [altscreen111] r56 layout slot 1 (Rect width 460): already current
+508.411 [altscreen111] r55 zone: setZoomArea Rect=370:49:700:300
+508.414 [altscreen111] r56 layout -> slot 0 (Rect width 700) viewAreaIndex=1 intent rc=0
+508.418 [altscreen111] r55 zone: setZoomArea Rect=370:49:700:300
+508.418 [altscreen111] r56 layout slot 0 (Rect width 700): already current
+511.349 [altscreen111] r55 zone: setZoomArea Rect=490:49:460:300
+511.350 [altscreen111] r55 zone: setZoomArea Rect=490:49:460:300
+511.350 [altscreen111] r56 layout -> slot 1 (Rect width 460) viewAreaIndex=3 intent rc=0
+511.351 [altscreen111] r56 layout slot 1 (Rect width 460): already current
+574.243 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+574.244 [altscreen111] r56 layout narrow: idle=460x367@490,25 route=840x255@100,85 views=4
+574.245 [altscreen111] r56 start layout=0 view=0
+root@mmx:/mnt/app/root> cat /mnt/app/root/mibr-carplay111-safearea-narrow-route.conf
+x=100
+y=85
+w=840
+h=255
+root@mmx:/mnt/app/root>
+
+##### [attachment 4e1346dd (grep block) | 2026-10-02T11:42Z(file mtime; attached in msg ts 2026-10-02T10:42:20.423Z)]
+root@mmx:/mnt/app/root> grep -e TEARDOWN -e "r56" -e "GEN2 VIEW" -e r44 -e watch /tmp/altscreen111.log | tail -12 | cut -c1-200
+248.623 [altscreen111] GEN2 VIEW turns=1 -> viewAreaIndex=1 intent rc=0
+301.765 [altscreen111] GEN2 TEARDOWN entry request=NULL reason=-6753 alt=0 main110=0 otherStreams=0 private111_decoupled=1
+301.804 [altscreen111] GEN2 TEARDOWN whole-session -> private111 cleanup
+305.428 [altscreen111] r56 layout narrow: idle=340x330@550,87 route=340x330@550,87 views=4
+305.429 [altscreen111] r56 layout full: idle=350x296@114,88 route=350x296@114,88 views=6
+305.431 [altscreen111] r56 start layout=0 view=0
+305.454 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-policy.enabled persistentMarker=/mn
+308.487 [altscreen111] GEN2 VIEW turns=2 -> viewAreaIndex=0 intent rc=0
+308.659 [altscreen111] GEN2 VIEW turns=2 -> viewAreaIndex=0 intent rc=0
+309.070 [altscreen111] GEN2 VIEW turns=1 -> viewAreaIndex=1 intent rc=0
+317.372 [altscreen111] GEN2 VIEW turns=0 -> viewAreaIndex=0 intent rc=0
+324.089 [altscreen111] GEN2 VIEW turns=1 -> viewAreaIndex=1 intent rc=0
+root@mmx:/mnt/app/root> 
+

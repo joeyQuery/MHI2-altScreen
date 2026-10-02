@@ -1,0 +1,77 @@
+# r23 two-view layout (with sed help noise)
+# Topic: GEN2 two-view mode idle/route values
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> for n in $(grep -n "installed ARM hook SessionSetup" /tmp/altscreen111.log | cut -d: -f1); do echo "=== before line $n"; sed -n "$((n-60)),$((n-1))p" /tmp/altscreen111.log | grep -v -e "mprotect" -e "page cloned" -e "installed ARM" | tail -5 | cut -c1-170; done
+=== before line 9
+sed: invalid option -- 5
+Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...
+
+  -n, --quiet, --silent
+                 suppress automatic printing of pattern space
+  -e script, --expression=script
+                 add the script to the commands to be executed
+  -f script-file, --file=script-file
+                 add the contents of script-file to the commands to be executed
+  -i[SUFFIX], --in-place[=SUFFIX]
+                 edit files in place (makes backup if extension supplied)
+  -l N, --line-length=N
+                 specify the desired line-wrap length for the `l' command
+  --posix
+                 disable all GNU extensions.
+  -r, --regexp-extended
+                 use extended regular expressions in the script.
+  -s, --separate
+                 consider files as separate rather than as a single continuous
+                 long stream.
+  -u, --unbuffered
+                 load minimal amounts of data from the input files and flush
+                 the output buffers more often
+      --help     display this help and exit
+      --version  output version information and exit
+
+If no -e, --expression, -f, or --file option is given, then the first
+non-option argument is taken as the sed script to interpret.  All
+remaining arguments are names of input files; if no input files are
+specified, then the standard input is read.
+
+E-mail bug reports to: bonzini@gnu.org .
+Be sure to include the word ``sed'' somewhere in the ``Subject:'' field.
+=== before line 274
+247.330 [altscreen111] build audi-mu0678-r23-rxstats enabled=1
+247.332 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+247.333 [altscreen111] renderer tee listening on 127.0.0.1:19820
+247.335 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+247.335 [altscreen111] hook destinations setup=7800927c start=78008818 teardown=7800a9f0 platform=78006954 control=78008184 modeParser=7832f5b4
+=== before line 772
+413.964 [altscreen111] build audi-mu0678-r23-rxstats enabled=1
+413.965 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+413.967 [altscreen111] renderer tee listening on 127.0.0.1:19820
+413.968 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+413.968 [altscreen111] hook destinations setup=7800927c start=78008818 teardown=7800a9f0 platform=78006954 control=78008184 modeParser=7832f5b4
+=== before line 1263
+561.469 [altscreen111] build audi-mu0678-r23-rxstats enabled=1
+561.470 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+561.471 [altscreen111] renderer tee listening on 127.0.0.1:19820
+561.472 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+561.473 [altscreen111] hook destinations setup=7800937c start=78008918 teardown=7800aaf0 platform=78006a44 control=78008284 modeParser=7832f5b4
+=== before line 1284
+595.651 [altscreen111] build audi-mu0678-r23-rxstats enabled=1
+595.653 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+595.654 [altscreen111] renderer tee listening on 127.0.0.1:19820
+595.655 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+595.656 [altscreen111] hook destinations setup=7800937c start=78008918 teardown=7800aaf0 platform=78006a44 control=78008284 modeParser=7832f5b4
+=== before line 1305
+851.008 [altscreen111] build audi-mu0678-r23-rxstats enabled=1
+851.010 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+851.011 [altscreen111] renderer tee listening on 127.0.0.1:19820
+851.013 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+851.013 [altscreen111] hook destinations setup=7800937c start=78008918 teardown=7800aaf0 platform=78006a44 control=78008284 modeParser=7832f5b4
+=== before line 1326
+869.605 [altscreen111] build audi-mu0678-r23-rxstats enabled=1
+869.607 [altscreen111] GEN2 two-view mode: idle=810x367@345,25 route=840x255@485,89
+869.608 [altscreen111] renderer tee listening on 127.0.0.1:19820
+869.610 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+869.610 [altscreen111] hook destinations setup=7800937c start=78008918 teardown=7800aaf0 platform=78006a44 control=78008284 modeParser=7832f5b4
+root@mmx:/mnt/app/root> 

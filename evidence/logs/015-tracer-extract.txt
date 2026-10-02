@@ -1,0 +1,74 @@
+# Extracts of pasted unit output (session transcript). Redacted as in the other logs.
+# Timestamps: 2026-10-02T00:35Z(file mtime)
+# Shows: sloginfo grep for key/knob/zoom; DSIKeyPanel service start/register and Eso_Knob HID register/deregister at boot. NO DSITracer/telnet/updateEncoder2/updateKey2/ports 1798/20991/traceConfig pastes exist in the available session data.
+# NOTE: pasted text verbatim; "attachment" = long paste the CLI stored as an uploaded .txt (user @-referenced or system-attached to this transcript).
+
+##### [attachment ca50c006 | 2026-10-02T00:35Z(file mtime)]
+root@mmx:/mnt/app/root> sloginfo -w 2>/dev/null | grep -i -e "scroll" -e "wheel" -e "knob" -e "rotary" -e "mfl" -e "view" -e "zoom" -e "key" | cut -c1-160
+Jan 01 00:00:00    4 10002     0 Key state: KEY_STATE_NONE
+Jan 01 00:00:00    4 10002     0 Key state right: KEY_STATE_NONE
+Jan 01 00:00:00    4 10002    23 fsm:iocHandleHandleUpdatePowerstateMain mmi state change: (0)->(1) keycode state change : (0)->(0) longpress state change detec
+Jan 01 00:00:04    5 10107   1001 00:00:04.509 MMX BENCH_Startup: Slow storage read: started: 4346 done: 4508 needed: 162 namespace = 256, key = 20
+Jan 01 00:00:05    5 10107   1001 00:00:05.097 MMX BENCH_Startup: Slow storage read: started: 4911 done: 5097 needed: 186 namespace = 52166966, key = 201
+Jan 01 00:00:05    5 10107   1001 00:00:05.172 MMX BENCH_Startup: Slow storage read: started: 5103 done: 5172 needed: 69 namespace = 1101, key = 10
+Jan 01 00:00:05    5 10107   1001 00:00:05.266 MMX BENCH_Startup: Slow storage read: started: 5203 done: 5266 needed: 63 namespace = 1009, key = 10
+Jan 01 00:00:06    5 10107   1001 00:00:06.233 MMX BENCH_Startup: Slow storage read: started: 6163 done: 6233 needed: 70 namespace = 1011, key = 1
+Jan 01 00:00:06    5 10107   1001 00:00:06.738 MMX BENCH_Startup: Slow storage read: started: 6644 done: 6738 needed: 94 namespace = 1002, key = 220
+Jan 01 00:00:09    5 10107   1001 00:00:09.071 MMX BENCH_Startup: Slow storage read: started: 8996 done: 9071 needed: 75 namespace = 1008, key = 2
+Jan 01 00:00:19    5 10500     0 1970-01-01 12:00:19.052000 AM [HID] Registered HID "Eso_Knob", <uuid>
+Jan 01 00:00:31    5 10107   1001 00:00:31.979 MMX BENCH_Startup: Slow storage read: started: 31844 done: 31979 needed: 135 namespace = 1010, key = 40
+Jan 01 00:00:32    5 10107   1001 00:00:32.466 MMX BENCH_Startup: Slow storage read: started: 32411 done: 32466 needed: 55 namespace = 1011, key = 30
+Jan 01 00:00:44    5 10107   1001 00:00:44.448 MMX BENCH_Startup: Slow storage read: started: 44392 done: 44448 needed: 56 namespace = 1005, key = 10
+Jan 01 00:00:54    5 10107   1001 00:00:54.799 MMX BENCH_Startup: Slow storage read: started: 54634 done: 54799 needed: 165 namespace = 1007, key = 1
+Jan 01 00:00:55    5 10500     0 1970-01-01 12:00:55.031000 AM [HID] Deregistered HID "Eso_Knob", <uuid>
+Jan 01 00:00:59    5 10107   1001 00:00:59.625 MMX BENCH_Startup: startDomain( StreetView, 0x4 )
+Jan 01 00:00:59    5 10000     0 00:00:59.628 servicemgr BENCH_Startup 2 19333 [startDomain] domain streetview state 0x4
+Jan 01 00:00:59    5 10000     0 00:00:59.629 servicemgr BENCH_Startup 2 19338 [SM] AS_LOADED requested for streetview
+Jan 01 00:01:00    5 10107   1001 00:01:00.347 MMX BENCH_Startup: updateDomainState(StreetView, 0x6)
+Jan 01 00:01:00    5 10000     0 00:01:00.312 servicemgr BENCH_Startup 2 23758 [SM] AS_LOADED reported for streetview
+Jan 01 00:01:00    5 10000     0 00:01:00.335 servicemgr BENCH_Startup 2 23765 [SM] AS_INITIALIZING reported for streetview
+Jan 01 00:01:00    5 10000     0 00:01:00.337 servicemgr BENCH_Startup 2 23768 [SM] AS_INITIALIZED reported for streetview
+Jan 01 00:01:00    5 10000     0 00:01:00.342 servicemgr BENCH_Startup 2 23771 [SM] AS_RUNNING reported for streetview
+Jan 01 00:01:00    5 10000     0 00:01:00.342 servicemgr BENCH_Startup 2 23791 [updateDomainState] domain 'streetview' state 0x4
+Jan 01 00:01:00    5 10000     0 00:01:00.343 servicemgr BENCH_Startup 2 23797 [SM] IS_RUNNING reported for streetview
+Jan 01 00:01:03    5 10500     0 1970-01-01 12:01:03.541000 AM [HID] Registered HID "Eso_Knob", <uuid>
+Jan 01 00:01:03    5 10000     0 00:00:04.740 hmi BENCH_Startup 2 27912 DSIAdapter.startService(org.dsi.ifc.keypanel.DSIKeyPanel,0) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:06.048 hmi BENCH_Startup 2 28011 DSIAdapter.startService(org.dsi.ifc.kombifastlist.DSIFastListScrollingAudio,0) ~Dispatch
+Jan 01 00:01:03    5 10000     0 00:00:06.062 hmi BENCH_Startup 2 28014 DSIAdapter.startService(org.dsi.ifc.kombifastlist.DSIFastListScrollingNavigation,0) ~Dis
+Jan 01 00:01:03    5 10000     0 00:00:06.074 hmi BENCH_Startup 2 28017 DSIAdapter.startService(org.dsi.ifc.kombifastlist.DSIFastListScrollingTelephone,0) ~Disp
+Jan 01 00:01:03    5 10000     0 00:00:07.534 hmi BENCH_Startup 2 28389 DSIAdapter.registerServiceProvider(org.dsi.ifc.keypanel.DSIKeyPanel,0)
+Jan 01 00:01:03    5 10000     0 00:00:18.095 hmi BENCH_Startup 2 31036 DSIAdapter.registerServiceProvider(org.dsi.ifc.kombifastlist.DSIFastListScrollingAudio,0
+Jan 01 00:01:03    5 10000     0 00:00:18.099 hmi BENCH_Startup 2 31039 DSIAdapter.registerServiceProvider(org.dsi.ifc.kombifastlist.DSIFastListScrollingNavigat
+Jan 01 00:01:03    5 10000     0 00:00:18.126 hmi BENCH_Startup 2 31045 DSIAdapter.registerServiceProvider(org.dsi.ifc.kombifastlist.DSIFastListScrollingTelepho
+Jan 01 00:01:03    5 10000     0 00:00:26.750 hmi BENCH_Startup 2 33773 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerControl,0) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:26.775 hmi BENCH_Startup 2 33849 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerZoomEngine,0) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:26.781 hmi BENCH_Startup 2 33854 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerManeuverView,0) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:26.795 hmi BENCH_Startup 2 33890 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerStreetViewCtrl,0) ~Dispatcher-Startu
+Jan 01 00:01:03    5 10000     0 00:00:26.804 hmi BENCH_Startup 2 33897 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerControl,3) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:26.810 hmi BENCH_Startup 2 33919 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerZoomEngine,1) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:26.815 hmi BENCH_Startup 2 33922 DSIAdapter.startService(org.dsi.ifc.komoview.DSIKOMOView,0) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:27.185 hmi BENCH_Startup 2 34337 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,0)
+Jan 01 00:01:03    5 10000     0 00:00:27.196 hmi BENCH_Startup 2 34349 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerZoomEngine,0)
+Jan 01 00:01:03    5 10000     0 00:00:27.200 hmi BENCH_Startup 2 34364 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerManeuverView,0)
+Jan 01 00:01:03    5 10000     0 00:00:27.240 hmi BENCH_Startup 2 34448 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,3)
+Jan 01 00:01:03    5 10000     0 00:00:27.243 hmi BENCH_Startup 2 34461 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerZoomEngine,1)
+Jan 01 00:01:03    5 10000     0 00:00:27.270 hmi BENCH_Startup 2 34516 DSIAdapter.registerServiceProvider(org.dsi.ifc.komoview.DSIKOMOView,0)
+Jan 01 00:01:03    5 10000     0 00:00:37.113 hmi BENCH_Startup 2 35875 DSIAdapter.startService(org.dsi.ifc.tmc.DSITmcOnRoute,0) ~Dispatcher-dsi.MapViewerContro
+Jan 01 00:01:03    5 10000     0 00:00:37.123 hmi BENCH_Startup 2 35878 DSIAdapter.startService(org.dsi.ifc.predictivenavigation.DSIPredictiveNavigation,0) ~Dis
+Jan 01 00:01:03    5 10000     0 00:00:59.610 hmi BENCH_Startup 2 41238 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerControl,1) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:59.611 hmi BENCH_Startup 2 41239 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,0) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:59.623 hmi BENCH_Startup 2 41241 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerControl,4) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:00:59.623 hmi BENCH_Startup 2 41242 DSIAdapter.startService(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,1) ~Dispatcher-Startup~
+Jan 01 00:01:03    5 10000     0 00:01:01.874 hmi BENCH_Startup 2 41418 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerStreetViewCtrl,0)
+Jan 01 00:01:03    5 10000     0 00:01:03.600 hmi BENCH_Startup 2 41509 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,4)
+Jan 01 00:01:03    5 10000     0 00:01:03.604 hmi BENCH_Startup 2 41520 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,1)
+Jan 01 00:01:03    5 10000     0 00:01:03.812 hmi BENCH_Startup 2 41568 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerControl,1)
+Jan 01 00:01:03    5 10000     0 00:01:03.816 hmi BENCH_Startup 2 41580 DSIAdapter.registerServiceProvider(org.dsi.ifc.map.DSIMapViewerGoogleCtrl,0)
+Jan 01 00:01:12    5 10500     0 1970-01-01 12:01:12.008000 AM [HID] Deregistered HID "Eso_Knob", <uuid>
+Jan 01 00:01:22    5 10500     0 1970-01-01 12:01:22.022000 AM [HID] Registered HID "Eso_Knob", <uuid>
+Jan 01 00:01:45    5 10000     0 00:01:00.313 streetviewProc BENCH_Startup 2 60781 [SM] AS_INITIALIZED requested for streetview
+Jan 01 00:01:45    5 10000     0 00:01:00.338 streetviewProc BENCH_Startup 2 60792 [SM] AS_RUNNING requested for streetview
+Jan 01 00:02:00    5 10500     0 1970-01-01 12:02:00.193000 AM [HID] Deregistered HID "Eso_Knob", <uuid>
+
+root@mmx:/mnt/app/root> 
+

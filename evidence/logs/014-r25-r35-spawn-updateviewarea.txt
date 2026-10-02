@@ -1,0 +1,56 @@
+# r25-autostart + r35-restore, updateViewArea
+# Topic: adjacentViewAreas mode=1 on the first session
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> sed -n '/r25-autostart: spawn/,$p' /tmp/altscreen111.log | cut -c1-170 | head -45
+44.971 [altscreen111] r25-autostart: spawn pid=2982009 h=542
+45.003 [altscreen111] r35-restore: spawn pid=2982010 h=542
+45.167 [altscreen111] NATIVE-B Screen B ready: cid=11608695640209573460 dataPort=6000 family=24 (native ServerSocketOpen, stub video sink)
+45.211 [altscreen111] GEN2 stream111 SETUP accepted cid=11608695640209573460 dataPort=6000 response=cloned-request+streamID111; UI acquisition armed
+45.225 [altscreen111] gen2 UI command dispatched type=1 request=1 awaiting completion
+45.285 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d620 command=modesChanged commandRef=2f0980 rc=0 out=0 private111=1
+45.293 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=1 delta=0x3f screen=2 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=0 sourc
+45.305 [altscreen111] GEN2 VIEW turns=0 -> viewAreaIndex=0 intent rc=0
+45.354 [altscreen111] gen2 UI completion type=1 request=1 status=0 core_rc=0
+45.412 [altscreen111] GEN2 updateViewArea index=0 animationMs=0
+45.476 [altscreen111] GEN2 PC disableBluetooth
+45.515 [altscreen111] GEN2 updateViewArea adjacentViewAreas mode=1 count=1
+45.536 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d620 command=disableBluetooth commandRef=2f01d0 rc=0 out=0
+45.542 [altscreen111] NATIVE-B iPhone connected on stream-111 port 6000 fd=39
+45.548 [altscreen111] gen2 UI command dispatched type=3 request=2 awaiting completion
+45.565 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d620 command=disableBluetooth commandRef=2f01d0 rc=0 out=0 private111=1
+45.605 [altscreen111] gen2 UI completion type=3 request=2 status=0 core_rc=0
+45.624 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d620 command=modesChanged commandRef=2f0fc8 rc=0 out=0 private111=1
+45.636 [altscreen111] NATIVE-B stub impl registered self=1a8870 (no NvSS init)
+45.651 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=2 delta=0x01 screen=1 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=0 sourc
+45.670 [altscreen111] NATIVE-B stub start (NvSSVideoOpen NOT called)
+45.674 [altscreen111] GEN2 VIEW turns=0 -> viewAreaIndex=0 intent rc=0
+45.686 [altscreen111] NATIVE-B stub configure 1024 480 1024 480 0 0 30
+45.699 [altscreen111] NATIVE-B ScreenStream B started; entering ProcessFrames
+45.704 [altscreen111] gen2 UI command dispatched type=4 request=3 awaiting completion
+45.724 [altscreen111] SETUP entry streams=1 types=110
+45.733 [altscreen111] gen2 UI completion type=4 request=3 status=0 core_rc=0
+45.735 [altscreen111] NATIVE-B decode#1 len=33 real_rc=0
+45.742 [altscreen111] GEN2 PC setUpStreams
+45.755 [altscreen111] NATIVE-B decode#2 len=183 real_rc=0
+45.756 [altscreen111] GEN2 FLIGHT PlatformControl exit session=30d620 command=setUpStreams commandRef=783a32f4 rc=0 out=0
+45.762 [altscreen111] SETUP stock result=0 response=yes
+45.768 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+45.770 [altscreen111] NATIVE-B decode#3 len=57 real_rc=0
+45.773 [altscreen111] AUDI features policy=replace(upstream)
+45.776 [altscreen111] AUDI enabledFeatures[final]=array count=2
+45.785 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+45.787 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+45.800 [altscreen111] GEN2 FLIGHT SessionControl exit session=30d620 command=modesChanged commandRef=2f06f8 rc=0 out=0 private111=1
+45.810 [altscreen111] NATIVE-A initialize ENTER self=1a88d8
+45.816 [altscreen111] NATIVE-A initialize EXIT rc=0 self=1a88d8
+45.806 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=3 delta=0x00 screen=1 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=0 sourc
+45.817 [altscreen111] NATIVE-A start ENTER self=1a88d8
+45.820 [altscreen111] GEN2 VIEW turns=0 -> viewAreaIndex=0 intent rc=0
+45.951 [altscreen111] NATIVE-A start EXIT rc=0 self=1a88d8
+root@mmx:/mnt/app/root> pidin -p vc_render | head -3
+     pid tid name               prio STATE       Blocked                     
+ 3494012   1 app/root/vc_render  25r REPLY       405513                      
+ 3494012   2 app/root/vc_render  27r CONDVAR     (0x106290)                  
+root@mmx:/mnt/app/root> 

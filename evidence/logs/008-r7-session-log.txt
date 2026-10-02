@@ -1,0 +1,508 @@
+# r7-port6000 full altscreen111.log
+# Topic: 10 restarts incl. tee-port EADDRINUSE fail-closed
+# Source: unit/host paste captured during the work (trimmed: first 420 + last 80 lines kept). Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+188.496 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+188.498 [altscreen111] renderer tee listening on 127.0.0.1:19820
+188.499 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+188.499 [altscreen111] hook destinations setup=780078f0 start=78006e94 teardown=78008f40 platform=78004e28 control=780068bc modeParser=782cf5b4
+188.500 [altscreen111] SessionSetup target mprotect RW denied page=782d2000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+188.500 [altscreen111] SessionSetup target page cloned private RW at 782d2000 size=4096
+188.501 [altscreen111] installed ARM hook SessionSetup target=782d2fd8 replacement=780078f0 trampoline=1b6000 page=782d2000 pagesize=4096
+188.501 [altscreen111] SessionStart target mprotect RW denied page=782d1000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+188.502 [altscreen111] SessionStart target page cloned private RW at 782d1000 size=4096
+188.502 [altscreen111] installed ARM hook SessionStart target=782d1360 replacement=78006e94 trampoline=1b7000 page=782d1000 pagesize=4096
+188.502 [altscreen111] installed ARM hook SessionTearDown target=782d2b1c replacement=78008f40 trampoline=1b8000 page=782d2000 pagesize=4096
+188.503 [altscreen111] PlatformControl target mprotect RW denied page=782cb000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+188.503 [altscreen111] PlatformControl target page cloned private RW at 782cb000 size=4096
+188.504 [altscreen111] installed ARM hook PlatformControl target=782cb710 replacement=78004e28 trampoline=1b9000 page=782cb000 pagesize=4096
+188.504 [altscreen111] SessionControl target mprotect RW denied page=782d4000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+188.504 [altscreen111] SessionControl target page cloned private RW at 782d4000 size=4096
+188.505 [altscreen111] installed ARM hook SessionControl target=782d4d88 replacement=780068bc trampoline=1ba000 page=782d4000 pagesize=4096
+188.508 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6000 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000-8000-000000000002 viewAreas=1 autoShow=0 bit26Mode=0
+188.509 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-policy.enabled persistentMarker=/mnt/app/root/mibr-alt111-keyframe-policy.enabled
+190.436 [altscreen111] captured stock CarPlay master AES key at SetSecurityInfo caller
+190.437 [altscreen111] SETUP entry streams=<none>
+190.439 [altscreen111] GEN2 PC setUpStreams
+190.440 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+190.441 [altscreen111] SETUP stock result=0 response=yes
+190.441 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+190.443 [altscreen111] AUDI features policy=replace(upstream)
+190.443 [altscreen111] AUDI enabledFeatures[final]=array count=2
+190.444 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+190.444 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+190.486 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+190.487 [altscreen111] AUDI features policy=replace(upstream)
+190.488 [altscreen111] AUDI enabledFeatures[final]=array count=2
+190.488 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+190.488 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+190.489 [altscreen111] GEN2 FLIGHT DUMP command=info path=root type=dict count=20 depth=0
+190.489 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.oemIconVisible type=string value=1
+190.490 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes type=dict count=2 depth=1
+190.490 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates type=array count=3 depth=2
+190.491 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[0] type=dict count=2 depth=3
+190.492 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[0].state type=bool value=0
+190.492 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[0].appStateID type=int value=2
+190.493 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[1] type=dict count=2 depth=3
+190.493 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[1].appStateID type=int value=1
+190.494 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[1].speechMode type=int value=-1
+190.494 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[2] type=dict count=2 depth=3
+190.494 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[2].state type=bool value=0
+190.495 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.appStates[2].appStateID type=int value=3
+190.495 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources type=array count=2 depth=2
+190.495 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0] type=dict count=5 depth=3
+190.496 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].transferPriority type=int value=500
+190.496 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].takeConstraint type=int value=500
+190.496 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].resourceID type=int value=1
+190.497 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].transferType type=int value=1
+190.497 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[0].borrowConstraint type=int value=100
+190.497 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1] type=dict count=5 depth=3
+190.498 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].transferPriority type=int value=500
+190.498 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].takeConstraint type=int value=500
+190.498 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].resourceID type=int value=2
+190.499 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].transferType type=int value=1
+190.499 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.modes.resources[1].borrowConstraint type=int value=100
+190.499 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.manufacturer type=string value=HARMAN
+190.500 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.features type=int value=5440801664
+190.500 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.model type=string value=AUDI 4910
+190.500 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.oemIconLabel type=string value=Audi MMI
+190.501 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.statusFlags type=int value=4
+190.501 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.deviceID type=redacted value=REDACTED
+190.501 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.bluetoothIDs type=redacted value=REDACTED
+190.502 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.name type=redacted value=REDACTED
+190.502 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices type=array count=4 depth=1
+190.502 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0] type=dict count=7 depth=2
+190.503 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].hidCountryCode type=int value=9
+190.503 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].displayUUID type=string value=<uuid>
+190.503 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].name type=redacted value=REDACTED
+190.504 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].hidProductID type=int value=8216
+190.504 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].hidVendorID type=int value=6806
+190.504 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].hidDescriptor type=data len=75 payload=not-logged
+190.505 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[0].uuid type=string value=<uuid>
+190.505 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1] type=dict count=7 depth=2
+190.505 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].hidCountryCode type=int value=9
+190.506 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].displayUUID type=string value=<uuid>
+190.506 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].name type=redacted value=REDACTED
+190.506 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].hidProductID type=int value=8216
+190.507 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].hidVendorID type=int value=6806
+190.507 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].hidDescriptor type=data len=31 payload=not-logged
+190.508 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[1].uuid type=string value=<uuid>
+190.508 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2] type=dict count=7 depth=2
+190.509 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].hidCountryCode type=int value=9
+190.509 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].displayUUID type=string value=<uuid>
+190.509 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].name type=redacted value=REDACTED
+190.509 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].hidProductID type=int value=8216
+190.510 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].hidVendorID type=int value=6806
+190.510 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].hidDescriptor type=data len=27 payload=not-logged
+190.510 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[2].uuid type=string value=<uuid>
+190.511 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3] type=dict count=7 depth=2
+190.511 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidCountryCode type=int value=9
+190.511 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].displayUUID type=string value=<uuid>
+190.512 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].name type=redacted value=REDACTED
+190.512 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidProductID type=int value=8216
+190.513 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidVendorID type=int value=6806
+190.513 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].hidDescriptor type=data len=90 payload=not-logged
+190.513 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.hidDevices[3].uuid type=string value=<uuid>
+190.514 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.oemIcon type=data len=19255 payload=not-logged
+190.514 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays type=array count=1 depth=1
+190.514 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0] type=dict count=7 depth=2
+190.515 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].widthPixels type=int value=1024
+190.515 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].features type=int value=2
+190.515 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].heightPhysical type=int value=88
+190.516 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].heightPixels type=int value=480
+190.516 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].maxFPS type=int value=30
+190.516 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].uuid type=string value=<uuid>
+190.517 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.displays[0].widthPhysical type=int value=188
+190.517 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.rightHandDrive type=string value=1
+190.517 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies type=array count=3 depth=1
+190.517 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0] type=dict count=2 depth=2
+190.518 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0].inputLatencyMicros type=int value=95000
+190.519 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[0].outputLatencyMicros type=int value=80000
+190.519 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1] type=dict count=4 depth=2
+190.520 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].audioType type=string value=telephony
+190.520 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].inputLatencyMicros type=int value=85000
+190.521 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].outputLatencyMicros type=int value=80000
+190.521 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[1].type type=int value=100
+190.522 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2] type=dict count=4 depth=2
+190.523 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].audioType type=string value=speechRecognition
+190.523 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].inputLatencyMicros type=int value=85000
+190.524 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].outputLatencyMicros type=int value=80000
+190.524 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioLatencies[2].type type=int value=100
+190.524 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.nightMode type=bool value=1
+190.525 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.keepAliveSendStatsAsBody type=bool value=1
+190.525 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats type=array count=2 depth=1
+190.526 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0] type=dict count=3 depth=2
+190.526 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].audioInputFormats type=int value=16
+190.527 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].type type=int value=100
+190.527 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[0].audioOutputFormats type=int value=1081360
+190.527 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1] type=dict count=3 depth=2
+190.528 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].audioInputFormats type=int value=16
+190.528 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].type type=int value=101
+190.529 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.audioFormats[1].audioOutputFormats type=int value=16
+190.529 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.macAddress type=redacted value=REDACTED
+190.529 [altscreen111] GEN2 FLIGHT DUMP command=info path=root.sourceVersion type=string value=210.81
+190.530 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0 type=dict count=7 depth=0
+190.530 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.widthPixels type=int value=1024
+190.530 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.features type=int value=2
+190.531 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.heightPhysical type=int value=88
+190.531 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.heightPixels type=int value=480
+190.531 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.maxFPS type=int value=30
+190.532 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.uuid type=string value=<uuid>
+190.532 [altscreen111] GEN2 FLIGHT DUMP command=info path=stockDisplay0.widthPhysical type=int value=188
+190.532 [altscreen111] GEN2 stock display URL capability altScreenSuggestUIURLs=<absent>
+190.533 [altscreen111] GEN2 stock display URL capability altScreenURLs=<absent>
+190.533 [altscreen111] GEN2 stock display URL capability uiContextURLs=<absent>
+190.534 [altscreen111] GEN2 stock display capability baseline: features=2 primaryInputDevice=<absent>0; alt clone removes primaryInputDevice
+190.536 [altscreen111] AUDI display clone stage=6 (uuid always unique)
+190.537 [altscreen111] GEN2 advertised altScreenSuggestUIURLs[0]=maps:/car/instrumentcluster [1]=maps:/car/instrumentcluster/map [2]=maps:/car/instrumentcluster/instructioncard
+190.537 [altscreen111] GEN2 ViewArea full=1440x456 safe=1440x456@0,0
+190.538 [altscreen111] AUDI hidDevices[0] name=Eso_Knob
+190.538 [altscreen111] AUDI hidDevices[1] name=Eso_Playback
+190.538 [altscreen111] AUDI hidDevices[2] name=Eso_Telephony
+190.539 [altscreen111] AUDI hidDevices[3] name=Eso_TrackPad
+190.539 [altscreen111] GEN2 /info ready: root=altScreen+viewAreas type=111 maxFPS=30 features=0 input=none geometry=1440x456 physical=200x63 uuid=b7e6c5a0-2222-4000-8000-000000000002 url=maps:/car/instrumentcluster
+190.554 [altscreen111] GEN2 PC startSession
+190.555 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=startSession commandRef=78343188 rc=0 out=0
+190.606 [altscreen111] SETUP entry streams=1 types=111
+190.609 [altscreen111] GEN2 PC setUpStreams
+190.610 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+190.610 [altscreen111] SETUP stock result=0 response=yes
+190.611 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+190.613 [altscreen111] AUDI features policy=replace(upstream)
+190.613 [altscreen111] AUDI enabledFeatures[final]=array count=2
+190.613 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+190.614 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+190.614 [altscreen111] GEN2 SETUP contains stream111 cid=13688592430774634056 otherStreams=0
+190.624 [altscreen111] waiting for iPhone AltScreen connection on 0.0.0.0:6000
+190.625 [altscreen111] stream111 receiver ready: conn=13688592430774634056 dataPort=6000 transport=IPv6-dualstack
+190.629 [altscreen111] GEN2 stream111 SETUP accepted cid=13688592430774634056 dataPort=6000 response=cloned-request+streamID111; UI acquisition armed
+190.637 [altscreen111] gen2 UI command dispatched type=1 request=1 awaiting completion
+190.666 [altscreen111] AltScreen stream 111 connected
+190.720 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=3018f0 rc=0 out=0 private111=1
+190.721 [altscreen111] gen2 UI completion type=1 request=1 status=0 core_rc=0
+190.721 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=1 delta=0x3f screen=2 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+190.734 [altscreen111] gen2 UI command dispatched type=4 request=2 awaiting completion
+190.740 [altscreen111] gen2 UI completion type=4 request=2 status=0 core_rc=0
+190.780 [altscreen111] GEN2 PC disableBluetooth
+190.783 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=disableBluetooth commandRef=3011a0 rc=0 out=0
+190.787 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=disableBluetooth commandRef=3011a0 rc=0 out=0 private111=1
+190.807 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=301fb0 rc=0 out=0 private111=1
+190.808 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=2 delta=0x01 screen=1 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=0 source_idrs=0 private111=1 policy=OBSERVE_ONLY
+190.836 [altscreen111] SETUP entry streams=1 types=110
+190.841 [altscreen111] GEN2 PC setUpStreams
+190.842 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+190.842 [altscreen111] SETUP stock result=0 response=yes
+190.843 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+190.845 [altscreen111] AUDI features policy=replace(upstream)
+190.845 [altscreen111] AUDI enabledFeatures[final]=array count=2
+190.845 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+190.846 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+190.969 [altscreen111] VideoConfig header source=1440.0x456.0 flags=0x16 body=40
+190.974 [altscreen111] gen2: stream111 valid transactional video config received
+190.975 [altscreen111] gen2: first complete Screen VIDEO_FRAME accepted as AU
+191.176 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=3012c0 rc=0 out=0 private111=1
+191.193 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=3 delta=0x00 screen=1 mainAudio=2 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=7 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+191.315 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=3013c8 rc=0 out=0 private111=1
+191.316 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=4 delta=0x02 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=11 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+191.353 [altscreen111] SETUP entry streams=1 types=100
+191.356 [altscreen111] GEN2 PC setUpStreams
+192.024 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+192.024 [altscreen111] SETUP stock result=0 response=yes
+192.025 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+192.026 [altscreen111] AUDI features policy=replace(upstream)
+192.026 [altscreen111] AUDI enabledFeatures[final]=array count=2
+192.027 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+192.027 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+192.350 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=3013c8 rc=0 out=0 private111=1
+192.351 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=5 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=42 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+192.357 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=3010f8 rc=0 out=0 private111=1
+192.358 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=6 delta=0x00 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=42 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+192.585 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=306098 private111=1
+194.145 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=3010f8 rc=0 out=0 private111=1
+194.151 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=7 delta=0x01 screen=2 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=83 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+194.178 [altscreen111] GEN2 TEARDOWN entry request=dict reason=0 alt=0 main110=1 otherStreams=1 private111_decoupled=1
+194.190 [altscreen111] GEN2 TEARDOWN stock110-only -> preserving private111 transport/control state
+194.210 [altscreen111] GEN2 PC tearDownStreams
+194.282 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=tearDownStreams commandRef=783431b4 rc=0 out=0
+194.620 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=2d9f38 private111=1
+196.619 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=2d9e60 private111=1
+198.634 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=2d9f80 private111=1
+198.812 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=301740 rc=0 out=0 private111=1
+198.813 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=8 delta=0x01 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=156 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+198.819 [altscreen111] SETUP entry streams=1 types=110
+198.822 [altscreen111] GEN2 PC setUpStreams
+198.823 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+198.824 [altscreen111] SETUP stock result=0 response=yes
+198.825 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+198.830 [altscreen111] AUDI features policy=replace(upstream)
+198.833 [altscreen111] AUDI enabledFeatures[final]=array count=2
+198.834 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+198.835 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+200.653 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+201.662 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=3076e0 rc=0 out=0 private111=1
+201.666 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=9 delta=0x01 screen=2 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=203 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+201.672 [altscreen111] GEN2 TEARDOWN entry request=dict reason=0 alt=0 main110=1 otherStreams=1 private111_decoupled=1
+201.672 [altscreen111] GEN2 TEARDOWN stock110-only -> preserving private111 transport/control state
+201.674 [altscreen111] GEN2 PC tearDownStreams
+201.677 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=tearDownStreams commandRef=783431b4 rc=0 out=0
+202.290 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=301d40 rc=0 out=0 private111=1
+202.290 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=10 delta=0x01 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=213 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+202.299 [altscreen111] SETUP entry streams=1 types=110
+202.301 [altscreen111] GEN2 PC setUpStreams
+202.302 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+202.303 [altscreen111] SETUP stock result=0 response=yes
+202.303 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+202.304 [altscreen111] AUDI features policy=replace(upstream)
+202.305 [altscreen111] AUDI enabledFeatures[final]=array count=2
+202.305 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+202.305 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+202.670 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=303050 private111=1
+203.084 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=307470 rc=0 out=0 private111=1
+203.085 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=11 delta=0x01 screen=2 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=229 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+203.100 [altscreen111] GEN2 TEARDOWN entry request=dict reason=0 alt=0 main110=1 otherStreams=1 private111_decoupled=1
+203.100 [altscreen111] GEN2 TEARDOWN stock110-only -> preserving private111 transport/control state
+203.102 [altscreen111] GEN2 PC tearDownStreams
+203.103 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=tearDownStreams commandRef=783431b4 rc=0 out=0
+203.708 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=301ad0 rc=0 out=0 private111=1
+203.710 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=12 delta=0x01 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=240 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+203.716 [altscreen111] SETUP entry streams=1 types=110
+203.719 [altscreen111] GEN2 PC setUpStreams
+203.720 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+203.721 [altscreen111] SETUP stock result=0 response=yes
+203.721 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+203.722 [altscreen111] AUDI features policy=replace(upstream)
+203.723 [altscreen111] AUDI enabledFeatures[final]=array count=2
+203.723 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+203.723 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+204.686 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+206.705 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+208.720 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+210.737 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+212.755 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+214.772 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+216.791 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+218.801 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+220.819 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+222.836 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+224.853 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+226.870 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+228.889 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+230.905 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+232.923 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+234.940 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+236.957 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+238.972 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+240.991 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+243.008 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+245.025 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+247.043 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+249.059 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+251.078 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+253.095 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+255.112 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+257.123 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+258.309 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=307170 rc=0 out=0 private111=1
+258.311 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=13 delta=0x01 screen=2 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=1134 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+258.319 [altscreen111] GEN2 TEARDOWN entry request=dict reason=0 alt=0 main110=1 otherStreams=1 private111_decoupled=1
+258.320 [altscreen111] GEN2 TEARDOWN stock110-only -> preserving private111 transport/control state
+258.323 [altscreen111] GEN2 PC tearDownStreams
+258.324 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=tearDownStreams commandRef=783431b4 rc=0 out=0
+258.978 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=301f80 rc=0 out=0 private111=1
+258.979 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=14 delta=0x01 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=1146 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+258.985 [altscreen111] SETUP entry streams=1 types=110
+258.987 [altscreen111] GEN2 PC setUpStreams
+258.988 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+258.989 [altscreen111] SETUP stock result=0 response=yes
+258.992 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+258.994 [altscreen111] AUDI features policy=replace(upstream)
+258.994 [altscreen111] AUDI enabledFeatures[final]=array count=2
+258.995 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+258.995 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+259.143 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=2d9f38 private111=1
+260.072 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=307680 rc=0 out=0 private111=1
+260.073 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=15 delta=0x01 screen=2 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=1163 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+260.081 [altscreen111] GEN2 TEARDOWN entry request=dict reason=0 alt=0 main110=1 otherStreams=1 private111_decoupled=1
+260.082 [altscreen111] GEN2 TEARDOWN stock110-only -> preserving private111 transport/control state
+260.086 [altscreen111] GEN2 PC tearDownStreams
+260.087 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=tearDownStreams commandRef=783431b4 rc=0 out=0
+260.738 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=modesChanged commandRef=301fb0 rc=0 out=0 private111=1
+260.739 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=0 seq=16 delta=0x01 screen=1 mainAudio=1 speech=0 speechDetail=-1 phone=0 turns=0 projection=1 source_aus=1173 source_idrs=1 private111=1 policy=OBSERVE_ONLY
+260.745 [altscreen111] SETUP entry streams=1 types=110
+260.747 [altscreen111] GEN2 PC setUpStreams
+260.749 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8718 command=setUpStreams commandRef=783432f4 rc=0 out=0
+260.750 [altscreen111] SETUP stock result=0 response=yes
+260.751 [altscreen111] AUDI enabledFeatures[stock]=<absent>
+260.754 [altscreen111] AUDI features policy=replace(upstream)
+260.754 [altscreen111] AUDI enabledFeatures[final]=array count=2
+260.755 [altscreen111] AUDI enabledFeatures[final][0]=altScreen
+260.755 [altscreen111] AUDI enabledFeatures[final][1]=viewAreas
+261.165 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+263.175 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+265.193 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+267.211 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+269.227 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+271.242 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+273.264 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+275.277 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+277.295 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+279.314 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+281.328 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+283.348 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+285.363 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+287.378 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+289.396 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+291.416 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+293.429 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+295.446 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+297.464 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+299.480 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+301.498 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+303.515 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+305.532 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+307.549 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+309.564 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+311.583 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+313.600 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+315.618 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+317.639 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+319.651 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8718 command=updateFeedback commandRef=78345110 rc=0 out=304098 private111=1
+320.668 [altscreen111] GEN2 TEARDOWN entry request=NULL reason=-6753 alt=0 main110=0 otherStreams=0 private111_decoupled=1
+327.156 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+327.166 [altscreen111] renderer tee listening on 127.0.0.1:19820
+327.171 [altscreen111] diagnostic H264 capture mirror listening on 127.0.0.1:19821
+327.172 [altscreen111] hook destinations setup=780078f0 start=78006e94 teardown=78008f40 platform=78004e28 control=780068bc modeParser=782cf5b4
+327.174 [altscreen111] SessionSetup target mprotect RW denied page=782d2000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+327.175 [altscreen111] SessionSetup target page cloned private RW at 782d2000 size=4096
+327.176 [altscreen111] installed ARM hook SessionSetup target=782d2fd8 replacement=780078f0 trampoline=1b6000 page=782d2000 pagesize=4096
+327.177 [altscreen111] SessionStart target mprotect RW denied page=782d1000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+327.178 [altscreen111] SessionStart target page cloned private RW at 782d1000 size=4096
+327.179 [altscreen111] installed ARM hook SessionStart target=782d1360 replacement=78006e94 trampoline=1b7000 page=782d1000 pagesize=4096
+327.179 [altscreen111] installed ARM hook SessionTearDown target=782d2b1c replacement=78008f40 trampoline=1b8000 page=782d2000 pagesize=4096
+327.180 [altscreen111] PlatformControl target mprotect RW denied page=782cb000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+327.181 [altscreen111] PlatformControl target page cloned private RW at 782cb000 size=4096
+327.181 [altscreen111] installed ARM hook PlatformControl target=782cb710 replacement=78004e28 trampoline=1b9000 page=782cb000 pagesize=4096
+327.182 [altscreen111] SessionControl target mprotect RW denied page=782d4000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+327.183 [altscreen111] SessionControl target page cloned private RW at 782d4000 size=4096
+327.183 [altscreen111] installed ARM hook SessionControl target=782d4d88 replacement=780068bc trampoline=1ba000 page=782d4000 pagesize=4096
+327.186 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6000 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000-8000-000000000002 viewAreas=1 autoShow=0 bit26Mode=0
+327.188 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-policy.enabled persistentMarker=/mnt/app/root/mibr-alt111-keyframe-policy.enabled
+341.912 [altscreen111] build audi-mu0678-r7-port6000 enabled=1
+341.915 [altscreen111] cannot bind renderer tee port 19820: Address already in use
+341.916 [altscreen111] cannot start local H264 tee; AltScreen disabled fail-closed
+343.707 [altscreen111] SETUP entry streams=<none>
+343.710 [altscreen111] GEN2 PC setUpStreams
+343.712 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8668 command=setUpStreams commandRef=783432f4 rc=0 out=0
+343.712 [altscreen111] SETUP stock result=0 response=yes
+343.746 [altscreen111] GEN2 PC startSession
+343.746 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8668 command=startSession commandRef=78343188 rc=0 out=0
+343.796 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=modesChanged commandRef=301998 rc=0 out=0 private111=0
+343.797 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=-1 seq=0 delta=0x00 screen=0 mainAudio=0 speech=0 speechDetail=0 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+343.850 [altscreen111] GEN2 PC disableBluetooth
+343.852 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8668 command=disableBluetooth commandRef=301230 rc=0 out=0
+343.853 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=disableBluetooth commandRef=301230 rc=0 out=0 private111=0
+343.930 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=modesChanged commandRef=301248 rc=0 out=0 private111=0
+343.931 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=-1 seq=0 delta=0x00 screen=0 mainAudio=0 speech=0 speechDetail=0 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+343.935 [altscreen111] SETUP entry streams=1 types=110
+343.938 [altscreen111] GEN2 PC setUpStreams
+343.938 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8668 command=setUpStreams commandRef=783432f4 rc=0 out=0
+343.939 [altscreen111] SETUP stock result=0 response=yes
+344.001 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=modesChanged commandRef=3015f0 rc=0 out=0 private111=0
+344.002 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=-1 seq=0 delta=0x00 screen=0 mainAudio=0 speech=0 speechDetail=0 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+344.197 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=modesChanged commandRef=301c80 rc=0 out=0 private111=0
+344.203 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=-1 seq=0 delta=0x00 screen=0 mainAudio=0 speech=0 speechDetail=0 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+344.288 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=modesChanged commandRef=3060b0 rc=0 out=0 private111=0
+344.289 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=-1 seq=0 delta=0x00 screen=0 mainAudio=0 speech=0 speechDetail=0 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+344.302 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=modesChanged commandRef=306788 rc=0 out=0 private111=0
+344.303 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=-1 seq=0 delta=0x00 screen=0 mainAudio=0 speech=0 speechDetail=0 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+344.318 [altscreen111] SETUP entry streams=1 types=100
+344.321 [altscreen111] GEN2 PC setUpStreams
+345.211 [altscreen111] GEN2 FLIGHT PlatformControl exit session=2e8668 command=setUpStreams commandRef=783432f4 rc=0 out=0
+345.212 [altscreen111] SETUP stock result=0 response=yes
+345.337 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=modesChanged commandRef=306470 rc=0 out=0 private111=0
+345.338 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=-1 seq=0 delta=0x00 screen=0 mainAudio=0 speech=0 speechDetail=0 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+345.345 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e8668 command=modesChanged commandRef=3066e0 rc=0 out=0 private111=0
+345.346 [altscreen111] GEN2 FLIGHT MODES_CHANGED parsed rc=-1 seq=0 delta=0x00 screen=0 mainAudio=0 speech=0 speechDetail=0 phone=0 turns=0 projection=0 source_aus=0 source_idrs=0 private111=0 policy=OBSERVE_ONLY
+
+[... 1745 lines trimmed ...]
+
+1584.224 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1586.239 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1588.263 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1590.271 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1592.294 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1594.306 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1596.328 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1598.340 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1600.361 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1602.381 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1604.394 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1606.412 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1608.432 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1610.440 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1612.458 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1614.477 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1616.491 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1618.509 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1620.527 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1622.545 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1624.559 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1626.580 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1628.593 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1630.611 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1632.629 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1634.646 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1636.667 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1638.684 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1640.694 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1642.712 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1644.730 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1646.747 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1648.764 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1650.781 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1652.800 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1654.815 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1656.832 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1658.848 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1660.869 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1662.885 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1664.903 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1666.918 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1668.935 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1670.953 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1672.968 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1674.989 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1677.004 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1679.020 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1681.036 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1683.062 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1685.069 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1687.086 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1689.105 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1691.120 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1693.139 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1695.155 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1697.174 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1699.189 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1701.205 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1703.225 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1705.244 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1707.259 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1709.270 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1711.290 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1713.306 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1715.325 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1717.341 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1719.357 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1721.375 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1723.391 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1725.407 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1727.429 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1729.445 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1731.462 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1733.479 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1735.498 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1737.511 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1739.531 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1741.553 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1
+1743.564 [altscreen111] GEN2 FLIGHT SessionControl exit session=2e87b0 command=updateFeedback commandRef=78345110 rc=0 out=3040e0 private111=1

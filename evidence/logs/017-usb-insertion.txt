@@ -1,0 +1,98 @@
+# dio_manager back, USB insertion
+# Topic: Phone USB insertion and io-fs-media launch
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> pidin | grep -i -e dio_manager -e usb -e carplay -e vc_render
+  966700   1 sbin/io-usb         10r SIGWAITINFO                             
+  966700   2 sbin/io-usb         10r RECEIVE     4                           
+  966700   3 sbin/io-usb         21r RECEIVE     7                           
+  966700   4 sbin/io-usb         21r RECEIVE     10                          
+  966700   5 sbin/io-usb         21r RECEIVE     1                           
+  966700   6 sbin/io-usb         10r RECEIVE     13                          
+  966700   8 sbin/io-usb         10r RECEIVE     13                          
+  966700   9 sbin/io-usb         10r RECEIVE     13                          
+  966700  10 sbin/io-usb         21r RECEIVE     13                          
+ 1445936   1 le/bin/usblauncher  10r RECEIVE     1                           
+ 1445936   2 le/bin/usblauncher  10r SIGWAITINFO                             
+ 1445936   3 le/bin/usblauncher  10r REPLY       966700                      
+ 1445936   4 le/bin/usblauncher  10r REPLY       1290296                     
+ 1536046   1 le/bin/usblauncher  10r RECEIVE     1                           
+ 1536046   2 le/bin/usblauncher  10r SIGWAITINFO                             
+ 1536046   3 le/bin/usblauncher  10r REPLY       1290296                     
+ 1536046   4 le/bin/usblauncher  10r REPLY       14061699                    
+ 1536046   5 le/bin/usblauncher  10r REPLY       14061699                    
+ 1790048   1 sbin/devc-serusb    21r RECEIVE     1                           
+ 1790048   2 sbin/devc-serusb    10r SIGWAITINFO                             
+ 1790048   3 sbin/devc-serusb    23r CONDVAR     (0x11fb34)                  
+ 1790048   4 sbin/devc-serusb    20r CONDVAR     (0x11fb44)                  
+ 1790048   5 sbin/devc-serusb    21r REPLY       966700                      
+ 5275784   1 app/root/vc_render  25r REPLY       405536                      
+14061699   1 le/sbin/io-usb-dcd  10r SIGWAITINFO                             
+14061699   2 le/sbin/io-usb-dcd  21r CONDVAR     (0x131060)                  
+14061699   3 le/sbin/io-usb-dcd  21r RECEIVE     4                           
+14061699   4 le/sbin/io-usb-dcd  12r RECEIVE     7                           
+14061699   5 le/sbin/io-usb-dcd  10r RECEIVE     7                           
+14061700   1 n/apps/dio_manager  10r CONDVAR     (0xffbe0)                   
+14061700   2 n/apps/dio_manager  10r NANOSLEEP                               
+14061700   3 n/apps/dio_manager  10r NANOSLEEP                               
+14061700   4 n/apps/dio_manager  10r REPLY       405536                      
+14061700   5 n/apps/dio_manager  10r REPLY       405536                      
+14061700   6 n/apps/dio_manager  10r CONDVAR     (0x1aae20)                  
+14061700   7 n/apps/dio_manager  10r RECEIVE     1                           
+14061700   8 n/apps/dio_manager  10r REPLY       1171503                     
+14061700   9 n/apps/dio_manager  10r CONDVAR     (0x1bfa54)                  
+14061700  10 n/apps/dio_manager  10r CONDVAR     (0x1bfc58)                  
+14061700  11 n/apps/dio_manager  10r CONDVAR     (0x1bfe38)                  
+14061700  12 n/apps/dio_manager  10r CONDVAR     (0x1bf100)                  
+14061700  13 n/apps/dio_manager  10r REPLY       884772                      
+14061700  14 n/apps/dio_manager  10r REPLY       405536                      
+14061700  15 n/apps/dio_manager  10r CONDVAR     (0x1c6568)                  
+14061700  16 n/apps/dio_manager  10r RECEIVE     4                           
+14061700  17 n/apps/dio_manager  10r RECEIVE     8                           
+14061700  18 n/apps/dio_manager  10r CONDVAR     (0x202c48)                  
+14061700  19 n/apps/dio_manager  10r CONDVAR     (0x2027c0)                  
+14061700  20 n/apps/dio_manager  10r CONDVAR     (0x202698)                  
+14061700  21 n/apps/dio_manager  10r CONDVAR     (0x202570)                  
+14061700  22 n/apps/dio_manager  10r CONDVAR     (0x201e18)                  
+14061700  23 n/apps/dio_manager  10r RECEIVE     4                           
+14061700  24 n/apps/dio_manager  10r CONDVAR     (0x1fdffc)                  
+14061700  25 n/apps/dio_manager  10r CONDVAR     (0x1fdc2c)                  
+14061700  26 n/apps/dio_manager  10r RECEIVE     4                           
+14061700  27 n/apps/dio_manager  10r REPLY       1753177                     
+14061700  28 n/apps/dio_manager  10r REPLY       1753146                     
+14061700  29 n/apps/dio_manager  10r REPLY       1380356                     
+root@mmx:/mnt/app/root> ls -l /tmp/altscreen111.log; tail -15 /tmp/altscreen111.log | cut -c1-170
+-rw-r--r--  2 root      root         131637 Jan 01 00:09 /tmp/altscreen111.log
+595.656 [altscreen111] SessionSetup target mprotect RW denied page=78332000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+595.657 [altscreen111] SessionSetup target page cloned private RW at 78332000 size=4096
+595.657 [altscreen111] installed ARM hook SessionSetup target=78332fd8 replacement=7800937c trampoline=1b6000 page=78332000 pagesize=4096
+595.658 [altscreen111] SessionStart target mprotect RW denied page=78331000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+595.658 [altscreen111] SessionStart target page cloned private RW at 78331000 size=4096
+595.658 [altscreen111] installed ARM hook SessionStart target=78331360 replacement=78008918 trampoline=1b7000 page=78331000 pagesize=4096
+595.659 [altscreen111] installed ARM hook SessionTearDown target=78332b1c replacement=7800aaf0 trampoline=1b8000 page=78332000 pagesize=4096
+595.659 [altscreen111] PlatformControl target mprotect RW denied page=7832b000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+595.660 [altscreen111] PlatformControl target page cloned private RW at 7832b000 size=4096
+595.660 [altscreen111] installed ARM hook PlatformControl target=7832b710 replacement=78006a44 trampoline=1b9000 page=7832b000 pagesize=4096
+595.660 [altscreen111] SessionControl target mprotect RW denied page=78334000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+595.661 [altscreen111] SessionControl target page cloned private RW at 78334000 size=4096
+595.661 [altscreen111] installed ARM hook SessionControl target=78334d88 replacement=78008284 trampoline=1ba000 page=78334000 pagesize=4096
+595.664 [altscreen111] GEN2 candidate active: 111=1440x456@30 physical=200x63 altPort=6000 tee=19820 capture=19821 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000
+595.665 [altscreen111] GEN2 Candidate-D manual=disabled D2_keyframes=disabled eventDelayMs=250 watchdogMs=1000 minGapMs=1000 sessionMarker=/tmp/mibr-alt111-keyframe-polic
+root@mmx:/mnt/app/root> sloginfo | grep -i -e usb -e "device not supported" -e enumerat | tail -15
+Jan 01 00:09:55    5    12   100 USB-0.1:1: vid=1a96, did=2018: Driver /etc/scripts/startncm.sh has pid 14078089
+Jan 01 00:09:55    5    12   100 USB-0.1:0: vid=1a96, did=2018: bring up link
+Jan 01 00:09:55    2    12     0 USB device suspend ....
+Jan 01 00:09:55    5    12   100 USB-0.1:0: tid=4, vid=1a96, did=2018: Device suspended: Before configured event - Ignore
+Jan 01 00:10:10    5    12   100 USB-0.3:0: vid=05ac, did=12a8: found control endpoint
+Jan 01 00:10:10    5    12   100 USB-0.3:0: vid=05ac, did=12a8: found interrupt endpoint, iface 2
+Jan 01 00:10:10    5    12   100 USB-0.3:0: vid=05ac, did=12a8: Insertion
+Jan 01 00:10:10    5    12   100 USB-0.3:0: vid=05ac, did=12a8: Ignore
+Jan 01 00:10:10    5    12   100 USB-0.3:0: vid=05ac, did=12a8: set config 2 of 4 configurations
+Jan 01 00:10:10    3    29     0 pps:(1445936) Created usb-0.0.3 with .all ocb 1 -> 2
+Jan 01 00:10:10    3    29     0 pps:(1445936) Created usb-0.0.3 with .all ocb 0 -> 3
+Jan 01 00:10:10    5    12   100 USB-0.3:2: vid=05ac, did=12a8: Launch io-fs-media -dipod,config=/etc/ipod.cfg,transport=usb:busno=0:devno=0x3:normal_mA=1100:suspend_mA=1100:audio=/dev/snd/ipod-0-0x3:path=/dev/io-usb/io-usb,acp=i2c:addr=0x11:path=/dev/i2c8,darates,restore=!shuffle:!repeat,eq=off,sndchk=on,storage,splash=:/etc/166x76.ipod:/etc/166x76.ipod,mount=/fs/ipod-03,pps=/ramdisk/pps/ipod-03
+Jan 01 00:10:10    5    12   100 USB-0.3:2: vid=05ac, did=12a8: Driver io-fs-media has pid 14934144
+Jan 01 00:10:10    5    12   100 USB-0.3:0: vid=05ac, did=12a8: Launch io-audio -o intr_thread_prio=21 -dipod busno=0,devno=0x3,ign_remove,cap_name=ipod-0-0x3,usbpath=/dev/io-usb/io-usb
+Jan 01 00:10:10    5    12   100 USB-0.3:0: vid=05ac, did=12a8: Driver io-audio has pid 14954627
+root@mmx:/mnt/app/root> 

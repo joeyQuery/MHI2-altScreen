@@ -1,0 +1,51 @@
+# Gen-1 hook first load on MU0678
+# Topic: ARM hooks via MAP_FIXED clone; stock /info baseline features=2
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> cat /tmp/altscreen111.log
+104.221 [altscreen111] renderer tee listening on 127.0.0.1:19820
+104.221 [altscreen111] hook destinations setup=78003b54 start=78003960 teardown=78004cc8
+104.222 [altscreen111] SessionSetup target mprotect RW denied page=782c2000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+104.222 [altscreen111] SessionSetup target page cloned private RW at 782c2000 size=4096
+104.223 [altscreen111] installed ARM hook SessionSetup target=782c2fd8 replacement=78003b54 trampoline=1b6000 page=782c2000 pagesize=4096
+104.223 [altscreen111] SessionStart target mprotect RW denied page=782c1000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+104.224 [altscreen111] SessionStart target page cloned private RW at 782c1000 size=4096
+104.224 [altscreen111] installed ARM hook SessionStart target=782c1360 replacement=78003960 trampoline=1b7000 page=782c1000 pagesize=4096
+104.225 [altscreen111] installed ARM hook SessionTearDown target=782c2b1c replacement=78004cc8 trampoline=1b8000 page=782c2000 pagesize=4096
+104.226 [altscreen111] GEN2 candidate active: 111=1440x455@30 physical=200x63 altPort=6031 tee=19820 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000-8000-000000000002 viewAreas=1 autoShow=0 bit26Mode=0
+106.160 [altscreen111] captured stock CarPlay master AES key at SetSecurityInfo caller
+106.160 [altscreen111] SETUP entry streams=<none>
+106.163 [altscreen111] SETUP stock result=0 response=yes
+106.205 [altscreen111] GEN2 stock display capability baseline: features=2 primaryInputDevice=<absent>0; alt clone removes primaryInputDevice
+106.207 [altscreen111] GEN2 /info ready: root=altScreen+viewAreas type=111 maxFPS=30 features=0 input=none geometry=1440x455 physical=200x63 uuid=b7e6c5a0-2222-4000-8000-000000000002 url=maps:/car/instrumentcluster
+280.405 [altscreen111] renderer tee listening on 127.0.0.1:19820
+280.405 [altscreen111] hook destinations setup=78003b54 start=78003960 teardown=78004cc8
+280.406 [altscreen111] SessionSetup target mprotect RW denied page=782c2000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+280.407 [altscreen111] SessionSetup target page cloned private RW at 782c2000 size=4096
+280.407 [altscreen111] installed ARM hook SessionSetup target=782c2fd8 replacement=78003b54 trampoline=1b6000 page=782c2000 pagesize=4096
+280.408 [altscreen111] SessionStart target mprotect RW denied page=782c1000 size=4096 errno=13 Permission denied; trying anonymous MAP_FIXED clone
+280.408 [altscreen111] SessionStart target page cloned private RW at 782c1000 size=4096
+280.409 [altscreen111] installed ARM hook SessionStart target=782c1360 replacement=78003960 trampoline=1b7000 page=782c1000 pagesize=4096
+280.409 [altscreen111] installed ARM hook SessionTearDown target=782c2b1c replacement=78004cc8 trampoline=1b8000 page=782c2000 pagesize=4096
+280.411 [altscreen111] GEN2 candidate active: 111=1440x455@30 physical=200x63 altPort=6031 tee=19820 URL=maps:/car/instrumentcluster uuid=b7e6c5a0-2222-4000-8000-000000000002 viewAreas=1 autoShow=0 bit26Mode=0
+282.297 [altscreen111] captured stock CarPlay master AES key at SetSecurityInfo caller
+282.298 [altscreen111] SETUP entry streams=<none>
+282.300 [altscreen111] SETUP stock result=0 response=yes
+282.328 [altscreen111] GEN2 stock display capability baseline: features=2 primaryInputDevice=<absent>0; alt clone removes primaryInputDevice
+282.329 [altscreen111] GEN2 /info ready: root=altScreen+viewAreas type=111 maxFPS=30 features=0 input=none geometry=1440x455 physical=200x63 uuid=b7e6c5a0-2222-4000-8000-000000000002 url=maps:/car/instrumentcluster
+root@mmx:/mnt/app/root> cat /tmp/mibr-carplay111.state
+ready
+root@mmx:/mnt/app/root> pidin ar | grep dio_manager
+ 4886656 /mnt/app/eso/bin/apps/dio_manager
+ 5005446 grep dio_manager
+root@mmx:/mnt/app/root> ls -l /mnt/app/eso/lib/libmibr_carplay111.so /mnt/app/root/mibr-carplay111-backup/
+-rwxr-xr-x  1 root      root         138316 Jan 01 00:06 /mnt/app/eso/lib/libmibr_carplay111.so
+
+/mnt/app/root/mibr-carplay111-backup/:
+total 23
+drwxr-xr-x  2 root      root           1024 Jan 01 00:07 .
+drwxrwxrwx  9 root      root           3072 Jan 01 00:07 ..
+-rw-r--r--  1 root      root           6788 Jan 01 00:08 smartphone_integrator.json.stock
+-rw-r--r--  1 root      root            136 Jan 01 00:07 smartphone_integrator.json.stock.sha256
+root@mmx:/mnt/app/root> 

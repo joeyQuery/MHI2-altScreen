@@ -1,0 +1,107 @@
+# iPhone log: transport to the head unit
+# Topic: h264 stream configured, Original Display Characteristics
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+user@mac ~ % log show --archive ~/carplay-phone5.logarchive --info --debug --style compact --start "2026-09-29 10:55:03" --predicate 'process == "airplayd" AND (eventMessage CONTAINS[c] "screen" OR eventMessage CONTAINS[c] "stream" OR eventMessage CONTAINS[c] "6031" OR eventMessage CONTAINS[c] "connect" OR eventMessage CONTAINS[c] "setup" OR eventMessage CONTAINS[c] "teardown")' | head -100
+Timestamp               Ty Process[PID:TID]
+2026-09-29 10:55:03.076 Df airplayd[10072:2b16a4] [com.apple.xpc:connection] [0x804c4bac0] activating connection: mach=true listener=false peer=false name=com.apple.trustd
+2026-09-29 10:55:03.081 Df airplayd[10072:2b16a4] [com.apple.xpc:connection] [0x804c4bac0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-29 10:55:03.082 Df airplayd[10072:2b16a4] [com.apple.xpc:connection] [0x804c4bac0] activating connection: mach=true listener=false peer=false name=com.apple.trustd
+2026-09-29 10:55:03.093 Df airplayd[10072:2b16a4] [com.apple.xpc:connection] [0x804c4bac0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportConnectionHTTP] [0xE14B] APTransportConnectionHTTP with name 'CarPlay-evnt' created. QoS: 0 Priority: 46
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportStream] [0x14C9] APTransportStream with name CarPlay-evnt holds send connection [0xE14B].
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportStream] APTransportStream 0x14C9 created with provider 0x0000.
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportStream] APTransportStream 0x14C9 with name CarPlay-evnt created.
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportSession] [0x664A] APTransportSession with stream [0x14C9] holds connection [0xE14B]
+2026-09-29 10:55:03.108 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportStream] [0x14C9] Waiting for connection [0xE14B].
+2026-09-29 10:55:03.108 Df airplayd[10072:2b17e4] [com.apple.airplay:APTransportStream] [0x14C9] Received event ? from connection [0xE14B]
+2026-09-29 10:55:03.108 Df airplayd[10072:2b158a] [com.apple.airplay:APTransportConnectionHTTP] [0xE14B] Async connecting to '[fe80::<redacted>%en7]:5001' port 5001 ifIndex: 31
+2026-09-29 10:55:03.108 Df airplayd[10072:2b158a] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xE14B]: Connect start: '[fe80::<redacted>%en7]:5001'
+2026-09-29 10:55:03.109 Df airplayd[10072:2b158a] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xE14B]: Connecting to [fe80::<redacted>%en7]:5001, interface 31
+2026-09-29 10:55:03.109 Df airplayd[10072:2b158a] [com.apple.airplay:APTransportConnectionHTTP] [0xE14B] Connecting to address: [fe80::<redacted>%en7]:5001
+2026-09-29 10:55:03.109 Df airplayd[10072:2b17e4] [com.apple.airplay:APTransportStream] [0x14C9] Received event Connecting from connection [0xE14B]
+2026-09-29 10:55:03.110 Df airplayd[10072:2b158a] [com.apple.airplay:AsyncCnxAirPlayHTTP] [0xE14B]: Connected to [fe80::<redacted>%en7]:5001 (Reach=0.00 ms, SRV=0.00 ms, DNS=0.00 ms, Connect=1.27 ms, Total=1.47 ms)
+2026-09-29 10:55:03.110 Df airplayd[10072:2b158a] [com.apple.airplay:APTransportConnectionHTTP] [0xE14B] Connected to address: [fe80::<redacted>%en7]:5001
+2026-09-29 10:55:03.112 Df airplayd[10072:2b158a] [com.apple.airplay:APTransportConnectionHTTP] [0xE14B] HTTPServer connected to [fe80::<redacted>%en7]:5001 (from [fe80::<redacted>%en7]:61249)
+2026-09-29 10:55:03.112 Df airplayd[10072:2b158a] [com.apple.airplay:APTransportConnectionHTTP] [0xE14B] HTTP connection connected
+2026-09-29 10:55:03.112 Df airplayd[10072:2b17e4] [com.apple.airplay:APTransportStream] [0x14C9] Received event Connected from connection [0xE14B]
+2026-09-29 10:55:03.112 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportStream] [0x14C9] Connection succeeded.
+2026-09-29 10:55:03.112 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597] FeatureKey list negotiated:[
+    "altScreen",
+    "viewAreas"
+]
+2026-09-29 10:55:03.112 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597], Video Stream configured for Codec Type: h264
+2026-09-29 10:55:03.112 Df airplayd[10072:2b16a4] [com.apple.xpc:connection] [0x804c4be80] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-29 10:55:03.114 Df airplayd[10072:2b16a4] [com.apple.carkit:General] Activating connection! <private>
+2026-09-29 10:55:03.115 Df airplayd[10072:2b158a] [com.apple.carkit:General] Connection activated! <private>
+2026-09-29 10:55:03.124 Df airplayd[10072:2b17e4] [com.apple.carkit:General] [CARInstrumentClusterURLController] invalidating connection.
+2026-09-29 10:55:03.201 Df airplayd[10072:2b16a4] (ExternalAccessory) [#ExternalAccessory] Returning connectedAccessories count 0
+2026-09-29 10:55:03.207 Df airplayd[10072:2b16a8] [com.apple.xpc:connection] [0x804c4bc00] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-29 10:55:03.224 Df airplayd[10072:2b16a4] [com.apple.airplay:APTransportKeepAliveControllerStandard] [0x67CD] APTransportKeepAliveControllerStandard created for stream [0x0240]
+2026-09-29 10:55:03.248 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597] Created CarPlayAudio stream [0x1B95]
+2026-09-29 10:55:03.248 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] [0x0597] Created CarPlayAudio stream [0xF563]
+2026-09-29 10:55:03.248 Df airplayd[10072:2b16a4] [com.apple.airplay:APEndpointCarPlay] Original Display Characteristics: [
+    {
+        "ScreenPixelSize" : 
+        {
+            "Width" : 1024.000000,
+            "Height" : 480.000000,
+        },
+        "ScreenPhysicalSize" : 
+        {
+            "Width" : 188.000000,
+            "Height" : 88.000000,
+        },
+    },
+    {
+        "ScreenPixelSize" : 
+        {
+            "Width" : 1440.000000,
+            "Height" : 456.000000,
+        },
+        "ScreenPhysicalSize" : 
+        {
+            "Width" : 200.000000,
+            "Height" : 63.000000,
+        },
+        "ViewAreas" : 
+        [
+            {
+                "viewAreaTransitionControl" : false,
+                "widthPixels" : 1440,
+                "originYPixels" : 0,
+                "safeArea" : 
+                {
+                    "originYPixels" : 0,
+                    "heightPixels" : 456,
+                    "originXPixels" : 0,
+                    "widthPixels" : 1440,
+                },
+                "drawUIOutsideSafeArea" : false,
+                "orig<…>
+2026-09-29 10:55:03.248 Df airplayd[10072:2b16a4] [com.apple.carkit:General] Connecting to CarKit service.
+2026-09-29 10:55:03.248 Df airplayd[10072:2b16a4] [com.apple.xpc:connection] [0x804c49b80] activating connection: mach=true listener=false peer=false name=com.apple.carkit.service
+2026-09-29 10:55:03.248 Df airplayd[10072:2b16a4] [com.apple.carkit:General] Connecting to CarKit service: will call serviceBlock
+2026-09-29 10:55:03.253 Df airplayd[10072:2b1818] [com.apple.airplay:APCarPlayCarServicesInterface] Fetching scaledDisplays: [
+    {
+        "ScreenPhysicalSize" : 
+        {
+            "Width" : 188.000000,
+            "Height" : 88.000000,
+        },
+        "ScreenPixelSize" : 
+        {
+            "Width" : 1024.000000,
+            "Height" : 480.000000,
+        },
+        "preferredUIScale" : 2,
+        "OverrideCanvasSize" : 
+        {
+            "Width" : 1024.000000,
+            "Height" : 480.000000,
+        },
+    },
+    {
+        "ScreenPhysicalSize" : 
+user@mac ~ % 

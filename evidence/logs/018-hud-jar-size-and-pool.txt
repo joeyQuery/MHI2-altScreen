@@ -1,0 +1,102 @@
+# HUD: jar size, ClusterSvc lines, rgd_hook.log pool
+# Topic: v2 jar size 157577, mm-ipod running from rgd_real
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> ls -l /mnt/app/eso/hmi/lsd/jars/rgd_hook.jar
+-rwxr-xr-x  1 root      root         157577 Jan 01 00:03 /mnt/app/eso/hmi/lsd/jars/rgd_hook.jar
+root@mmx:/mnt/app/root> grep ClusterSvc /tmp/carplay_hook.log | tail -n 5 | cut -c1-160
+45109 [INF] [ClusterSvc] bapDescriptor(2): [3] 6:48:0 0:0:0 0:0:0
+45129 [INF] [ClusterSvc] rgiString: [2] 6 48
+46217 [INF] [ClusterSvc] nextManeuver: type=3 dist= distToMan=null turnTo=<street-A> streetIcon=/4399 exit=/-1 destIdx=0 maneuver[1] 13:64:0
+301869 [INF] [ClusterSvc] nextManeuver: type=0 dist=null distToMan=null turnTo=null streetIcon=null/0 exit=null/-1 destIdx=0 maneuver=null
+301933 [INF] [ClusterSvc] rgiString: null
+root@mmx:/mnt/app/root> tail -n 40 /mnt/app/rgd_hook.log | cut -c1-200
+206.684 W HARMAN: pool: recv 1/2 (min 1) send 1/2 pops=1 retained=0 reclaimed=0 msgs=0
+208.569 W HARMAN: reclaiming packets the driver drops: rc=22 first_msg=0x5201 len=27
+209.149 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=45 retained=1 reclaimed=2 msgs=21
+212.079 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=58 retained=1 reclaimed=9 msgs=28
+214.346 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=62 retained=1 reclaimed=9 msgs=28
+217.081 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=68 retained=1 reclaimed=9 msgs=28
+220.078 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=77 retained=1 reclaimed=12 msgs=33
+222.078 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=82 retained=1 reclaimed=12 msgs=33
+224.501 W HARMAN: pool: recv 5/6 (min 1) send 6/6 pops=89 retained=1 reclaimed=12 msgs=33
+226.976 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=105 retained=1 reclaimed=22 msgs=43
+228.976 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=110 retained=1 reclaimed=22 msgs=43
+231.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=115 retained=1 reclaimed=22 msgs=43
+233.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=119 retained=1 reclaimed=22 msgs=43
+235.976 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=125 retained=1 reclaimed=22 msgs=43
+237.976 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=130 retained=1 reclaimed=22 msgs=43
+240.017 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=136 retained=1 reclaimed=23 msgs=46
+242.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=142 retained=1 reclaimed=23 msgs=46
+245.084 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=148 retained=1 reclaimed=23 msgs=46
+247.974 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=154 retained=1 reclaimed=23 msgs=46
+249.974 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=159 retained=1 reclaimed=23 msgs=46
+252.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=164 retained=1 reclaimed=23 msgs=46
+254.973 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=169 retained=1 reclaimed=23 msgs=46
+256.974 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=173 retained=1 reclaimed=23 msgs=46
+259.972 W HARMAN: pool: recv 5/6 (min 1) send 5/6 pops=178 retained=1 reclaimed=23 msgs=46
+root@mmx:/mnt/app/root> pidin | grep -e mm-ipod -e dio_manager
+ 8323174   1 n/apps/dio_manager  10r CONDVAR     (0xffbe0)                   
+ 8323174   2 n/apps/dio_manager  10r READY       1                           
+ 8323174   3 n/apps/dio_manager  10r NANOSLEEP                               
+ 8323174   4 n/apps/dio_manager  10r REPLY       405531                      
+ 8323174   5 n/apps/dio_manager  10r REPLY       405531                      
+ 8323174   6 n/apps/dio_manager  10r CONDVAR     (0x1aae20)                  
+ 8323174   7 n/apps/dio_manager  10r RECEIVE     1                           
+ 8323174   8 n/apps/dio_manager  10r REPLY       1171503                     
+ 8323174   9 n/apps/dio_manager  10r CONDVAR     (0x1bfa54)                  
+ 8323174  10 n/apps/dio_manager  10r CONDVAR     (0x1bfc58)                  
+ 8323174  11 n/apps/dio_manager  10r CONDVAR     (0x1bfe38)                  
+ 8323174  12 n/apps/dio_manager  10r CONDVAR     (0x1bf100)                  
+ 8323174  13 n/apps/dio_manager  10r REPLY       884772                      
+ 8323174  14 n/apps/dio_manager  10r REPLY       405531                      
+ 8323174  15 n/apps/dio_manager  10r CONDVAR     (0x1dfe00)                  
+ 8323174  16 n/apps/dio_manager  10r RECEIVE     4                           
+ 8323174  17 n/apps/dio_manager  10r RECEIVE     8                           
+ 8323174  18 n/apps/dio_manager  10r CONDVAR     (0x202c48)                  
+ 8323174  19 n/apps/dio_manager  10r CONDVAR     (0x202670)                  
+ 8323174  20 n/apps/dio_manager  10r CONDVAR     (0x202548)                  
+ 8323174  21 n/apps/dio_manager  10r CONDVAR     (0x201fa8)                  
+ 8323174  22 n/apps/dio_manager  10r CONDVAR     (0x201e80)                  
+ 8323174  23 n/apps/dio_manager  15r RECEIVE     4                           
+ 8323174  24 n/apps/dio_manager  10r CONDVAR     (0x1fdbfc)                  
+ 8323174  25 n/apps/dio_manager  10r CONDVAR     (0x20206c)                  
+ 8323174  26 n/apps/dio_manager  10r REPLY       1753127                     
+ 8323174  27 n/apps/dio_manager  10r REPLY       1761368                     
+ 8323174  28 n/apps/dio_manager  10r REPLY       1380378                     
+ 8323174  29 n/apps/dio_manager  10r CONDVAR     (0x2efe10)                  
+ 8323174  30 n/apps/dio_manager  10r RECEIVE     4                           
+ 8323174  31 n/apps/dio_manager  10r SIGWAITINFO                             
+ 8323174  32 n/apps/dio_manager  17f SIGWAITINFO                             
+ 8323174  33 n/apps/dio_manager  10r SIGWAITINFO                             
+ 8323174  34 n/apps/dio_manager  10r NANOSLEEP                               
+ 8323174  35 n/apps/dio_manager  19f SIGWAITINFO                             
+ 8323174  36 n/apps/dio_manager  10r REPLY       405531                      
+ 8323174  37 n/apps/dio_manager  10r REPLY       405531                      
+ 8323174  38 n/apps/dio_manager  10r SIGWAITINFO                             
+ 8323174  39 n/apps/dio_manager  10r CONDVAR     (0x783bb128)                
+ 8323174  40 n/apps/dio_manager  19f CONDVAR     (0x302ef0)                  
+ 8323174  41 n/apps/dio_manager  21f CONDVAR     (0x302050)                  
+ 8323174  42 n/apps/dio_manager  17f SIGWAITINFO                             
+ 8323174  43 n/apps/dio_manager  17f SEM         fbe0506c                    
+ 8323174  44 n/apps/dio_manager  17f REPLY       155668                      
+ 8323174  45 n/apps/dio_manager  18f SIGWAITINFO                             
+ 8323174  46 n/apps/dio_manager  18f CONDVAR     (0x2815200c)                
+ 8331372   1 n/rgd_real/mm-ipod  10r RECEIVE     1                           
+ 8331372   2 n/rgd_real/mm-ipod  10r CONDVAR     (0x78028dc4)                
+ 8331372   3 n/rgd_real/mm-ipod  12r REPLY       8323175                     
+ 8331372   4 n/rgd_real/mm-ipod  12r REPLY       8323175                     
+ 8331372   5 n/rgd_real/mm-ipod  10r RECEIVE     1                           
+ 8331372   7 n/rgd_real/mm-ipod  10r RECEIVE     1                           
+ 8331372   8 n/rgd_real/mm-ipod  10r RECEIVE     1                           
+root@mmx:/mnt/app/root> sloginfo | grep -i -e mm-ipod -e SIGSEGV -e terminated | tail -n 15 | cut -c1-200
+Jan 01 00:01:57    5    12   100 USB-0.1:0: vid=1a96, did=2018: Launch mm-ipod -d iap2,config=/etc/mm/iap2.cfg,probe,ppsdir=/ramdisk/pps/iap2 -a i2c,addr=0x11,path=/dev/i2c8,speed=50000 -t usbdevice,p
+Jan 01 00:01:57    5    12   100 USB-0.1:0: vid=1a96, did=2018: Driver mm-ipod has pid 4579393
+Jan 01 00:02:13    5    12   100 USB-0.1:0: vid=1a96, did=2018: Launch mm-ipod -d iap2,config=/etc/mm/iap2.cfg,probe,ppsdir=/ramdisk/pps/iap2 -a i2c,addr=0x11,path=/dev/i2c8,speed=50000 -t usbdevice,p
+Jan 01 00:02:13    5    12   100 USB-0.1:0: vid=1a96, did=2018: Driver mm-ipod has pid 5136511
+Jan 01 00:03:48    5    12   100 USB-0.1:0: vid=1a96, did=2018: Launch mm-ipod -d iap2,config=/etc/mm/iap2.cfg,probe,ppsdir=/ramdisk/pps/iap2 -a i2c,addr=0x11,path=/dev/i2c8,speed=50000 -t usbdevice,p
+Jan 01 00:03:48    5    12   100 USB-0.1:0: vid=1a96, did=2018: Driver mm-ipod has pid 6643824
+Jan 01 00:05:04    5    12   100 USB-0.1:0: vid=1a96, did=2018: Launch mm-ipod -d iap2,config=/etc/mm/iap2.cfg,probe,ppsdir=/ramdisk/pps/iap2 -a i2c,addr=0x11,path=/dev/i2c8,speed=50000 -t usbdevice,p
+Jan 01 00:05:04    5    12   100 USB-0.1:0: vid=1a96, did=2018: Driver mm-ipod has pid 8331372
+root@mmx:/mnt/app/root> 

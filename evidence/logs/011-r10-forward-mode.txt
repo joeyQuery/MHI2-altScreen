@@ -1,0 +1,92 @@
+# r10-fwd: forward mode
+# Topic: Frames forwarded to vc_render
+# Source: unit/host paste captured during the work. Redacted: street names, MAC/IPv6 addresses, VIN/IMSI,
+# account/host names and phone-side UUIDs. Everything else is verbatim.
+
+root@mmx:/mnt/app/root> pidin | grep vc_render
+ 8581228   1 tmp/vc_render       10r REPLY       405534                      
+ 8581228   2 tmp/vc_render       12r CONDVAR     (0x1053b0)                  
+ 8581228   3 tmp/vc_render       14r CONDVAR     (0x1052d0)                  
+ 8581228   4 tmp/vc_render       10r SIGWAITINFO                             
+ 8581228   5 tmp/vc_render       10r SEM         fc3e506c                    
+ 8581228   6 tmp/vc_render       10r REPLY       155662                      
+root@mmx:/mnt/app/root> 
+root@mmx:/mnt/app/root> tail -25 /tmp/vc_render.log
+2019.751 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+2019.752 [vc_render] NvSSVideoGetAttribs -> 0x0
+2019.753 [vc_render] decode#1 len=33 rc=0x0 flag=0
+2019.758 [vc_render] decode#2 len=162 rc=0x0 flag=1
+2019.767 [vc_render] decode#3 len=53 rc=0x0 flag=1
+2021.208 [vc_render] hook disconnected frames=23 dec_err=0
+2021.211 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=23 dec_err=0
+2021.351 [vc_render] NvSSVideoClose EXIT rc=0x0
+2021.355 [vc_render] hook connected
+2021.477 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+2021.662 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+2021.662 [vc_render] NvSSVideoGetAttribs -> 0x0
+2021.663 [vc_render] decode#1 len=12412 rc=0x0 flag=1
+2021.665 [vc_render] decode#2 len=64130 rc=0x0 flag=1
+2021.666 [vc_render] decode#3 len=11757 rc=0x0 flag=1
+2022.032 [vc_render] hook disconnected frames=16 dec_err=0
+2022.032 [vc_render] NvSSVideoClose ENTER handle=117a48 frames=16 dec_err=0
+2022.141 [vc_render] NvSSVideoClose EXIT rc=0x0
+2022.261 [vc_render] hook connected
+2022.371 [vc_render] NvSSVideoOpen(outputDevice=1 layer=58) -> 0x0 handle=117a48
+2022.542 [vc_render] NvSSVideoStreamConfigure(1440x456@30) -> 0x0
+2022.543 [vc_render] NvSSVideoGetAttribs -> 0x0
+2022.544 [vc_render] decode#1 len=4947 rc=0x0 flag=1
+2022.544 [vc_render] decode#2 len=4875 rc=0x0 flag=1
+2022.545 [vc_render] decode#3 len=4860 rc=0x0 flag=1
+root@mmx:/mnt/app/root> grep -E "NATIVE-B|forward:|build" /tmp/altscreen111.log | tail -25
+1980.202 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+1982.146 [altscreen111] NATIVE-B forward: renderer connection closed (sent=66 dropped=1)
+1982.149 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+1996.591 [altscreen111] NATIVE-B decode#300 len=5043 real_rc=0
+1998.271 [altscreen111] NATIVE-B forward: renderer connection closed (sent=317 dropped=2)
+1998.273 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2001.564 [altscreen111] NATIVE-B forward: renderer connection closed (sent=371 dropped=3)
+2001.566 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2016.698 [altscreen111] build audi-mu0678-r10-fwd enabled=1
+2018.694 [altscreen111] NATIVE-B FORWARD MODE ON: frames go to vc_render on 127.0.0.1:19830 (no NvSS in dio_manager)
+2018.701 [altscreen111] NATIVE-B Screen B ready: cid=734253416225195704 dataPort=6000 family=24 (native ServerSocketOpen, stub video sink)
+2018.744 [altscreen111] NATIVE-B iPhone connected on stream-111 port 6000 fd=39
+2018.769 [altscreen111] NATIVE-B stub impl registered self=1a8598 (no NvSS init)
+2018.776 [altscreen111] NATIVE-B stub start (NvSSVideoOpen NOT called)
+2018.779 [altscreen111] NATIVE-B stub configure 1024 480 1024 480 0 0 30
+2018.782 [altscreen111] NATIVE-B ScreenStream B started; entering ProcessFrames
+2018.965 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2018.980 [altscreen111] NATIVE-B decode#1 len=33 real_rc=0
+2019.067 [altscreen111] NATIVE-B decode#2 len=162 real_rc=0
+2019.118 [altscreen111] NATIVE-B decode#3 len=53 real_rc=0
+2021.203 [altscreen111] NATIVE-B forward: renderer connection closed (sent=23 dropped=0)
+2021.212 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2022.031 [altscreen111] NATIVE-B forward: renderer connection closed (sent=39 dropped=1)
+2022.257 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2038.256 [altscreen111] NATIVE-B decode#300 len=5095 real_rc=0
+root@mmx:/mnt/app/root> grep -E "NATIVE-B|forward:|build" /tmp/altscreen111.log | tail -25
+1982.149 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+1996.591 [altscreen111] NATIVE-B decode#300 len=5043 real_rc=0
+1998.271 [altscreen111] NATIVE-B forward: renderer connection closed (sent=317 dropped=2)
+1998.273 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2001.564 [altscreen111] NATIVE-B forward: renderer connection closed (sent=371 dropped=3)
+2001.566 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2016.698 [altscreen111] build audi-mu0678-r10-fwd enabled=1
+2018.694 [altscreen111] NATIVE-B FORWARD MODE ON: frames go to vc_render on 127.0.0.1:19830 (no NvSS in dio_manager)
+2018.701 [altscreen111] NATIVE-B Screen B ready: cid=734253416225195704 dataPort=6000 family=24 (native ServerSocketOpen, stub video sink)
+2018.744 [altscreen111] NATIVE-B iPhone connected on stream-111 port 6000 fd=39
+2018.769 [altscreen111] NATIVE-B stub impl registered self=1a8598 (no NvSS init)
+2018.776 [altscreen111] NATIVE-B stub start (NvSSVideoOpen NOT called)
+2018.779 [altscreen111] NATIVE-B stub configure 1024 480 1024 480 0 0 30
+2018.782 [altscreen111] NATIVE-B ScreenStream B started; entering ProcessFrames
+2018.965 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2018.980 [altscreen111] NATIVE-B decode#1 len=33 real_rc=0
+2019.067 [altscreen111] NATIVE-B decode#2 len=162 real_rc=0
+2019.118 [altscreen111] NATIVE-B decode#3 len=53 real_rc=0
+2021.203 [altscreen111] NATIVE-B forward: renderer connection closed (sent=23 dropped=0)
+2021.212 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2022.031 [altscreen111] NATIVE-B forward: renderer connection closed (sent=39 dropped=1)
+2022.257 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+2038.256 [altscreen111] NATIVE-B decode#300 len=5095 real_rc=0
+2042.931 [altscreen111] NATIVE-B forward: renderer connection closed (sent=359 dropped=9)
+2042.933 [altscreen111] NATIVE-B forward: connected to renderer on 127.0.0.1:19830
+root@mmx:/mnt/app/root> 

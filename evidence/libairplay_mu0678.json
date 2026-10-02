@@ -1,0 +1,217 @@
+{
+  "file_sha256": "a3ab0fe0ac20a712f7f240c1abd852a38faf78f2673880342d0eb24a6d8c29be",
+  "size": 857727,
+  "gates": {
+    "AirPlayReceiverSessionSetup": {
+      "va": "0x22fd8",
+      "size": 5032,
+      "words": [
+        "e92d4ff0",
+        "ed2d8b02"
+      ],
+      "gate_pass": true
+    },
+    "AirPlayReceiverSessionStart": {
+      "va": "0x21360",
+      "size": 2992,
+      "words": [
+        "e92d4ff0",
+        "ed2d8b02"
+      ],
+      "gate_pass": true
+    },
+    "AirPlayReceiverSessionTearDown": {
+      "va": "0x22b1c",
+      "size": 1004,
+      "words": [
+        "e92d4ff0",
+        "ed2d8b02"
+      ],
+      "gate_pass": true
+    },
+    "AirPlayReceiverSessionPlatformControl": {
+      "va": "0x1b710",
+      "size": 2392,
+      "words": [
+        "e92d4ff0",
+        "ed2d8b04"
+      ],
+      "gate_pass": true
+    },
+    "AirPlayReceiverSessionControl": {
+      "va": "0x24d88",
+      "size": 1660,
+      "words": [
+        "e92d4ff0",
+        "e1a06002"
+      ],
+      "gate_pass": true
+    },
+    "AirPlayReceiverSessionSetSecurityInfo": {
+      "va": "0x24c5c",
+      "size": 108,
+      "words": [
+        "e92d41f0",
+        "e28050b4"
+      ],
+      "gate_pass": null
+    },
+    "AES_CBCFrame_Init": {
+      "va": "0x2d1b4",
+      "size": 88,
+      "words": [
+        "e92d41f0",
+        "e1a05003"
+      ],
+      "gate_pass": null
+    },
+    "AirPlayReceiverSessionMakeModeStateFromDictionary": {
+      "va": "0x1f5b4",
+      "size": 1568,
+      "words": [
+        "e59fc600",
+        "e1a03002"
+      ],
+      "gate_pass": null
+    },
+    "AirPlayCopyServerInfo": {
+      "va": "0x1e5d8",
+      "size": 2848,
+      "words": [
+        "e92d4ff0",
+        "e24dde4d"
+      ],
+      "gate_pass": null
+    }
+  },
+  "functions": {
+    "AES_CBCFrame_Init": {
+      "sha256": "c4eebe74e3147631474264cbea2b1771b612c21ac92dc8b8f6eb370572d8444b",
+      "size": 88,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x2d1b4",
+      "mu1438_va": "0x2d1bc"
+    },
+    "AES_CTR_Final": {
+      "sha256": "a601e670c6a5ff0a8d1245f67ffb97078c19eebe24dc89c7896b5414336855ec",
+      "size": 24,
+      "matches_mu1438": true,
+      "matches_mu1440": true,
+      "va": "0x2cec0",
+      "mu1438_va": "0x2cec8"
+    },
+    "AES_CTR_Init": {
+      "sha256": "9c4e8023143e41cbaa0542766ba25a7e98515a8bafacbf84a7f14a7a066b5b98",
+      "size": 68,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x2d20c",
+      "mu1438_va": "0x2d214"
+    },
+    "AES_CTR_Update": {
+      "sha256": "21a6ad2e124a20d1d889a2c8a0c9b75b2d68b837df2c9ec4b8abf9a087713a1c",
+      "size": 504,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x2cf08",
+      "mu1438_va": "0x2cf10"
+    },
+    "AirPlayCopyServerInfo": {
+      "sha256": "1e02b796662706d654d3453e1e786093054598799886e9d89be79b64ceab048a",
+      "size": 2848,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x1e5d8",
+      "mu1438_va": "0x1e5e0"
+    },
+    "AirPlayReceiverSessionControl": {
+      "sha256": "bede54917a735fa7b9a03c6a2bfb0ffa032b78f0b2aed042f946e9a2c2726d83",
+      "size": 1660,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x24d88",
+      "mu1438_va": "0x24d90"
+    },
+    "AirPlayReceiverSessionMakeModeStateFromDictionary": {
+      "sha256": "4a431b4d8a05b85a088bad0df1501514c284ced02b96c2ed8faa79bc0fdfb431",
+      "size": 1568,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x1f5b4",
+      "mu1438_va": "0x1f5bc"
+    },
+    "AirPlayReceiverSessionPlatformControl": {
+      "sha256": "c7801e04038c7cf99fb8238764ff69f9609e1ee859daca7752507485e72b5315",
+      "size": 2392,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x1b710",
+      "mu1438_va": "0x1b718"
+    },
+    "AirPlayReceiverSessionPlatformCopyProperty": {
+      "sha256": "ea09d0d2b81cfd35ddd78246ecaa817482aef5a5c5907b96bc48877dfbcd163e",
+      "size": 1368,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x19cb0",
+      "mu1438_va": "0x19cb8"
+    },
+    "AirPlayReceiverSessionScreen_CopyDisplaysInfo": {
+      "sha256": "741bf6b11f90d0c99178af2bc5fd9915b28c55675a4bcf128860c47b867354aa",
+      "size": 884,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x26590",
+      "mu1438_va": "0x26598"
+    },
+    "AirPlayReceiverSessionSetSecurityInfo": {
+      "sha256": "a7da60524739dac5e297b2bee1dd347102f424f99a8e7f6622cfc51e1b168be3",
+      "size": 108,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x24c5c",
+      "mu1438_va": "0x24c64"
+    },
+    "AirPlayReceiverSessionSetup": {
+      "sha256": "3215586c796976c36bb179d4fb5b4d9b33a5102a5ede07c7df818974aa491db7",
+      "size": 5032,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x22fd8",
+      "mu1438_va": "0x22fe0"
+    },
+    "AirPlayReceiverSessionStart": {
+      "sha256": "bd2ca065803fd956330805254013d1159fe2c200c9dc658022ce02eee07c78ed",
+      "size": 2992,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x21360",
+      "mu1438_va": "0x21368"
+    },
+    "AirPlayReceiverSessionTearDown": {
+      "sha256": "931178dc93994101ac1fd15e9857f5be69e0530c9ed3cf9c37e6b6c0f970f6eb",
+      "size": 1004,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x22b1c",
+      "mu1438_va": "0x22b24"
+    },
+    "AirPlay_DeriveAESKeySHA512ForScreen": {
+      "sha256": "c2bafbf67e4184f90c13dcea02c11b5eadbde1036942c9c718135efda22027c7",
+      "size": 252,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x28dd8",
+      "mu1438_va": "0x28de0"
+    },
+    "ScreenCopyMain": {
+      "sha256": "92cbde193c89bcafcf5fe11c93157ec24f2da73b4119d38eb730fbd7693e4218",
+      "size": 240,
+      "matches_mu1438": true,
+      "matches_mu1440": false,
+      "va": "0x7e278",
+      "mu1438_va": "0x7e280"
+    }
+  }
+}
