@@ -70,6 +70,8 @@ byte for byte (zip metadata differs).
 - After the rollback CarPlay did not come up until the MMI was restarted again; before that the unit showed no `vid=1a96` USB device and no `dio_manager`
   (the phone had simply not enumerated). See [TRACE-017](../traces/TRACE-017-dio-manager-triage.md).
 
+See also the code-level audit of what reaches the cluster: [hud-vc-callers.md](hud-vc-callers.md).
+
 ## Next steps
 
 1. Cold start with `rgd_disable` set; start/stop a route; does the session still drop? (isolates the hook).

@@ -12,6 +12,7 @@
 | [cluster-controls.md](cluster-controls.md) | Zoom, wheel, layout detection |
 | [safe-areas.md](safe-areas.md) | Per-layout visible rectangles |
 | [hud-route-guidance.md](hud-route-guidance.md) | HUD experiment (paused) |
+| [hud-vc-callers.md](hud-vc-callers.md) | Audit: what the HUD package puts on the VC |
 | [open-issues.md](open-issues.md) | What is unresolved |
 | [disproven.md](disproven.md) | What did not work |
 | [builds.md](builds.md) | Build history r24–r60 |

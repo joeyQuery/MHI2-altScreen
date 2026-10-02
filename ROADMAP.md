@@ -17,6 +17,9 @@ Priorities, in the order the owner set them. Each item lists what is known and w
 3. **Disable the cluster's left (key 99) and right (key 100) menus** while the altscreen is showing.
 4. **Issue 1 — the native road-name bar.** Parked until last. Lead: the bar changes size with the dial layout, so the
    cluster knows the layout; BAP map-presentation flags are the candidate lever.
+5. **Cover art / picture download (later).** Upstream's cover-art feature (`coverart_hook.jar`, the `libcarplay_hook.so`
+   dio_manager hook) needs the cluster coded to pull pictures (module 17, `Picture_Upload_Download`). It is **not** part
+   of this project's HUD package and is out of scope for now; listed here so it is not forgotten.
 
 ## Housekeeping
 
