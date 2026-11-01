@@ -9,24 +9,8 @@
 > Virtual Cockpit at about 29–30 frames per second**, with an automatic start after boot, a return to the
 > native map when the phone is unplugged, steering-wheel zoom, and a map that follows the cluster's
 > dial layout.
->
-> The path is **CarPlay stream 111 → native `Screen B` in `dio_manager` → local TCP → `vc_render` →
-> NvSS (`outputDevice 1`, layer 58) → display-manager context 77 on the cluster display.**
-> There is **no** MOST/MPEG-TS leg on this car (see [why](docs/display-path.md)).
->
-> This is a **developer proof of concept**, not an installer. The HUD next-turn feed is an experiment
-> and is **not part of the working baseline** ([status](docs/hud-route-guidance.md)).
 
 [**Status**](STATUS.md) · [Roadmap](ROADMAP.md) · [Docs index](docs/README.md) · [Traces](traces/README.md) · [Evidence register](docs/evidence.md) · [Open issues](docs/open-issues.md) · [What did not work](docs/disproven.md)
-
-> [!CAUTION]
-> ## NOT SD-CARD READY — DEVELOPER SNAPSHOT
->
-> This repository is **not a one-click modification package**. It documents a reverse-engineering effort and
-> publishes the source, scripts and logs behind it. It assumes you already have **SSH shell access** to your own
-> MHI2 unit and can restore it.
->
-> **If you have another MHI2 unit, QNX/CarPlay experience, or can provide reproducible traces, help is wanted.**
 
 > [!WARNING]
 > **Research / experimental / use at your own risk.** The hook runs inside `dio_manager`. Mistakes can leave the
